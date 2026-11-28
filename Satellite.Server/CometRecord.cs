@@ -265,6 +265,34 @@ public partial class LiveMapRoute
         }
     }
 
+    // Explicit Debug requests only. The ordinary replay never scans the archive for these pages.
+    private async Task SendCometDebug(HttpContext context, CancellationToken token)
+    {
+        var q = context.Request.Query;
+        var id = q["id"].ToString();
+        if (!RaidId().IsMatch(id) || q["p"].ToString().Length > 64 || q["filter"].ToString().Length > 80)
+        {
+            context.Response.StatusCode = 400;
+            return;
+        }
+
+        var path = Path.Combine(HistoryFolder, id + ".comet.gz");
+        if (!File.Exists(path))
+        {
+            await SendJson(context, "{\"none\":true}", token);
+            return;
+        }
+
+        int.TryParse(q["cursor"], out var cursor);
+        long.TryParse(q["at"], out var at);
+        await using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 65536, true);
+        using var gzip = new GZipStream(file, CompressionMode.Decompress);
+        using var reader = new StreamReader(gzip);
+        var page = await CometDebugPage.Read(reader, q["p"].ToString(), q["filter"].ToString(), Math.Max(0, at),
+            Math.Max(0, cursor), q["sum"] == "1", token);
+        await SendJson(context, Packed(page.ToJsonString()), token);
+    }
+
     // GET api/history/comet?id=<raid>&p=<profile id>: that one's decisions, {"ev":[{"t":ms,"d":{...}},..]}, oldest
     // first; with &sum=1, COMET's reports of the whole raid instead (recorded with history.cometDebug). {"none":true}:
     // the raid has none recorded.

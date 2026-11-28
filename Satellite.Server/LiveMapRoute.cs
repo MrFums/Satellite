@@ -254,6 +254,11 @@ public partial class LiveMapRoute(ISptLogger<LiveMapRoute> logger, ModHelper mod
                     await SendRecording(context, query["id"].ToString(), cancellationToken);
                     return;
                 case "api/history/comet":
+                    if (query["debug"] == "1")
+                    {
+                        await SendCometDebug(context, cancellationToken);
+                        return;
+                    }
                     await SendComet(context, query["id"].ToString(), query["p"].ToString(), query["sum"].ToString() == "1", cancellationToken);
                     return;
                 case "api/history/export":

@@ -1474,10 +1474,9 @@ html.swap body { opacity: 0; transition: none; }
 }
 #replayBar[hidden] { display: none; }
 #replayBar { flex-wrap: wrap; z-index: 4; }
-#replayBot { flex-basis: 100%; display: flex; align-items: center; gap: 10px; }
+#replayBot { flex: none; width: 100%; }
 #replayBot[hidden] { display: none; }
-#replayBotName { white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
-#replayBotStrip { position: relative; flex: 1; height: 12px; border-radius: 3px; background: rgba(200, 205, 255, 0.07); overflow: hidden; cursor: pointer; }
+#replayBotStrip { position: relative; box-sizing: border-box; border-inline: 1px solid transparent; height: 12px; border-radius: 3px; background: rgba(200, 205, 255, 0.07); overflow: hidden; cursor: pointer; }
 #replayBotStrip i { position: absolute; top: 0; bottom: 0; }
 #replayBar button, #replayBar select {
   height: 30px;
@@ -1670,7 +1669,14 @@ tr.act-left .actTag { background: rgba(45, 212, 191, 0.2); color: #a5f0e5; }
 .goalChain { display: flex; flex-wrap: wrap; gap: 6px; }
 .goal { display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 10px 0 4px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: 12px; cursor: pointer; }
 .goal i { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #12314d; border: 1.5px solid #6fbcff; color: #d7ecff; font-style: normal; font-size: 11px; font-weight: 700; }
-.goal.now { border-color: #6fbcff; color: var(--bright); }
+.squadRow.selected { border-inline-start: 3px solid #68d9c2; padding-inline-start: 8px; }
+.goal.active { border-color: #65dec4; color: var(--bright); }
+.goal.paused { border-color: #f5bd62; }
+.goal.failed { border-color: #ef8982; }
+.goal small { font-size: .88em; color: var(--dim); }
+.goal.active small { color: #65dec4; }
+.goal.paused small { color: #f5bd62; }
+.goal.failed small { color: #ef8982; }
 .goal.done { opacity: 0.5; text-decoration: line-through; }
 /* the menu's own list of raids: the button that looks into one */
 .histLook { font-size: 13px; }
@@ -1748,6 +1754,7 @@ a.histPlay { text-decoration: none; }
   text-decoration: none; white-space: nowrap; transition: background 0.12s, color 0.12s; }
 #modeNav a:hover { color: var(--bright); background: var(--hover); }
 #modeNav a.on { color: var(--ink); background: var(--accent); cursor: default; }
+html:not(.hist) .orbitReplayRoutes { display: none; }
 html.hist #modeNav { margin-right: auto; }
 html.hist #status, html.hist #backRaid, html.hist #session, html.hist #map, html.hist #mapBtn, html.hist #findBox, html.hist #listBtn,
 html.hist #follow, html.hist #reveal, html.hist #options, html.hist #mapTools, html.hist #panel, html.hist #notice, html.hist #recBtn,
@@ -2400,6 +2407,9 @@ table.board.sizes th .sortBtn:hover, table.board.sizes th .sortBtn.on { color: v
 .whyMove b { font-size: 14px; color: #ffc56e; }
 .whyMove.over b { color: var(--dim); }
 .whyMove small { color: var(--dim); font-variant-numeric: tabular-nums; }
+.whyAction { font-weight: 650; font-size: 16px; color: var(--text); margin: 3px 0 6px; }
+.whyDetails { margin: 6px 0; }
+.whyDetails > summary { cursor: pointer; color: var(--dim); font-size: 12px; }
 table.whyOptions { width: 100%; margin: 6px 0 2px; border-collapse: collapse; font-size: 12px; }
 table.whyOptions th { color: var(--dim); font-weight: 600; text-align: left; padding: 2px 4px; }
 table.whyOptions td { padding: 3px 4px; border-top: 1px solid var(--line); }
@@ -2413,8 +2423,6 @@ table.whyOptions tr.no td { color: var(--dim); }
 .whyBefore i { color: var(--dim); font-style: normal; font-variant-numeric: tabular-nums; }
 .whyBefore small { color: var(--dim); font-variant-numeric: tabular-nums; }
 /* by the followed bot's name over the replay's bar: COMET's move now and why */
-#replayBotWhy { margin-left: 8px; overflow: hidden; color: #ffc56e; font-size: 11.5px; white-space: nowrap; text-overflow: ellipsis; }
-#replayBotWhy:empty { display: none; }
 /* a bot's card by the pointer: what it is and its health on the left, its gear and what it carries on the right */
 #tip.cols { max-width: min(600px, calc(100vw - 16px)); }
 #tip .tipCols { display: grid; grid-template-columns: minmax(170px, auto) minmax(220px, 1fr); }
@@ -2436,3 +2444,35 @@ table.whyOptions tr.no td { color: var(--dim); }
 /* Raid history has its own page and its own settings: the live map's menu has no History tab and no replay
    settings (the replay rows stay in the page, hidden, as the history page's settings panel mirrors them) */
 #panel button[data-tab="history"], #panel section[data-tab="history"], #panel details[data-group="replays"] { display: none !important; }
+
+.actionLegend { margin: 4px 0 8px 22px; font-size: 0.85em; }
+.actionLegend summary { cursor: pointer; }
+.actionLegend > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 8px; padding: 6px 0; }
+.actionLegend span { display: flex; align-items: center; gap: 5px; }
+.actionLegend canvas { position: static; width: 20px; height: 20px; flex: none; }
+
+/* The replay HUD stays within the map when the timeline expands or the viewport changes. */
+#actionDock { position: fixed; top: calc(var(--action-under, 100px) + 8px); bottom: calc(var(--bar-over, 110px) + 8px);
+  left: max(8px, var(--menu-l, 0px)); right: max(8px, var(--menu-r, 0px)); z-index: 4; pointer-events: none; }
+#actionDock[hidden], body:not(.hpMap) #actionDock { display: none; }
+#actionOverlay { position: absolute; width: min(280px, 100%); max-height: 100%; box-sizing: border-box; display: flex;
+  flex-direction: column; overflow: hidden; color: var(--bright); background: var(--panel, #17191e);
+  border: 1px solid var(--line); border-radius: 8px; pointer-events: auto; box-shadow: 0 2px 12px #0005; }
+#actionHandle { display: flex; flex: none; align-items: center; justify-content: space-between; padding: 8px 12px;
+  border-bottom: 1px solid var(--line); font-size: 12px; cursor: grab; touch-action: none; user-select: none; }
+#actionHandle span { color: var(--dim); font-size: 16px; }
+#actionRows { overflow: auto; padding: 2px 12px 6px; overscroll-behavior: contain; }
+.actionMember { padding: 6px 0; line-height: 1.4; }
+.actionMember + .actionMember { border-top: 1px solid var(--line); }
+.actionMember strong, .actionMember small { display: block; }
+.actionMember strong { font-size: 13px; }
+.actionMember small { color: var(--dim); font-size: 12px; }
+.actionMember .actionRole { color: var(--accent); }
+
+.cometDebugTools { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin: 4px 0 8px; }
+.cometDebugTools input[type="search"] { flex: 1; min-width: 110px; }
+.cometDebugTools .row { flex-basis: 100%; }
+.cometDebugRow { margin: 5px 0; padding: 5px 7px; border: 1px solid var(--line); border-radius: 5px; }
+.cometDebugRow summary { cursor: pointer; overflow-wrap: anywhere; }
+.cometDebugRow .whyLine { overflow-wrap: anywhere; }
+.cometFields { margin: 4px 0 4px 7px; padding-left: 5px; border-left: 1px solid var(--line); }

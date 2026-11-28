@@ -26,25 +26,22 @@ namespace Satellite.Client
 
         // 0: none asked for; 1: decisions without their settings; 2: everything (see above). As the server asks now:
         // out of a raid it asks for none, but what COMET says of the raid just left (as it's cleaned up, its reports
-        // of the whole raid) comes after, so the raid's own is kept for a while once it's left (Asked)
+        // of the whole raid) can arrive later. Each queue keeps its own raid id, clock and capture mode.
         internal static volatile int Mode;
-        private static volatile int _leftMode;
-        private static int _leftUntil;
-        // (how long after the raid is left what COMET says still goes with it, ms)
         private const int AfterRaid = 120_000;
-
-        // what's asked for now, the raid just left's for a while after it (any thread: no Unity calls)
-        private static int Asked
+        private sealed class RaidQueue
         {
-            get
-            {
-                var now = Mode;
-                return now != 0 ? now : _leftMode != 0 && unchecked(Environment.TickCount - _leftUntil) < 0 ? _leftMode : 0;
-            }
+            internal readonly string Id;
+            internal readonly float Began;
+            internal List<string> Lines = new List<string>();
+            internal string Session, SessionField;
+            internal int CaptureMode, End;
+            internal RaidQueue(string id, float began) { Id = id; Began = began; }
         }
-
         private static readonly object Gate = new object();
-        private static List<string> _waiting = new List<string>();
+        private static RaidQueue _current;
+        private static volatile RaidQueue _previous;
+        private static volatile bool _hasLines;
         private static readonly Link Linked = new Link("comet");
         private static Delegate _listener;
         private static Delegate _summaryListener;
@@ -101,7 +98,7 @@ namespace Satellite.Client
         // On COMET's thread: put by, nothing more
         private static void Hear(string json)
         {
-            if (Asked == 0 || json == null || json.Length > MostLength)
+            if (json == null || json.Length > MostLength)
             {
                 return;
             }
@@ -112,86 +109,105 @@ namespace Satellite.Client
         // (on whichever thread COMET writes its reports from)
         private static void HearSummary(string json)
         {
-            if (Asked != 2 || json == null || json.Length > MostLength)
+            if (json == null || json.Length > MostLength)
             {
                 return;
             }
 
-            Put(json);
+            Put(json, true);
         }
 
-        private static void Put(string json)
+        private static void Put(string json, bool summary = false)
         {
+            var retired = _previous;
+            if (Mode == 0 && (retired == null || retired.CaptureMode == 0 || unchecked(Environment.TickCount - retired.End) >= 0)) return;
             lock (Gate)
             {
-                if (_waiting.Count >= MostWaiting)
+                // A report can arrive after the final map packet, or even after another raid has started.
+                // COMET puts the session near the front of each compact JSON object.
+                var previous = _previous;
+                bool grace = previous != null && unchecked(Environment.TickCount - previous.End) < 0;
+                var target = _current;
+                if (previous?.SessionField != null && (grace || summary) && json.IndexOf(previous.SessionField, 0,
+                    Math.Min(192, json.Length), StringComparison.Ordinal) >= 0)
                 {
-                    _waiting.RemoveAt(0);
+                    if (!grace) return;
+                    target = previous;
+                }
+                else if (target == null && grace && previous.Session == null)
+                    target = previous;
+                else if (grace && target?.SessionField != null && json.IndexOf(target.SessionField, 0,
+                    Math.Min(192, json.Length), StringComparison.Ordinal) < 0)
+                    return;
+                if (target == null) return;
+                int mode = target == _current ? Mode : target.CaptureMode;
+                if (mode == 0 || summary && mode != 2) return;
+                if (target.Session == null)
+                {
+                    var session = Peek(json, "session");
+                    if (session.Length == 0) return;
+                    target.Session = session;
+                    target.SessionField = "\"session\":\"" + session + "\"";
+                }
+                target.CaptureMode = mode;
+                if (target.Lines.Count >= MostWaiting)
+                {
+                    target.Lines.RemoveAt(0);
                     _dropped++;
                 }
-
-                _waiting.Add(json);
+                target.Lines.Add(json);
+                _hasLines = true;
             }
         }
 
-        // The raid's just been left: what COMET still has to say of it (its reports of the whole raid) is said now
+        internal static void RaidStarted(string id, float began)
+        {
+            lock (Gate) _current = new RaidQueue(id, began);
+        }
+
         internal static void RaidLeft()
         {
-            _leftMode = Mode;
-            _leftUntil = unchecked(Environment.TickCount + AfterRaid);
-            if (Mode == 2 && _flushPending != null)
+            lock (Gate)
             {
-                try
-                {
-                    _flushPending();
-                }
-                catch (Exception)
-                {
-                    // not this time
-                }
+                if (_current == null) return;
+                _previous = _current;
+                _current = null;
+                _previous.End = unchecked(Environment.TickCount + AfterRaid);
+                if (Mode != 0) _previous.CaptureMode = Mode;
+            }
+            if (_previous.CaptureMode == 2 && _flushPending != null)
+            {
+                try { _flushPending(); }
+                catch (Exception) { /* COMET may already have shut down. */ }
             }
         }
 
-        // From Update: once a second, what's waiting goes to the server
+        // Drain the queue against the clock captured for that raid, even after Events.Take sent its final packet.
         internal static void Tick(float delta)
         {
-            if (!_bound || Asked == 0 && _waiting.Count == 0)
-            {
-                return;
-            }
-
+            if (!_bound || !_hasLines && !_sending) return;
             Linked.Tick(delta);
             _next -= delta;
-            if (_next > 0f || _sending || !Linked.Open)
-            {
-                return;
-            }
-
+            if (!_hasLines || _next > 0f || _sending || !Linked.Open) return;
             _next = 1f;
             List<string> lines;
+            RaidQueue target;
             lock (Gate)
             {
-                if (_waiting.Count == 0)
-                {
-                    return;
-                }
-
-                lines = _waiting;
-                _waiting = new List<string>();
+                target = _previous != null && _previous.Lines.Count > 0 ? _previous : _current;
+                if (target == null || target.Lines.Count == 0) return;
+                lines = target.Lines;
+                target.Lines = new List<string>();
+                _hasLines = (_current?.Lines.Count ?? 0) > 0 || (_previous?.Lines.Count ?? 0) > 0;
             }
-
-            if (!Events.ClockOf(out var raid, out var began))
-            {
-                return;
-            }
-
             if (_dropped > 0 && !_saidDropped)
             {
                 _saidDropped = true;
                 Plugin.Log?.LogWarning($"COMET said more than Satellite could send to the server: {_dropped} of its decisions were left out of the raid's recording.");
             }
-
-            var full = Asked == 2;
+            var raid = target.Id;
+            var began = target.Began;
+            var full = target.CaptureMode == 2;
             _sending = true;
             Task.Run(() =>
             {
@@ -296,22 +312,27 @@ namespace Satellite.Client
 
         // who was in control of each bot as last kept (T04), and of which raid
         private static readonly Dictionary<string, string> Control = new Dictionary<string, string>();
+        private static readonly CometActionSamples ActionSamples = new CometActionSamples();
         private static string _controlRaid = "";
 
         // One decision as {"t":<ms on the raid's clock>,"p":whose (profile id),"f":feature,"s":stage,"d":{...}}: unless
         // full, only what the replay's Why tab shows (Wanted, Kept); null: left out
         private static string Line(string json, string raid, float began, bool full)
         {
-            string feature = null, stage = null;
+            string feature = null, stage = null, trace = null;
             if (!full)
             {
                 feature = Peek(json, "feature");
                 stage = Peek(json, "stage");
-                if (!Wanted(feature, stage))
+                trace = stage == "evaluated" ? CometActionSamples.Trace(feature) : null;
+                if (trace != null && Brains.GestureEvents) return null; // Confirmed actions ride the main recording.
+                if (!Wanted(feature, stage) && (trace == null || json.IndexOf("\"" + trace + "\":", StringComparison.Ordinal) < 0))
                 {
                     return null;
                 }
             }
+
+            if (trace != null && !ActionSamples.NeedsSample(raid, Peek(json, "profileId"), feature, json)) return null;
 
             JObject said;
             try
@@ -323,6 +344,20 @@ namespace Satellite.Client
                 return null;
             }
 
+            JObject action = null;
+            if (trace != null)
+            {
+                try
+                {
+                    action = ActionSamples.Changed(Word(said, "profileId"), feature, trace, said);
+                }
+                catch (Exception ex) when (ex is FormatException || ex is InvalidCastException || ex is ArgumentException || ex is OverflowException)
+                {
+                    // A differently shaped trace from another COMET version must not discard the rest of the batch.
+                    return null;
+                }
+                if (action == null) return null;
+            }
             var realtime = said.Value<double?>("realtime");
             var t = realtime.HasValue ? Math.Max(0L, (long)((realtime.Value - began) * 1000.0)) : 0L;
             var head = "{\"t\":" + t + ",\"p\":" + JsonConvert.ToString(Word(said, "profileId")) + ",\"f\":" + JsonConvert.ToString(Word(said, "feature"))
@@ -332,6 +367,7 @@ namespace Satellite.Client
                 return head + json + "}";
             }
 
+            if (action != null) return head + action.ToString(Formatting.None) + "}";
             if (feature == "E04")
             {
                 // (only a move that went well or badly: most come to nothing either way)

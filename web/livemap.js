@@ -342,13 +342,13 @@
   // myQuests: only quest items and places of the quests the player has started
   // (what a page starts with, the first time it's opened, is how the mod ships: the author's own page as of 1.0.0)
   const prefs = Object.assign({ follow: true, autoZoom: false, spanIn: 120, spanOut: 400, scale: 1, zoom: 0.32, map: '',
-    hide: [], show: [], player: null, floor: 'auto', worth: 0, wishOnly: false, heat: false, lootFloats: true, trails: true, killLines: true, floorOnly: false, hitFlash: true, switches: true, orbitMain: false, orbitRush: false, recSign: true, orbitField: false, squadMarks: true, grenades: true, phobosField: false, minimap: true, killKeep: false, trailMs: 60000, itemNames: true, modTints: false, names: 'all', closeSpan: 250, myExits: true, goneExits: false, secretExits: false, allCorpses: true, botKills: false, lootSprees: true, edgeExits: true, doorEvents: true, teamNames: true, squadCols: false, actionIcons: true, tacticWords: true, floorGrey: true, keyStates: false,
-    myQuests: true, otherLoot: 30, floorDim: 70, insideMine: true, insideLook: true, lookSpan: 220, pressOpen: true, squadParts: true, edge: true, corpseKind: true, botDetails: true, botDiff: true, botSAIN: true, botORBIT: true, botCOMET: true, botLoot: true, edgeQuests: true, myName: true, shots: true, health: true, eventsKind: 'all', feed: true, feedMine: true, feedPmc: true, feedBoss: true, feedAi: true, orbitLines: false, areaPmc: false, lootArea: false, squadPane: true,
-    rosterShut: [], rosterGhosts: 'in', rosterHp: true, rosterDoing: true, rosterSlim: false, mapDoing: false, healthAll: true,
-    orbitNames: false, orbitHear: false, orbitFights: false, lootCell: 60, areaR: 70, roofLoot: true, roofTotals: true, roofTotalsUnder: false, feedNames: 'all', feedBg: 70, feedRows: 5,
+    hide: [], show: [], player: null, floor: 'auto', worth: 0, wishOnly: false, heat: false, lootFloats: true, trails: true, killLines: true, floorOnly: false, hitFlash: true, switches: true, orbitMain: true, orbitRush: true, orbitTactics: true, recSign: true, orbitField: false, squadMarks: true, grenades: true, phobosField: false, minimap: true, killKeep: false, trailMs: 60000, itemNames: true, modTints: false, names: 'all', closeSpan: 250, myExits: true, goneExits: false, secretExits: false, allCorpses: true, botKills: false, lootSprees: true, edgeExits: true, doorEvents: true, teamNames: true, squadCols: false, actionIcons: true, mapDifficulty: true, mapPersonality: true, tacticWords: true, floorGrey: true, keyStates: false,
+    myQuests: true, otherLoot: 30, floorDim: 70, insideMine: true, insideLook: true, lookSpan: 220, pressOpen: true, squadParts: true, edge: true, corpseKind: true, botDetails: true, botDiff: true, botSAIN: true, botORBIT: true, botCOMET: true, botLoot: true, edgeQuests: true, myName: true, shots: true, health: true, eventsKind: 'all', feed: true, feedMine: true, feedPmc: true, feedBoss: true, feedAi: true, orbitLines: true, areaPmc: false, lootArea: false, squadPane: true,
+    rosterShut: [], rosterGhosts: 'in', rosterHp: true, rosterDoing: true, rosterSlim: false, mapDoing: true, healthAll: true,
+    orbitNames: false, orbitHear: true, orbitFights: true, lootCell: 60, areaR: 70, roofLoot: true, roofTotals: true, roofTotalsUnder: false, feedNames: 'all', feedBg: 70, feedRows: 5,
     feedPos: 'free', feedAt: { l: false, t: false, x: 0.143, y: 0.0064 }, eventsPos: { x: 0.135, y: 0.039, v: 2 }, keepZoom: true, feedKeep: true, feedFolded: false, feedBox: true, textScale: 0.9, mapLight: 100, alertSound: false, seenDead: true,
-    alerts: [], has: null, seenInfected: false, rosterNear: false, bestMore: false, lootOff: [], boxOff: [], peek: true, rosterFog: false,
-    latin: true, botShape: 'arrow', meShape: 'arrow', hpTab: 'events', floatWorth: 0, chaseRing: true, nameScale: 1, doingScale: 1, tipGear: true, tipCarry: true, secureShown: false, wishMarks: true, modTeams: true, worldScale: false, sizeByKind: false,
+    alerts: [], has: null, seenInfected: false, rosterNear: false, bestMore: false, lootOff: [], boxOff: [], containerStyle: 'icon', containerScale: 1, peek: true, rosterFog: false,
+    latin: true, botShape: 'arrow', meShape: 'arrow', hpTab: 'events', hpEventsAll: true, hpActions: false, hpGestures: true, floatWorth: 0, chaseRing: true, nameScale: .8, doingScale: 1, tipGear: true, tipCarry: true, secureShown: false, wishMarks: true, modTeams: true, worldScale: false, sizeByKind: false,
     // the menu's groups, open or folded
     groups: { labels: true, show: true, key: true, quests: true, view: true, loot: true, alerts: true, roster: true, lootKinds: true, lootMore: true, lootKey: true,
       rosterMore: true, who: true, layout: true, spawnKinds: false, rosterRows: true, bots: true, orbitMap: false, feed: true, areas: false, boxKinds: true,
@@ -356,12 +356,12 @@
   // lootOff: the kinds of loot left off (see LOOT_KINDS). peek: what's in containers, bodies, airdrops and on bots is
   // shown. rosterFog: the Raid list names everyone seen this raid but not who's still alive. latin: names written in
   // Cyrillic are shown in Latin letters (bosses by their English names)
-  // worldScale: Grow with the zoom, off to begin with (a page that opened beta 6 before that had it on: off once)
-  if (!prefs.worldScaleOffOnce) { prefs.worldScale = false; prefs.worldScaleOffOnce = true; }
   // botShape, meShape: how bots, and you and your friends, are drawn (see MARKER_SHAPES)
   for (const k of ['botShape', 'meShape']) if (!['arrow', 'disc', 'dart', 'drop', 'chevron', 'cone', 'dot'].includes(prefs[k])) prefs[k] = 'arrow';
   if (!Array.isArray(prefs.lootOff)) prefs.lootOff = [];
   // boxOff: the sorts of container left off the map (see BOX_GLYPH)
+  if (prefs.containerStyle !== 'square') prefs.containerStyle = 'icon';
+  prefs.containerScale = Math.max(.5, Math.min(2, Number(prefs.containerScale) || 1));
   if (!Array.isArray(prefs.boxOff)) prefs.boxOff = [];
   // rosterShut: the groups of the Raid list folded away (a kind, or 'Ghosts'). rosterGhosts: ORBIT's ghosts in a group
   // of their own ('own'), with their kind ('in') or not listed ('hide'). lootCell, areaR: how big a rough area of loot
@@ -370,18 +370,6 @@
   // areaKinds: the kinds shown only as a rough area (before this: PMCs alone, areaPmc)
   if (!Array.isArray(prefs.areaKinds)) prefs.areaKinds = prefs.areaPmc ? ['Enemy Player'] : [];
   delete prefs.areaPmc;
-  // (once: ORBIT's squad plans and ghost fights used to start on; every page has them off now, until turned on)
-  if (!prefs.botPlansOff) { prefs.orbitMain = false; prefs.orbitRush = false; prefs.orbitFights = false; prefs.botPlansOff = true; }
-  // (once: a PMC killed by a bot used to have a red ring to begin with; now only a player's kills have one, until
-  // Corpses > "PMCs killed by bots" is turned on)
-  if (!prefs.botKillsOff) { prefs.botKills = false; prefs.botKillsOff = true; }
-  // (once: a replay's Raid events list the whole raid to begin with, not only what had happened by the moment shown)
-  if (!prefs.eventsAllOnce) { prefs.hpEventsAll = true; prefs.eventsAllOnce = true; }
-  // (once: the raid's events used to open on Tactic, which only COMET has; All now, until another is picked)
-  if (!prefs.eventsAllFirst) { prefs.eventsKind = 'all'; prefs.eventsAllFirst = true; }
-  // (once: a preset of the day before put ORBIT's and Phobos's fields, hearing circles and the rest on; off again)
-  if (!prefs.modsOnOnce) { prefs.botSAIN = true; prefs.botORBIT = true; prefs.botCOMET = true; prefs.modsOnOnce = true; }
-  if (!prefs.debugOffOnce) { Object.assign(prefs, { orbitField: false, phobosField: false, orbitLines: false, orbitNames: false, orbitHear: false, orbitFights: false }); prefs.debugOffOnce = true; }
   // the Loot tab's Explorer: where its items are from ('real': this raid, 'can': what can spawn), of which kind ('' any,
   // a kind of LOOT_KINDS, or 'quest'), of the wishlist ('' any, 'all' on it, or one of its groups '0'..'4'), in what
   // order, and whether the whole list is shown
@@ -391,13 +379,9 @@
   if (!['worth', 'total', 'name', 'count', 'chance'].includes(prefs.exSort)) prefs.exSort = 'worth';
   if (typeof prefs.exMore !== 'boolean') prefs.exMore = false;
   if (!['own', 'in', 'hide'].includes(prefs.rosterGhosts)) prefs.rosterGhosts = 'in';
-  // ghosts are listed with their kind, like any bot, unless asked otherwise (a page from the hour they weren't: put back once)
-  if (!prefs.ghostsIn) { prefs.ghostsIn = true; prefs.rosterGhosts = 'in'; prefs.rosterShut = prefs.rosterShut.filter(k => k !== 'Ghosts'); }
   if (!['all', 'victim', 'kinds'].includes(prefs.feedNames)) prefs.feedNames = 'all';
   prefs.lootCell = Math.min(150, Math.max(20, +prefs.lootCell || 60));
   prefs.areaR = Math.min(200, Math.max(30, +prefs.areaR || 70));
-  // (a page from the evening it started at 30, which was too dark: put to 15 once)
-  if (prefs.feedBgSet !== 2) { prefs.feedBgSet = 2; if (+prefs.feedBg === 15) prefs.feedBg = 30; }
   prefs.feedBg = Math.min(100, Math.max(0, Number.isFinite(+prefs.feedBg) ? +prefs.feedBg : 30));
   // feedRows: how many kills the feed shows at once, at most. (feedOnlyMine and rosterTags: switches before 1.0.0,
   // dropped: the four kill feed switches and One line each say the same)
@@ -407,7 +391,7 @@
   // alertSound: a sound with each alert
   prefs.textScale = Math.min(2.4, Math.max(0.6, +prefs.textScale || 1));
   // nameScale, doingScale: names under markers, and what a bot is doing under its name, each on top of textScale
-  prefs.nameScale = Math.min(2, Math.max(0.5, +prefs.nameScale || 1));
+  prefs.nameScale = Math.min(2, Math.max(0.5, +prefs.nameScale || .8));
   prefs.doingScale = Math.min(2, Math.max(0.5, +prefs.doingScale || 1));
   // floatWorth: what a pick-up written on the map must be worth, apart from Worth at least (a page from before 1.1.0
   // may say -1, "as Worth at least": it takes what that's set to now)
@@ -430,8 +414,6 @@
   // Extracts shows every extract of the location; in a raid, the player's own by their state and the rest hollow.
   // myExits: only the player's own, in a raid. goneExits: the ones that are no longer there (a car that never came,
   // or that left with someone) are still shown, in red. (Before 1.0.0: allExits and openExits, read once.)
-  if (prefs.openExits === true && prefs.exitsOnce !== 1) prefs.goneExits = false;
-  prefs.exitsOnce = 1;
   delete prefs.allExits;
   delete prefs.openExits;
   delete prefs.refollow;
@@ -442,11 +424,6 @@
   if (typeof prefs.secretExits !== 'boolean') prefs.secretExits = false;
   // corpseKind: a body says what it was
   // alerts: the kinds that are announced once seen. has: the kinds only a mod brings that this game has
-  // (1.0.0: a building opens by zooming in on it again, as well as when pressed; a page from the days it was put off
-  // gets it back, once, and can put it off in Map > View). lookSpan: how close that is, the screen's short side in
-  // metres. pressOpen: a building pressed opens
-  if (prefs.lookBack !== 1) { prefs.insideLook = true; prefs.lookBack = 1; }
-  delete prefs.lookOnce;
   const LOOK_SPAN = [60, 500];
   prefs.lookSpan = Math.min(LOOK_SPAN[1], Math.max(LOOK_SPAN[0], +prefs.lookSpan || 220));
   if (typeof prefs.pressOpen !== 'boolean') prefs.pressOpen = true;
@@ -460,10 +437,11 @@
   if (!Array.isArray(prefs.brains)) prefs.brains = null;
   delete prefs.zin;
   delete prefs.zout;
-  // names: 'some' (friends, the Goons, bosses), 'players' (every PMC too, bots or not) or 'all' (the bots too)
+  // 'some' and 'players' keep their original combinations in existing settings and presets.
+  const botNameModes = ['none', 'pmc', 'other', 'all', 'some', 'players'];
   if (prefs.allNames) prefs.names = 'all';
   delete prefs.allNames;
-  if (!['some', 'players', 'all'].includes(prefs.names)) prefs.names = 'all';
+  if (!botNameModes.includes(prefs.names)) prefs.names = 'all';
   // closeSpan: item names, and every container, show once the screen's short side is this many metres or fewer
   const CLOSE_SPAN = [20, 400];
   prefs.closeSpan = Math.min(CLOSE_SPAN[1], Math.max(CLOSE_SPAN[0], +prefs.closeSpan || 250));
@@ -481,8 +459,6 @@
     for (const k of Object.keys(KINDS)) hidden.delete(k);
     prefs.areaKinds = [];
     prefs.rosterFog = false;
-    // and everybody named, and what each body has said by the pointer
-    prefs.names = 'all';
     hidden.delete('Layer bodies');
   }
   // cols: the marker colours picked in Settings, Colours, over the usual ones ({ 'Scav': '#rrggbb', 'Layer quest': ... })
@@ -582,8 +558,13 @@
       if (!mine) {
         mine = {};
         for (const k of Object.keys(live)) {
-          if (/^hp/.test(k) || ['minimap', 'killKeep', 'trailMs', 'eventsKind', 'eventsAllFirst', 'eventsAllOnce', 'debugOffOnce'].includes(k)) mine[k] = live[k];
+          if (/^hp/.test(k) || ['mapDifficulty', 'mapPersonality', 'minimap', 'killKeep', 'trailMs', 'eventsKind', 'mapDoing', 'orbitMain', 'orbitRush', 'orbitLines', 'orbitNames', 'orbitHear', 'orbitFights'].includes(k)) mine[k] = live[k];
         }
+      }
+      // Earlier builds kept the replay name filter in hpBotNames alongside live settings.
+      if (mine.hpBotNames !== undefined) {
+        if (mine.names === undefined) mine.names = mine.hpBotNames;
+        delete mine.hpBotNames;
       }
       if (live.lang) mine.lang = live.lang;
       else delete mine.lang;
@@ -744,6 +725,7 @@
     if (id === null) backToPlayer();
     // (a replay's Why tab: about the one followed now)
     if (HIST && prefs.hpTab === 'bots') hpSideShow();
+    if (HIST && replay && prefs.hpActions) showActionOverlay(replay);
   }
   // The zoom the player was being followed at, before the map was taken off them (a drag, a look at something,
   // somebody else followed): put back when it returns to them. Without auto zoom only; with it, the zoom is the one
@@ -2930,7 +2912,7 @@
   const badges = new Map();
   function badge(glyph, fill, rim, ink, form, size) {
     const ratio = pixelRatio();
-    const px = Math.max(6, Math.round(size * ratio));
+    const px = Math.max(form === 'tile' ? 2 : 6, Math.round(size * ratio));
     const key = [glyph, fill, rim, ink, form, px].join('|');
     let c = badges.get(key);
     if (c) return c;
@@ -2952,7 +2934,8 @@
         if (i) g.lineTo(mid + d * Math.cos(a), mid + d * Math.sin(a)); else g.moveTo(mid + d * Math.cos(a), mid + d * Math.sin(a));
       }
       g.closePath();
-    } else if (g.roundRect) g.roundRect(mid - half, mid - half, px, px, px * 0.24);
+    } else if (form === 'tile') g.rect(mid - half, mid - half, px, px);
+    else if (g.roundRect) g.roundRect(mid - half, mid - half, px, px, px * 0.24);
     else g.rect(mid - half, mid - half, px, px);
     g.lineJoin = 'round';
     g.lineWidth = Math.max(3, px * 0.3);
@@ -3283,11 +3266,16 @@
         const s = onScreen(b.p[0], b.p[1]);
         if (!s) continue;
         const rim = forQuest ? LAYERS.quest.col : forFir ? LAYERS.firItems.col : worth ? worthCol(total) : '#7c7f8f';
-        put(s, b.p, badge(BOX_GLYPH[(names[b.tpl] || {}).c] || 'i:boxCrate', '#1a1a24', rim, SPAWN_INK, 'square', size));
-        if (match || forQuest) ring(s, size * 0.85);
-        else if (forFir) ring(s, size * 0.85, LAYERS.firItems.col);
-        else if (forWish) ring(s, size * 0.85, WISH_COL);
-        if (forWish) star(s, size * 0.85);
+        const square = prefs.containerStyle === 'square';
+        const markSize = size * prefs.containerScale * (square ? .4 : 1);
+        const icon = square ? badge('', rim, rim, '', 'tile', markSize)
+          : badge(BOX_GLYPH[(names[b.tpl] || {}).c] || 'i:boxCrate', '#1a1a24', rim, SPAWN_INK, 'square', markSize);
+        put(s, b.p, icon);
+        const ringRadius = Math.max(5, markSize * .85);
+        if (match || forQuest) ring(s, ringRadius);
+        else if (forFir) ring(s, ringRadius, LAYERS.firItems.col);
+        else if (forWish) ring(s, ringRadius, WISH_COL);
+        if (forWish) star(s, ringRadius);
         // (what the box by the pointer lists: worked out only when the container is pointed at)
         const listed = () => {
           const lines = (counted || []).slice().sort((a, c) => worthOf(c[0], c[1]) - worthOf(a[0], a[1])).slice(0, 10)
@@ -3309,7 +3297,7 @@
           }
           return lines;
         };
-        thingsDrawn.push({ x: s[0], y: s[1], r: size / 2, tip: { title: nameOf(b.tpl) + (total ? ' · ' + roubles(total) : ''), tint: tintOf(b.tpl), get lines() { return listed(); } } });
+        thingsDrawn.push({ x: s[0], y: s[1], r: Math.max(4, markSize / 2), tip: { title: nameOf(b.tpl) + (total ? ' · ' + roubles(total) : ''), tint: tintOf(b.tpl), get lines() { return listed(); } } });
       }
 
       // Where loose loot can spawn: a hollow ring each, in the colour of the dearest thing it can spawn of the kinds
@@ -3684,7 +3672,9 @@
     const font = 'bold ' + px + 'px ' + FONT, line = Math.max(2, px * 0.28), pad = Math.ceil(line / 2 + 1);
     if (!wordRuler) wordRuler = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
     wordRuler.font = font;
-    const w = Math.ceil(wordRuler.measureText(text).width + pad * 2), h = Math.ceil(px * 1.4 + pad * 2);
+    wordRuler.textBaseline = 'top';
+    const metrics = wordRuler.measureText(text);
+    const w = Math.ceil(metrics.width + pad * 2), h = Math.ceil(px * 1.4 + pad * 2);
     const c = document.createElement('canvas');
     c.width = Math.max(1, Math.ceil(w * ratio));
     c.height = Math.max(1, Math.ceil(h * ratio));
@@ -3699,7 +3689,11 @@
     g.fillStyle = col;
     g.strokeText(text, w / 2, pad);
     g.fillText(text, w / 2, pad);
-    pic = { c, w, h, pad };
+    // Bot label rows share the transparent sprite margins. Keep the visible outline
+    // in the placement bounds, including accents and descenders at custom text sizes.
+    const inkTop = Math.floor(-(metrics.actualBoundingBoxAscent ?? 0) - line / 2);
+    const inkBottom = Math.ceil((metrics.actualBoundingBoxDescent ?? px) + line / 2);
+    pic = { c, w, h, pad, inkTop, inkBottom };
     wordPics.set(key, pic);
     if (wordPics.size > WORD_PICS) wordPics.delete(wordPics.keys().next().value);
     return pic;
@@ -3894,7 +3888,7 @@
     if (!killTipKept || killTipKept.title !== title || killTipKept.lines[0] !== line) killTipKept = { title, lines: [line] };
     return killTipKept;
   }
-  const MOD_OPTIONS = [['optOrbitLines', 'ORBIT'], ['optOrbitMain', 'ORBIT'], ['optOrbitRush', 'ORBIT'], ['optOrbitField', 'ORBIT'], ['optOrbitNames', 'ORBIT'], ['optOrbitFights', 'ORBIT'], ['optOrbitHear', 'ORBIT'],
+  const MOD_OPTIONS = [['optOrbitLines', 'ORBIT'], ['optOrbitTactics', 'ORBIT'], ['optOrbitMain', 'ORBIT'], ['optOrbitRush', 'ORBIT'], ['optOrbitField', 'ORBIT'], ['optOrbitNames', 'ORBIT'], ['optOrbitFights', 'ORBIT'], ['optOrbitHear', 'ORBIT'],
     ['optRosterGhosts', 'ORBIT'], ['optSquadParts', 'COMET'], ['optTacticWords', 'COMET'], ['optPhobosField', 'Phobos']];
   const modHere = n => (prefs.brains || []).includes(n);
   // (in a replay always: what SAIN, COMET and ORBIT had the bots doing is what a replay is watched for)
@@ -4005,18 +3999,21 @@
   // said by the pointer; made once for each report of a marker
   function botTip(m) {
     const carried = carriedBy(m);
-    if (!hasDetails(m) && !carried) return null;
+    if (!hasDetails(m) && !carried && !m.ch && !m.psc) return null;
     // (made again once a part of it is folded or unfolded)
     const folds = (prefs.tipGear !== false) + '|' + (prefs.tipCarry !== false) + '|' + !!prefs.secureShown;
-    if (!m.botTip || m.botTipFolds !== folds) {
+    if (!m.botTip || m.botTipFolds !== folds || m.botTipOrbit !== orbitMain?.n || m.botTipInventory !== things?.carried[m.pid]) {
       m.botTipFolds = folds;
+      m.botTipOrbit = orbitMain?.n;
+      m.botTipInventory = things?.carried[m.pid];
+      const goal = hasDetails(m) ? orbitGoalOf(m.pid) : null;
       const brain = hasDetails(m) ? brainOf(m) : null, like = hasDetails(m) ? likeOf(m) : '';
       m.botTip = { title: (m.t || ONE[m.c] || m.c) + (carried && carried.total ? ' · ' + roubles(carried.total) : ''),
-        lines: [(ONE[m.c] || m.c) + (levelShown(m.bl, m.c) ? ' · ' + T('Lv {n}', { n: m.bl }) : '') + (like ? ' · ' + like : ''), m.dn ? T('Down: can be got up again') : '', brain ? brain.by + ': ' + brain.text : '',
+        lines: [(m.psc ? T('AI player scav') : ONE[m.c] || m.c) + (levelShown(m.bl, m.c) ? ' · ' + T('Lv {n}', { n: m.bl }) : '') + (like ? ' · ' + like : ''), m.dn ? T('Down: can be got up again') : '', brain ? brain.by + ': ' + brain.text : '',
           m.ch ? T('PBT cheater') + (m.chd ? ' · ' + cheatSaid(m.chd) : '') : '', ...(prefs.health && Array.isArray(m.hp) ? hpSaid(m).split('\n') : ['']),
           hasDetails(m) && m.sq ? T('Squad:') + ' ' + squadSaid(m.sq) + (squadFoe(m.sq) ? ' · ' + T('against {who}', { who: squadFoe(m.sq) }) : '') : '',
-          hasDetails(m) && orbitGoalOf(m.pid) ? T('ORBIT goal:') + ' ' + orbitGoalOf(m.pid).text : '',
-          hasDetails(m) && m.xr ? T('Leaving the raid: {why}', { why: m.xr }) : ''], side: carried ? carried.lines : null };
+          hasDetails(m) && goal ? T('ORBIT goal:') + ' ' + goal.text : '',
+          hasDetails(m) && m.xr ? T('Leaving the raid: {why}', { why: extractReason(m.xr) }) : ''], side: carried ? carried.lines : null };
     }
     return m.botTip;
   }
@@ -4031,12 +4028,91 @@
   // a PMC who came in with others: their team's colour (Settings > Team colours), for their marker and trail
   const teamColOf = m => m.c === 'Enemy Player' && prefs.squadCols && teamKey(m) && squadOf(m) ? squadCol(squadNo(teamKey(m))) : null;
   const DOING_COL = { SAIN: '#ff8d84', COMET: '#ffc56e', ORBIT: '#9fd8ff', QuestingBots: '#b7e3a1', Phobos: '#b7e3a1' };
+  // Living bot markers use pid. Human Fika players use u, including player scavs.
+  function isMapBot(m, kind) {
+    return kind.shape === 'arrow' && m.c !== 'Main Player' && (m.c !== 'Friendly Player' || !!m.pid);
+  }
+  function showBotName(mode, m, kind) {
+    const pmc = m.c === 'Enemy Player' || (m.c === 'Friendly Player' && (m.sd === 'Usec' || m.sd === 'Bear'));
+    if (mode === 'some' || mode === 'players') return kind.label || (mode === 'players' && pmc);
+    return mode === 'all' || (mode === 'pmc' && pmc) || (mode === 'other' && !pmc);
+  }
   // a colour as the canvas gives it back ("#rrggbb", or "rgba(..)" once it's see-through), at alpha a
   const seeThrough = (col, a) => {
     if (/^#[0-9a-f]{6}$/i.test(col)) return col + Math.round(a * 255).toString(16).padStart(2, '0');
     const m = /^rgba?\(([^,]+),([^,]+),([^,)]+)/.exec(col);
     return m ? 'rgba(' + m[1] + ',' + m[2] + ',' + m[3] + ',' + a + ')' : col;
   };
+  // Lay out text in screen space after drawing the map. Pins, paths and hit tests stay at their world positions.
+  const botLabels = [];
+  function drawBotLabels(scale) {
+    const blocks = botLabels;
+    if (!blocks.length) return;
+    const bounds = [], gap = 3 * scale, ratio = pixelRatio();
+    blocks.sort((a, b) => b.priority - a.priority || a.id - b.id);
+    const shared = new Map();
+    for (const block of blocks) {
+      const team = teamKey(block.marker);
+      for (const line of block.lines) {
+        if (team && line.objective && block.lines.length > 1) {
+          const key = team + '|' + line.objective;
+          const speakers = shared.get(key);
+          if (speakers?.some(m => Math.hypot(m.x - block.x, m.y - block.y) < 48 * scale)) {
+            line.hidden = true;
+            continue;
+          }
+          if (speakers) speakers.push(block);
+          else shared.set(key, [block]);
+        }
+        const pic = wordPic(line.text, line.px * prefs.textScale, inkOf(line.col), ratio);
+        block.width = Math.max(block.width, pic.w);
+        if (block.height) block.height += 1 / ratio;
+        line.top = block.height - pic.inkTop;
+        block.height += pic.inkBottom - pic.inkTop;
+      }
+    }
+    function fits(box, block) {
+      const overlaps = other => box.left < other.right + gap && box.right + gap > other.left
+        && box.top < other.bottom + gap && box.bottom + gap > other.top;
+      if (bounds.some(overlaps)) return false;
+      return !blocks.some(other => other !== block && box.left < other.x + other.r && box.right > other.x - other.r
+        && box.top < other.y + other.r && box.bottom > other.y - other.r);
+    }
+    for (const block of blocks) {
+      const { x, y, width, height, r } = block;
+      let place;
+      function tryAt(cx, top) {
+        if (place) return;
+        const left = Math.max(2, Math.min(vw - width - 2, cx - width / 2));
+        top = Math.max(2, Math.min(vh - height - 2, top));
+        const box = { left, right: left + width, top, bottom: top + height };
+        if (fits(box, block)) place = box;
+      }
+      if (block.lines[0].tactic) block.top = y - r - gap - height;
+      tryAt(x, block.top);
+      const reach = width / 2 + r + gap;
+      for (let row = 0; !place && row <= 4; row++) {
+        const shift = row * (height + gap);
+        for (const dx of [reach, -reach, 0]) {
+          tryAt(x + dx, block.top + shift);
+          tryAt(x + dx, y - r - gap - height - shift);
+        }
+      }
+      if (!place) continue;
+      bounds.push(place);
+      const cx = (place.left + place.right) / 2;
+      drawn.push({ m: block.marker, x: cx, y: place.top + height / 2, w: width, h: height });
+      if (Math.abs(cx - x) > r || Math.abs(place.top - block.top) > r) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(Math.max(place.left, Math.min(x, place.right)), Math.max(place.top, Math.min(y, place.bottom)));
+        ctx.lineWidth = Math.max(1, scale);
+        ctx.strokeStyle = 'rgba(210,224,239,0.7)';
+        ctx.stroke();
+      }
+      for (const line of block.lines) if (!line.hidden) write(line.text, line.px, cx, place.top + line.top, line.col, line.alpha);
+    }
+  }
   function drawMarker(m, strong, scale) {
     const kind = KINDS[m.c] || OTHER;
     const at = toScreen(m.cx, m.cy);
@@ -4055,8 +4131,20 @@
     const apart = m.c !== 'Main Player' && m.c !== 'BTR' && m.c !== 'Airdrop' ? otherFloor(m.cx, m.cy, m.cz) : 0;
     const away = apart !== 0;
 
+    const bot = isMapBot(m, kind);
+    const effects = replay && bot && m.pid && !prefs.hpNoEvents;
+    const hop = effects && !m.gh && prefs.hpGestures !== false && modOn('COMET')
+      ? markerHop(gestureTrack(replay, m.pid, chased === m.id), replay.at, r) : 0;
+    if (hop > 0) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(x, y, r * 0.8, r * 0.35, 0, 0, 2 * Math.PI);
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.fill();
+      ctx.restore();
+    }
     ctx.save();
-    ctx.translate(x, y);
+    ctx.translate(x, y - hop);
     ctx.globalAlpha = away && !strong ? 0.6 : 1;
     ctx.lineJoin = 'round';
     ctx.lineWidth = Math.max(1.5, r * 0.22);
@@ -4277,20 +4365,109 @@
     }
     if (away) write(apart > 0 ? '▲' : '▼', 9 * scale, x + r * 1.5, y - r * 0.9, col, strong ? 1 : 0.6);
     const person = m.c === 'Enemy Player' || m.c === 'Friendly Player';
-    const named = kind.label || strong || (prefs.names === 'players' && person)
+    const named = bot ? strong || showBotName(prefs.names, m, kind) : kind.label || strong || (prefs.names === 'players' && person)
       || (m.c === 'Main Player' && (prefs.myName || live.some(o => o.c === 'Friendly Player')))
       || (prefs.names === 'all' && m.c !== 'Corpse' && m.c !== 'Main Player' && m.c !== 'Extract' && m.c !== 'Transit');
     const floorSays = away && (m.c === 'Extract' || m.c === 'Transit') ? floorSaid(m) : '';
     // (names and what they're doing each sized on top of Text size: Settings > Names, What they're doing)
     const namePx = 12 * scale * prefs.nameScale;
-    if (named && (m.t || m.c === 'Transit')) label(markerText(m) + (floorSays ? ' · ' + floorSays : ''), namePx, x, y + r * 1.35 + under, y - r * 1.35, col, away && !strong ? 0.6 : 1);
+    const lines = [];
+    const alpha = away && !strong ? 0.6 : 1;
+    const top = y + r * 1.35 + under;
+    if (named && (m.t || m.c === 'Transit')) {
+      const text = markerText(m) + (floorSays ? ' · ' + floorSays : '');
+      if (bot) lines.push({ text, px: namePx, col, alpha });
+      else label(text, namePx, x, top, y - r * 1.35, col, alpha);
+    }
+    if (bot && (m.psc || prefs.mapDifficulty || prefs.mapPersonality)) {
+      const details = [];
+      if (m.psc) details.push(T('AI player scav'));
+      if (prefs.mapDifficulty && m.df) details.push(DIFFICULTY[m.df] || m.df);
+      if (prefs.mapPersonality && m.ps) details.push(m.ps);
+      if (details.length) lines.push({ text: details.join(' · '), px: 10 * scale, col: m.psc ? '#9ff4c8' : '#e1e5ec', alpha });
+    }
+    if (bot && m.ch) {
+      const d = Math.max(6, r * 0.72), bx = x + r + d * 0.65, by = y - r * 0.7;
+      const icon = badge('!', '#ffc857', '#221a10', '#221a10', 'diamond', d * 1.85);
+      const size = icon.width / pixelRatio();
+      ctx.globalAlpha = away && !strong ? 0.65 : 1;
+      ctx.drawImage(icon, bx - size / 2, by - size / 2, size, size);
+      ctx.globalAlpha = 1;
+      drawn.push({ m, x: bx, y: by, w: d * 2, h: d * 2 });
+    }
     // what it's doing, under its name ("What each bot is doing"): as a mod has it, not the game's own brain
     if (prefs.mapDoing && brain && !inArea(m)) {
-      const said = brain.ghost ? m.ob || '' : brain.by === 'EFT' ? '' : brain.text;
-      if (said) write(said.length > 30 ? said.slice(0, 29) + '…' : said, 9.5 * scale * prefs.doingScale, x, y + r * 1.35 + under + (named && m.t ? namePx * prefs.textScale * 1.3 : 0),
-        brain.ghost ? '#c2c5ca' : DOING_COL[brain.by] || '#dadcdf', away && !strong ? 0.55 : 0.95);
+      const said = brain.by === 'EFT' ? '' : currentAction(m, brain, true);
+      const context = mapContext(m, brain);
+      if (said) lines.push({ text: said.length > 30 ? said.slice(0, 29) + '…' : said, px: 9.5 * scale * prefs.doingScale,
+        col: brain.ghost ? '#c2c5ca' : DOING_COL[brain.by] || '#dadcdf', alpha,
+        objective: brain.by === 'ORBIT' ? said : null });
+      if (context && context !== said) lines.push({ text: context.length > 40 ? context.slice(0, 39) + '…' : context,
+        px: 9 * scale * prefs.doingScale, col: '#b4d5df', alpha });
     }
-    drawn.push({ m, x, y, w: r * 2.6, h: r * 2.6 });
+    const role = m.sq;
+    if (bot && !m.gh && role?.a && prefs.tacticWords !== false && modOn('COMET') && !squadOver(role)
+        && role.u !== 'declined' && role.u !== 'interrupted') {
+      lines.unshift({ tactic: true, text: tacticWord(role), px: 9.5 * scale, col: '#ffc56e', alpha });
+    }
+    if (lines.length && x >= 0 && x <= vw && y >= 0 && y <= vh) botLabels.push({ marker: m, id: m.id, x, y, r, top, width: 0, height: 0, lines,
+      priority: m.id === chased ? 2 : m.id === rosterOver ? 1 : 0 });
+    if (replay && bot && m.pid && prefs.hpGestures !== false && !prefs.hpNoEvents && !inArea(m) && modOn('COMET'))
+      drawGestures(m, replay, x, y - r * 2.5 - 10 * scale, scale);
+    if (bot && m.pid && (!replay || effects) && prefs.actionIcons !== false) {
+      const calls = replay?.signals.voices.get(m.pid);
+      const voice = replay ? (calls && calls[lastAt(calls, replay.at)]) : liveVoices.get(m.pid);
+      if (voice && (replay ? replay.at : performance.now()) - voice.t < SHARE_MS) {
+        const pic = actionPic('voice', ACTION_RADIUS * scale);
+        ctx.drawImage(pic.c, x - pic.w - 6 * scale, y - hop - pic.w - 6 * scale, pic.w, pic.w);
+        if (!replay) dirty = true;
+      }
+      const contacts = replay?.sightings.get(m.pid);
+      const last = contacts ? lastAt(contacts, replay.at) : -1;
+      if (replay ? last >= 0 && replay.at - contacts[last].t < SIGHT_MS : performance.now() < liveSightUntil.get(m.pid)) {
+        const pic = actionPic('sight', ACTION_RADIUS * scale);
+        ctx.drawImage(pic.c, x - pic.w / 2, y - hop - r * 1.6 - pic.w, pic.w, pic.w);
+        if (!replay) dirty = true;
+      }
+    }
+    drawn.push({ m, x, y: y - hop / 2, w: r * 2.6, h: r * 2.6 + hop });
+  }
+
+  // The arrow points from the reporting bot to the squadmate who accepted the contact.
+  function drawSharedContacts(scale) {
+    if (!prefs.actionIcons || (replay && (prefs.hpNoPeople || prefs.hpNoEvents))) return;
+    const now = replay ? replay.at : performance.now();
+    if (!replay && liveShares.length) liveShares = liveShares.filter(s => now - s.t < SHARE_MS);
+    const shares = replay ? recentSignals(replay.signals.shares, now, SHARE_MS) : liveShares;
+    if (!shares.length) return;
+    const visible = new Map();
+    for (const m of live) if (m.pid && m.c !== 'Corpse' && !isHidden(m.c) && !inArea(m)
+      && Number.isFinite(m.cx) && !offFloor(m.cx, m.cy, m.cz)) visible.set(m.pid, m);
+    const sent = new Set();
+    ctx.save();
+    ctx.strokeStyle = '#d4a2ff'; ctx.fillStyle = '#d4a2ff'; ctx.lineWidth = 2 * scale;
+    for (const share of shares) {
+      const from = visible.get(share.from), to = visible.get(share.to);
+      if (!from || !to) continue;
+      const [x, y] = toScreen(from.cx, from.cy), [tx, ty] = toScreen(to.cx, to.cy);
+      const angle = Math.atan2(ty - y, tx - x), length = Math.hypot(tx - x, ty - y);
+      if (length > 9 * scale) {
+        const dx = Math.cos(angle), dy = Math.sin(angle), tipX = tx - dx * 6 * scale, tipY = ty - dy * 6 * scale;
+        ctx.setLineDash([4 * scale, 3 * scale]); ctx.beginPath();
+        ctx.moveTo(x, y); ctx.lineTo(tipX, tipY); ctx.stroke(); ctx.setLineDash([]);
+        ctx.beginPath(); ctx.moveTo(tipX, tipY);
+        ctx.lineTo(tipX - (dx * 7 + dy * 4) * scale, tipY - (dy * 7 - dx * 4) * scale);
+        ctx.lineTo(tipX - (dx * 7 - dy * 4) * scale, tipY - (dy * 7 + dx * 4) * scale);
+        ctx.closePath(); ctx.fill();
+      }
+      if (!sent.has(share.from)) {
+        sent.add(share.from);
+        const pic = actionPic('share', ACTION_RADIUS * scale);
+        ctx.drawImage(pic.c, x + 6 * scale, y - pic.w - 6 * scale, pic.w, pic.w);
+      }
+    }
+    ctx.restore();
+    if (!replay) dirty = true;
   }
 
   // slanting stripes in a colour, to fill a shape with
@@ -4732,16 +4909,21 @@
   function drawHeadings(scale) {
     drawGhostEvents(scale);
     const focus = [pointed, rosterOver, chased];
+    let labelled;
     for (const m of live) {
       if (!(m.os ? prefs.botDetails : modOn('ORBIT'))) continue;
       if (!Array.isArray(m.og) || m.c === 'Corpse' || inArea(m) || isHidden(m.c || 'None') || !Number.isFinite(m.cx)) continue;
       const strong = focus.includes(m.id);
-      if (!strong && !prefs.orbitLines) continue;
+      const tactical = orbitTacticalOrder(m);
+      if (!strong && !prefs.orbitLines && !tactical) continue;
+      if (tactical && (offFloor(m.cx, m.cy, m.cz) || offFloor(m.og[0], m.og[1], m.og[2]))) continue;
+      const team = tactical && orbitSquadOf(m.pid);
+      const tint = team && Number.isInteger(team.SquadId) && team.SquadId >= 0 ? squadCol(team.SquadId + 1) : '#6fbcff';
       const a = toScreen(m.cx, m.cy), b = toScreen(m.og[0], m.og[1]);
-      if (Math.hypot(a[0] - b[0], a[1] - b[1]) < 14 * scale) continue;
+      if (!tactical && Math.hypot(a[0] - b[0], a[1] - b[1]) < 14 * scale) continue;
       const r = Math.max(5 * scale, 4 * zoom);
       ctx.save();
-      ctx.globalAlpha = strong ? 1 : 0.5;
+      ctx.globalAlpha = strong ? 1 : tactical ? .8 : .5;
       ctx.lineCap = 'round';
       ctx.setLineDash([2 * scale, 6 * scale]);
       ctx.beginPath();
@@ -4751,7 +4933,7 @@
       ctx.strokeStyle = 'rgba(0,0,0,0.6)';
       ctx.stroke();
       ctx.lineWidth = strong ? 2 : 1.3;
-      ctx.strokeStyle = '#6fbcff';
+      ctx.strokeStyle = tint;
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.beginPath();
@@ -4760,12 +4942,20 @@
       ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       ctx.stroke();
       ctx.lineWidth = 1.6;
-      ctx.strokeStyle = '#6fbcff';
+      ctx.strokeStyle = tint;
       ctx.stroke();
       ctx.fillStyle = 'rgba(111, 188, 255, 0.18)';
       ctx.fill();
       ctx.restore();
-      if ((strong || prefs.orbitNames) && m.ob) write(m.ob, 10 * scale, b[0], b[1] + r + 3 * scale, '#9fd8ff', strong ? 0.95 : 0.7);
+      if (tactical) {
+        const action = m.ob.split(/\s*[:(]/, 1)[0].trim(), key = (team ? 's' + team.SquadId : 'b' + m.id) + '/' + action;
+        if (strong || !labelled?.has(key)) {
+          (labelled ??= new Set()).add(key);
+          const caption = (team ? T('Squad {n}', { n: team.SquadId }) : m.t || m.c) + ' · ' + (strong || prefs.orbitNames ? m.ob : spaced(action));
+          write(caption, 10 * scale, b[0], b[1] + r + 3 * scale, tint, strong ? .95 : .85);
+        }
+      } else if ((strong || prefs.orbitNames) && m.ob)
+        write(m.ob, 10 * scale, b[0], b[1] + r + 3 * scale, '#9fd8ff', strong ? .95 : .7);
     }
   }
 
@@ -4775,8 +4965,8 @@
   const SHOT_MS = 900;
   let tracers = [];
   function takeShots(list, now) {
-    if (!Array.isArray(list) || (!prefs.shots && prefs.hitFlash === false)) return;
-    for (const s of list) {
+    if (!Array.isArray(list)) return;
+    if (prefs.shots || prefs.hitFlash !== false) for (const s of list) {
       if (!Array.isArray(s) || s.length < 5) continue;
       tracers.push({ who: s[0], a: [s[1], s[2]], b: [s[3], s[4]], at: now });
       // (a sixth: the marker of whoever it hit)
@@ -4784,10 +4974,11 @@
     }
     if (hitFlashes.length > 60) hitFlashes.splice(0, hitFlashes.length - 60);
     // a grenade going off (its fragments, all from one spot): a burst there, and an arc to it from the thrower
-    if (!replaySeeking && prefs.grenades !== false) {
+    if (!replaySeeking && !replay?.scan?.done && prefs.grenades !== false) {
       for (const b of blastsOf(list, id => { const m = liveById.get(id); return m && Number.isFinite(m.cx) ? [m.cx, m.cy] : null; })) {
         const thrower = b.who ? liveById.get(b.who) : null;
-        blastMarks.push({ x: b.x, y: b.y, at: now, fx: thrower ? thrower.cx : NaN, fy: thrower ? thrower.cy : NaN });
+        const inferred = { x: b.x, y: b.y, t: replay ? replay.at : now, pid: thrower?.pid, fx: thrower?.cx, fy: thrower?.cy };
+        if (!blastMarks.some(mark => mark.confirmed && sameBurst(mark, inferred))) blastMarks.push(inferred);
       }
       if (blastMarks.length > 30) blastMarks.splice(0, blastMarks.length - 30);
     }
@@ -5231,6 +5422,7 @@
     drawSwitches(scale);
     drawOrbitMain(scale);
     drawTrails(scale);
+    botLabels.length = 0;
     let top = null;
     // the corpses first, under everyone: the ones a player killed, or every one when asked
     if (!isHidden('Corpse')) {
@@ -5300,6 +5492,8 @@
     if (prefs.edge || prefs.edgeQuests || prefs.edgeExits !== false) drawEdge(scale);
     // the one pointed at: bigger, named, over the others
     if (top) drawMarker(top, true, scale);
+    drawBotLabels(scale);
+    drawSharedContacts(scale);
     // the one the pointer is over in the Raid list: ringed; and the one followed, in blue
     // (Settings > Ring round the one followed: off, only the white one)
     for (const id of chased !== null && chased !== rosterOver && prefs.chaseRing !== false ? [rosterOver, chased] : [rosterOver]) {
@@ -5580,6 +5774,7 @@
     killEvents = [];
     eventsSeen = new Set();
     eventsRaid = '';
+    liveSightUntil.clear(); liveLastSight.clear(); liveVoices.clear(); liveShares = [];
   }
 
   // a raid began, ended or moved on, or its location's map arrived: show that map
@@ -5974,7 +6169,7 @@
   // the switches that tell of bots, whichever preset: on for everything, off for the other two. What's for finding out
   // what a mod is doing (its fields, hearing circles, ghost fights, lines to where every bot is heading) is never put
   // on by a preset: turned on by hand only.
-  const botSwitches = v => ({ mapDoing: v, squadParts: v, actionIcons: v, tacticWords: v, squadPane: v, orbitMain: v, orbitRush: v,
+  const botSwitches = v => ({ mapDoing: v, squadParts: v, actionIcons: v, tacticWords: v, squadPane: v, orbitTactics: v, orbitMain: v, orbitRush: v,
     doorEvents: v, grenades: v, botLoot: v,
     orbitField: false, phobosField: false, orbitLines: false, orbitNames: false, orbitHear: false, orbitFights: false });
   const PRESETS = [
@@ -6029,7 +6224,7 @@
   // The player's own presets (prefs.myPresets: [{ name, patch }]): the switches the ready-made ones set, as they were
   // when saved. Kept with the rest of the settings, so Export and Import take them along.
   const MY_MAX = 20;
-  const PRESET_KEYS = [...new Set(PRESETS.flatMap(p => Object.keys(p.patch())))];
+  const PRESET_KEYS = [...new Set([...PRESETS.flatMap(p => Object.keys(p.patch())), 'mapDifficulty', 'mapPersonality'])];
   const myPresets = () => (Array.isArray(prefs.myPresets) ? prefs.myPresets : []).filter(p => p && typeof p.name === 'string' && p.patch && typeof p.patch === 'object' && !Array.isArray(p.patch));
   const asPreset = mine => ({ name: mine.name, says: '', mine: true, patch: () => JSON.parse(JSON.stringify(mine.patch)) });
   function switchesNow() {
@@ -6641,11 +6836,61 @@
   // number in the raid, when on the raid's clock in ms, its kind, whose, their name, the rest). They come with the
   // full reports ("rid" the raid, "ev" the new ones); a page opened later asks the server for the raid so far.
   // So far only "comet.squad": what COMET has a bot doing with its squad, whenever that changes.
+  const SIGHT_MS = 1400, SIGHT_REARM_MS = 5000, SHARE_MS = 2400;
+  const liveSightUntil = new Map(), liveLastSight = new Map();
+  // A brief loss of visibility is still the same encounter. Remember the last report,
+  // but only the start of a contact pulses the marker.
+  function startsSightContact(lastSight, observer, target, time) {
+    if (!observer || !target || !Number.isFinite(time)) return false;
+    let targets = lastSight.get(observer);
+    if (!targets) {
+      targets = new Map();
+      lastSight.set(observer, targets);
+    }
+    const last = targets.get(target);
+    if (last !== undefined && time <= last) return false;
+    targets.set(target, time);
+    return last === undefined || time - last >= SIGHT_REARM_MS;
+  }
+  let liveShares = [];
+  const liveVoices = new Map();
   let squadEvents = [], eventsRaid = '', eventsSeen = new Set(), squadLogOpen = false;
-  function addEvents(list, fresh) {
+  function addEvents(list, fresh, clock) {
     let added = false, killed = false, others = false;
     for (const e of list || []) {
       if (!e || !Number.isFinite(e.n) || eventsSeen.has(e.n) || !e.d) continue;
+      if (e.k === 'bot.share' || e.k === 'bot.voice' || e.k === 'grenade.blast') {
+        eventsSeen.add(e.n);
+        const age = clock - e.t, now = performance.now();
+        if (!replay && fresh && age >= 0) {
+          if (e.k === 'bot.share' && e.p && e.d.to && age < SHARE_MS) {
+            liveShares = liveShares.filter(s => now - s.t < SHARE_MS);
+            liveShares.push({ t: now - age, from: e.p, to: e.d.to });
+            dirty = true;
+          } else if (e.k === 'bot.voice' && e.p && e.d.phrase && age < SHARE_MS) {
+            liveVoices.set(e.p, { t: now - age, phrase: e.d.phrase });
+            dirty = true;
+          } else if (e.k === 'grenade.blast' && Array.isArray(e.d.at) && age < BLAST_MS) {
+            const b = blastEvent(e, now - age);
+            const who = b.pid && live.find(m => m.pid === b.pid);
+            b.fx = who?.cx; b.fy = who?.cy;
+            blastMarks = blastMarks.filter(old => old.confirmed || !sameBurst(old, b));
+            blastMarks.push(b);
+            dirty = true;
+          }
+        }
+        continue;
+      }
+      if (e.k === 'bot.sight') {
+        eventsSeen.add(e.n);
+        const age = clock - e.t;
+        if (!replay && startsSightContact(liveLastSight, e.p, e.d.target, e.t) && fresh && age >= 0 && age < SIGHT_MS) {
+          const until = performance.now() + SIGHT_MS - age;
+          liveSightUntil.set(e.p, Math.max(liveSightUntil.get(e.p) || 0, until));
+          dirty = true;
+        }
+        continue;
+      }
       if (e.k === 'kill') {
         eventsSeen.add(e.n);
         // heard as it happened (not asked for afterwards): shown at the top of the map for a few seconds
@@ -6674,7 +6919,7 @@
       if (e.k === 'switch') { eventsSeen.add(e.n); if (e.d.id && !lightSwitch(e.d)) switchNow.set(e.d.id, e); dirty = true; continue; }
       // a magazine dropped in a quick reload, and a bot going back for it (COMET): the latest of each
       if (e.k === 'comet.mag') { eventsSeen.add(e.n); if (e.d.id) magNow.set(e.d.id, e); dirty = true; continue; }
-      if (e.k === 'orbit.main') { eventsSeen.add(e.n); orbitMain = e; dirty = true; continue; }
+      if (e.k === 'orbit.main') { eventsSeen.add(e.n); orbitMain = e; orbitReceivedAt = performance.now(); dirty = true; continue; }
       if (e.k === 'orbit.field') { eventsSeen.add(e.n); orbitField = e; dirty = true; continue; }
       if (e.k === 'phobos.field') { eventsSeen.add(e.n); phobosField = e; dirty = true; continue; }
       if (e.k === 'drop') { eventsSeen.add(e.n); if (fresh) floatLoot(e); continue; }
@@ -6698,6 +6943,7 @@
     const rid = d.raid && d.rid ? d.rid : '';
     if (rid !== eventsRaid) {
       eventsRaid = rid;
+      liveSightUntil.clear(); liveLastSight.clear(); liveVoices.clear(); liveShares = [];
       squadEvents = [];
       otherEvents = [];
       ghostMarks = [];
@@ -6705,6 +6951,8 @@
       switchNow = new Map();
       magNow = new Map();
       orbitMain = orbitField = phobosField = null;
+      huntSnapshot = null; huntsByMember.clear();
+      indexedOrbitMain = null; orbitByMember.clear();
       eventsSeen = new Set();
       if (!replay) forgetSquads();
       showKills();
@@ -6713,7 +6961,7 @@
           .then(j => { if (j && j.rid === eventsRaid) addEvents(j.ev); }).catch(() => {});
       }
     }
-    addEvents(d.ev, true);
+    addEvents(d.ev, true, d.clk);
   }
   // ---- the kill feed ----
   // Who killed whom ("kill" events), in a corner of the map as it happens: the latest few (or each for FEED_MS). Its
@@ -6915,7 +7163,7 @@
     if (e.k === 'door') return ['', doorSaid(d), '#d9c29a'];
     if (e.k === 'orbit.wake') return ['', T('Woke') + ' · ' + words(d.c || 'woken') + (d.by ? ' · ' + T('by {who}', { who: latin(d.by) }) : '') + (d.m ? ' · ' + d.m + ' m' : ''), '#9fd8ff'];
     if (e.k === 'orbit.fight') return [T('Ghost fight'), T('{n} dead', { n: d.n || 0 }) + ' · ' + (d.s || 0) + ' s', '#ff8d84'];
-    if (e.k === 'orbit.leave') return ['', T('Heading out: {why}', { why: d.why || '' }), '#9fd8ff'];
+    if (e.k === 'orbit.leave') return ['', T('Heading out: {why}', { why: extractReason(d.why) || '' }), '#9fd8ff'];
     return [e.nm ? '' : T('A ghost'), (d.sh ? TP(d.sh, 'Heard {n} shot', 'Heard {n} shots') : T('Heard a noise')) + (d.m ? ' · ' + T('{n} m off', { n: d.m }) : '') + (d.inv ? ' · ' + T('going to look') : ''), '#9fd8ff'];
   }
   // (in a replay, pressing it plays the raid from a moment before it)
@@ -7134,13 +7382,15 @@
   // panel has its one place.
   // snap(x, y), when given: where the panel would stand for a top left corner there, shown while it's moved (on a grid
   // drawn faintly over the map meanwhile)
-  function draggable(handle, box, drop, snap) {
+  function draggable(handle, box, drop, snap, allowTouch = false) {
     handle.classList.add('dragHandle');
     handle.addEventListener('pointerdown', e => {
-      if (phone.matches || e.button !== 0 || e.target.closest('input, select, #sideClose, #squadClose, #panelClose, #killClose')) return;
+      if ((!allowTouch && phone.matches) || e.button !== 0 || e.target.closest('input, select, #sideClose, #squadClose, #panelClose, #killClose')) return;
+      if (allowTouch) e.preventDefault();
       const start = box.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY;
       let moved = false;
       const move = ev => {
+        if (ev.pointerId !== e.pointerId) return;
         const dx = ev.clientX - x0, dy = ev.clientY - y0;
         if (!moved && Math.hypot(dx, dy) < 6) return;
         if (!moved) {
@@ -7154,6 +7404,7 @@
         box.style.transform = 'translate(' + (at ? at[0] - start.left : dx) + 'px, ' + (at ? at[1] - start.top : dy) + 'px)';
       };
       const up = ev => {
+        if (ev.pointerId !== e.pointerId) return;
         window.removeEventListener('pointermove', move);
         window.removeEventListener('pointerup', up);
         window.removeEventListener('pointercancel', up);
@@ -7161,6 +7412,7 @@
         box.classList.remove('panelMoving');
         document.body.classList.remove('gridOn');
         box.style.transform = '';
+        if (ev.type === 'pointercancel') return;
         // the click that follows letting go is the drag's, not a press
         const eat = c => { c.stopPropagation(); c.preventDefault(); };
         window.addEventListener('click', eat, { capture: true, once: true });
@@ -8760,12 +9012,21 @@
     save();
     setTurn(turnFor(map.loc));
   };
-  for (const [id, key] of [['optBotShape', 'botShape'], ['optMeShape', 'meShape']]) {
+  for (const [id, key] of [['optBotShape', 'botShape'], ['optMeShape', 'meShape'], ['optContainerStyle', 'containerStyle']]) {
     $(id).value = prefs[key];
     $(id).onchange = e => { prefs[key] = e.target.value; save(); dirty = true; };
   }
+  if (prefs.names === 'some' || prefs.names === 'players') {
+    const legacy = new Option(prefs.names === 'some' ? T('Bosses and friends') : T('PMCs, bosses and friends'), prefs.names);
+    legacy.hidden = true;
+    $('optNames').add(legacy);
+  }
   $('optNames').value = prefs.names;
-  $('optNames').onchange = e => { prefs.names = e.target.value; save(); dirty = true; };
+  $('optNames').onchange = e => {
+    prefs.names = e.target.value;
+    save();
+    dirty = true;
+  };
   // the slider runs from far to near, like the zoom ones
   $('optClose').min = -CLOSE_SPAN[1];
   $('optClose').max = -CLOSE_SPAN[0];
@@ -8871,7 +9132,7 @@
       requestAnimationFrame(() => { again = false; findSettings(); });
     }).observe($('panelBody'), { childList: true, subtree: true });
   }
-  for (const [id, key] of [['optItemNames', 'itemNames'], ['optModTints', 'modTints'], ['optWishOnly', 'wishOnly'], ['optLootFloats', 'lootFloats'], ['optKillLines', 'killLines'], ['optFloorOnly', 'floorOnly'], ['optHitFlash', 'hitFlash'], ['optSwitches', 'switches'], ['optOrbitMain', 'orbitMain'], ['optOrbitRush', 'orbitRush'], ['optOrbitField', 'orbitField'], ['optSquadMarks', 'squadMarks'], ['optSquadCols', 'squadCols'], ['optTeamNames', 'teamNames'], ['optDoorEvents', 'doorEvents'], ['optActionIcons', 'actionIcons'], ['optTacticWords', 'tacticWords'], ['optGrenades', 'grenades'], ['optPhobosField', 'phobosField'], ['optMinimap', 'minimap'], ['optKillKeep', 'killKeep'], ['optMyQuestItems', 'myQuestItems'], ['optMyQuestPlaces', 'myQuestPlaces'], ['optFriendQuests', 'friendQuests'],
+  for (const [id, key] of [['optItemNames', 'itemNames'], ['optModTints', 'modTints'], ['optWishOnly', 'wishOnly'], ['optLootFloats', 'lootFloats'], ['optKillLines', 'killLines'], ['optFloorOnly', 'floorOnly'], ['optHitFlash', 'hitFlash'], ['optSwitches', 'switches'], ['optOrbitMain', 'orbitMain'], ['optOrbitTactics', 'orbitTactics'], ['optOrbitRush', 'orbitRush'], ['optOrbitField', 'orbitField'], ['optSquadMarks', 'squadMarks'], ['optSquadCols', 'squadCols'], ['optTeamNames', 'teamNames'], ['optDoorEvents', 'doorEvents'], ['optActionIcons', 'actionIcons'], ['optMapDifficulty', 'mapDifficulty'], ['optMapPersonality', 'mapPersonality'], ['optTacticWords', 'tacticWords'], ['optGrenades', 'grenades'], ['optPhobosField', 'phobosField'], ['optMinimap', 'minimap'], ['optKillKeep', 'killKeep'], ['optMyQuestItems', 'myQuestItems'], ['optMyQuestPlaces', 'myQuestPlaces'], ['optFriendQuests', 'friendQuests'],
     ['optInsideMine', 'insideMine'], ['optInsideLook', 'insideLook'], ['optPressOpen', 'pressOpen'], ['optEdge', 'edge'], ['optEdgeQuests', 'edgeQuests'], ['optEdgeExits', 'edgeExits'], ['optMyName', 'myName'], ['optRecSign', 'recSign'], ['optShots', 'shots'], ['optHealth', 'health'], ['optFeed', 'feed'], ['optPhoneLight', 'phoneLight'], ['optAwake', 'awake'], ['optLowPower', 'lowPower'], ['optSpeed', 'speed'], ['optFeedMine', 'feedMine'], ['optFeedPmc', 'feedPmc'], ['optFeedBoss', 'feedBoss'], ['optFeedAi', 'feedAi'], ['optOrbitLines', 'orbitLines'], ['optBotLoot', 'botLoot'],
     ['optPeek', 'peek'], ['optFog', 'rosterFog'], ['optRosterDoing', 'rosterDoing'], ['optRosterHp', 'rosterHp'],
     ['optRosterSlim', 'rosterSlim'], ['optHealthAll', 'healthAll'], ['optMapDoing', 'mapDoing'], ['optSquadParts', 'squadParts'], ['optOrbitNames', 'orbitNames'],
@@ -8893,7 +9154,7 @@
   // text size and map brightness
   $('optTextScale').value = prefs.textScale;
   $('optTextScale').oninput = e => { prefs.textScale = +e.target.value || 1; save(); sizesSaid(); dirty = true; };
-  for (const [id, key] of [['optNameScale', 'nameScale'], ['optDoingScale', 'doingScale']]) {
+  for (const [id, key] of [['optNameScale', 'nameScale'], ['optDoingScale', 'doingScale'], ['optContainerScale', 'containerScale']]) {
     $(id).value = prefs[key];
     $(id).oninput = e => { prefs[key] = +e.target.value || 1; save(); sizesSaid(); dirty = true; };
   }
@@ -9052,6 +9313,7 @@
   $('optScale').value = prefs.scale;
   // marker and text size, each with its size in percent beside it (100%: as usual)
   const sizesSaid = () => { $('scaleText').textContent = Math.round(prefs.scale * 100) + '%'; $('textScaleText').textContent = Math.round(prefs.textScale * 100) + '%';
+    $('containerScaleText').textContent = Math.round(prefs.containerScale * 100) + '%';
     $('nameScaleText').textContent = Math.round(prefs.nameScale * 100) + '%'; $('doingScaleText').textContent = Math.round(prefs.doingScale * 100) + '%'; };
   $('optScale').oninput = e => { prefs.scale = +e.target.value || 1; save(); sizesSaid(); dirty = true; };
   sizesSaid();
@@ -9332,7 +9594,7 @@
     if (replay) leaveReplay();
     const times = [], lines = [], full = [], events = [], loot = [];
     // (where each of the raid's containers stood, as it loaded: see addMore; an older recording has none)
-    let spots = null;
+    let spots = null, hasGestures = false;
     for (let from = 0; from < text.length;) {
       let end = text.indexOf('\n', from);
       if (end < 0) end = text.length;
@@ -9345,9 +9607,19 @@
         }
         else if (Number.isFinite(t) && line.startsWith('{"t":"f')) {
           const whole = line.startsWith('{"t":"full"');
+          if (whole && !hasGestures) hasGestures = line.includes('"gestures":1');
           let fine = true;
           if (whole && line.includes('"ev":[')) {
-            try { for (const e of JSON.parse(line).ev || []) if (e && e.d && Number.isFinite(e.n)) { e.rt = t; events.push(e); } } catch (err) { fine = false; }
+            try {
+              const report = JSON.parse(line);
+              for (const e of report.ev || []) if (e && e.d && Number.isFinite(e.n)) {
+                // A gesture may have waited for the next full report. Both clocks include the loading screen here.
+                e.rt = t;
+                if ((e.k === 'bot.sight' || e.k === 'bot.share' || e.k === 'bot.voice' || e.k === 'grenade.blast' || e.k === 'comet.gesture' || e.k === 'comet.activity' || e.k === 'comet.mag' || e.k === 'orbit.main' || e.k === 'loot' || e.k === 'drop') && Number.isFinite(e.t) && Number.isFinite(report.clk))
+                  e.performedAt = Math.max(0, t - Math.max(0, report.clk - e.t));
+                events.push(e);
+              }
+            } catch (err) { fine = false; }
           }
           if (fine && !(whole && line.includes('"raid":false'))) { times.push(t); lines.push(line); full.push(whole); }
         }
@@ -9371,8 +9643,22 @@
     }
     // (a replay's clock is the recording's own: what the kill feed and the lists say goes by it)
     for (const e of events) e.t = e.rt;
-    const r = replay = { about, times, lines, full, events, total: Math.max(1, times[times.length - 1]), at: 0, playing: false, speed: REPLAY_SPEEDS.includes(prefs.hpSpeed) ? prefs.hpSpeed : 1,
-      next: 0, scan: null, names: null, loot, lootAt: '', lootBaseAt: -2, lootBase: null, picks: null, spots };
+    const mainTimes = new Map(), firstHunts = new Map();
+    for (const e of events) {
+      if (e.k !== 'orbit.main' || mainTimes.has(e.n)) continue;
+      const t = e.performedAt == null ? e.rt : Math.max(0, e.performedAt - lead);
+      mainTimes.set(e.n, t);
+      // Older ORBIT recordings only say that a hunt has started. Keep the first observation
+      // of each hunt as an estimate, independent of playback direction or later snapshots.
+      for (const squad of list(e.d.s)) for (const goal of list(squad.MainObjectives)) {
+        if (goal?.Type !== 'Kills' || goal.KillAmbush || !(goal.KillsRoamStartedAt > 0) || goal.Completed) continue;
+        const key = huntKey(squad, goal);
+        if (!firstHunts.has(key)) firstHunts.set(key, t);
+      }
+    }
+    whyOf.clear();
+    const r = replay = { about, lead, times, lines, full, events, total: Math.max(1, times[times.length - 1]), at: 0, playing: false, speed: REPLAY_SPEEDS.includes(prefs.hpSpeed) ? prefs.hpSpeed : 1,
+      next: 0, mainTimes, firstHunts, sightings: indexSightings(events, lead), signals: indexMapSignals(events, lead), hasGestures, gestures: indexGestures(events, lead, hasGestures), activities: indexActivities(events, lead), scan: null, names: null, loot, lootAt: '', lootBaseAt: -2, lootBase: null, picks: null, spots };
     forgetSquads();
     blastMarks = [];
     // what the things picked up are worth: asked of the server (a recording doesn't hold prices)
@@ -9442,6 +9728,8 @@
     magNow = new Map();
     blastMarks = [];
     orbitMain = orbitField = phobosField = null;
+    huntSnapshot = null; huntsByMember.clear();
+    indexedOrbitMain = null; orbitByMember.clear();
     addEvents(r.events.filter(e => e.rt <= t), false);
     showKills();
     squadPanePrint = '';
@@ -9474,16 +9762,24 @@
     let at = r.loot.length ? 0 : -1;
     for (let i = 1; i < r.loot.length && r.loot[i][0] <= r.at; i++) at = i;
     const since = at < 0 ? 0 : r.loot[at][0];
-    if (!r.picks) r.picks = r.events.filter(e => e.k === 'loot' && e.d && e.d.tpl && Array.isArray(e.d.at)).sort((x, y) => x.rt - y.rt);
-    let taken = 0;
-    while (taken < r.picks.length && r.picks[taken].rt <= r.at) taken++;
+    if (!r.picks) {
+      r.picks = [];
+      const seen = new Set();
+      for (const e of r.events) {
+        if ((e.k !== 'loot' && e.k !== 'drop') || !e.d?.tpl || seen.has(e.n)) continue;
+        seen.add(e.n);
+        r.picks.push({ ...e, t: e.performedAt == null ? e.rt : Math.max(0, e.performedAt - r.lead) });
+      }
+      r.picks.sort((a, b) => a.t - b.t || a.n - b.n);
+    }
+    const taken = lastAt(r.picks, r.at) + 1;
     const key = at + '|' + taken;
     if (key === r.lootAt) return;
     const base = at === r.lootBaseAt ? r.lootBase : null;
     r.lootAt = key;
     try {
       if (!base) { r.lootBase = at < 0 ? null : readThings(JSON.parse(r.loot[at][1]).d); r.lootBaseAt = at; }
-      things = r.lootBase ? takenAway(r.lootBase, r.picks.slice(0, taken).filter(e => e.rt > since)) : null;
+      things = r.lootBase ? takenAway(r.lootBase, r.picks.slice(lastAt(r.picks, since) + 1, taken)) : null;
     } catch (e) { things = null; }
     addMore();
     bestPrint = rosterPrint = null;
@@ -9495,7 +9791,34 @@
     if (!picks.length) return base;
     const loose = base.loose.slice(), inside = Object.assign({}, base.inside);
     const boxes = places && places.boxes ? places.boxes : [];
+    const carried = { ...base.carried };
+    let names = base.names;
     for (const e of picks) {
+      const d = e.d;
+      if (e.p) {
+        const inventory = carried[e.p] || [];
+        if (e.k === 'drop') {
+          // Drops have no source slot. Subtract only when the rows agree on its location.
+          const rows = inventory.filter(i => i[0] === d.tpl);
+          if (rows.length && rows.every(i => i[2] === rows[0][2])) {
+            let count = d.q || 1;
+            carried[e.p] = inventory.flatMap(i => {
+              if (i[0] !== d.tpl || count <= 0) return [i];
+              const used = Math.min(count, i[1]); count -= used;
+              return used === i[1] ? [] : [[i[0], i[1] - used, ...i.slice(2)]];
+            });
+          }
+        } else if (['Backpack', 'Pockets', 'TacticalVest', 'SecuredContainer'].includes(d.in)) {
+          const row = [d.tpl, d.q || 1];
+          if (d.in === 'SecuredContainer') row.push(d.in);
+          carried[e.p] = [...inventory, row];
+          if (!names[d.tpl] && d.i) {
+            if (names === base.names) names = { ...base.names };
+            names[d.tpl] = { n: d.i, s: d.i };
+          }
+        }
+      }
+      if (e.k !== 'loot' || !Array.isArray(d.at)) continue;
       const [x, y] = e.d.at, tpl = e.d.tpl, far = (px, py) => Math.hypot(px - x, py - y);
       let best = -1, bestD = TAKEN_REACH;
       loose.forEach((it, i) => { if (it.tpl === tpl) { const d = far(it.x, it.y); if (d < bestD) { best = i; bestD = d; } } });
@@ -9514,7 +9837,7 @@
         inside[box.id] = items;
       }
     }
-    return Object.assign({}, base, { loose, inside });
+    return Object.assign({}, base, { loose, inside, carried, names });
   }
   // each frame: the reports due by now
   function playReplay(dt) {
@@ -9540,6 +9863,7 @@
   function showReplay() {
     const r = replay;
     if (!r) return;
+    showActionOverlay(r);
     showBotLine();
     // the playhead and what's been played, every frame (not only as the rest is redone), so the dot moves smoothly
     const at = (100 * r.at / r.total) + '%';
@@ -9566,6 +9890,10 @@
     $('replayPeople').classList.toggle('on', !prefs.hpNoPeople);
     $('replayEvents').classList.toggle('on', !prefs.hpNoEvents);
     $('replayShots').classList.toggle('on', !!prefs.shots);
+    $('replayGestures').classList.toggle('on', prefs.hpGestures !== false);
+    $('replayGestures').setAttribute('aria-pressed', String(prefs.hpGestures !== false));
+    $('replayOverlayToggle').setAttribute('aria-pressed', String(!!prefs.hpActions));
+    $('replayOverlayToggle').classList.toggle('on', !!prefs.hpActions);
     $('replayDoing').classList.toggle('on', !!prefs.mapDoing);
     $('replayFacing').classList.toggle('on', !prefs.hpNoFacing);
     for (const b of $('replayModes').children) b.classList.toggle('on', b.dataset.mode === replayMode());
@@ -9580,7 +9908,6 @@
     for (const b of $('hpView').children) b.classList.toggle('on', (b.dataset.v === 'heat') === !!prefs.heat);
     // the panel beside the map that follows the moment shown, every second or so while it plays
     if (!r.playing || performance.now() - hpSideAt > 1000) hpSideShow();
-    whyBrief();
   }
   // The bot pressed (followed) in a replay: what it was doing over the raid, as a line of colours over the bar, a
   // colour for each mod that decided for it. Pointing at a stretch says what; pressing goes there.
@@ -9592,9 +9919,8 @@
     botLinePrint = print;
     box.hidden = !track;
     if (!track) return;
-    $('replayBotName').textContent = track.name || ONE[track.c] || track.c;
-    $('replayBotName').style.color = (KINDS[track.c] || OTHER).col;
     const strip = $('replayBotStrip'), end = track.t[track.t.length - 1];
+    strip.setAttribute('aria-label', track.name || ONE[track.c] || track.c);
     strip.textContent = '';
     track.act.forEach((a, i) => {
       const until = i + 1 < track.act.length ? track.act[i + 1].t : end, part = document.createElement('i');
@@ -9615,6 +9941,8 @@
   function leaveReplay() {
     if (!replay) return;
     replay = null;
+    $('actionDock').hidden = true;
+    actionFrame = null;
     // (its containers back where places.json has them)
     addMore();
     replayShown = '';
@@ -9654,7 +9982,8 @@
       prefs.lowPower = b.dataset.mode === 'perf';
       prefs.hpDebug = b.dataset.mode === 'debug';
       $('optLowPower').checked = prefs.lowPower;
-      save(); replayShown = ''; showReplay(); tipFor = null; dirty = true;
+      if (prefs.hpDebug) { prefs.hpTab = 'bots'; prefs.hpSideOff = false; }
+      save(); hpShow(); hpSideShow(); replayShown = ''; showReplay(); tipFor = null; dirty = true;
     };
   }
   $('replayStop').onclick = () => { if (!replay) return; replay.playing = false; seekReplay(0); replayShown = ''; showReplay(); };
@@ -9663,6 +9992,8 @@
   $('replaySpree').onclick = () => { prefs.lootSprees = !prefs.lootSprees; $('replaySpree').classList.toggle('on', prefs.lootSprees); save(); if (replay && replay.scan && replay.scan.done) buildSprees(replay); };
   // the cog's other switches: each flips one setting of the replay's map
   for (const [id, flip] of [['replayPeople', () => { prefs.hpNoPeople = !prefs.hpNoPeople; }], ['replayEvents', () => { prefs.hpNoEvents = !prefs.hpNoEvents; }],
+    ['replayGestures', () => { prefs.hpGestures = prefs.hpGestures === false; }],
+    ['replayOverlayToggle', () => { prefs.hpActions = !prefs.hpActions; actionFrame = null; }],
     ['replayShots', () => { prefs.shots = !prefs.shots; }], ['replayDoing', () => { prefs.mapDoing = !prefs.mapDoing; }],
     ['replayFacing', () => { prefs.hpNoFacing = !prefs.hpNoFacing; }]]) {
     $(id).onclick = () => { flip(); save(); replayShown = ''; showReplay(); tipFor = null; dirty = true; };
@@ -9690,7 +10021,11 @@
     // every shot, by whose it was; a sixth number in one says it hit somebody (a newer plugin's)
     const whereNow = id => { const tr = s.tracks.get(id); return tr && tr.x.length ? [tr.x[tr.x.length - 1], tr.y[tr.y.length - 1]] : null; };
     const shotsOf = (rows, t) => {
-      for (const b of blastsOf(rows, whereNow)) s.blasts.push({ t, x: b.x, y: b.y, who: b.who });
+      for (const b of blastsOf(rows, whereNow)) {
+        const from = whereNow(b.who), inferred = { t, x: b.x, y: b.y, who: b.who, pid: s.tracks.get(b.who)?.pid, fx: from?.[0], fy: from?.[1] };
+        const candidates = recentSignals(r.signals.blasts, t + 600, 1201);
+        if (!candidates.some(mark => sameBurst(mark, inferred))) s.blasts.push(inferred);
+      }
       for (const row of rows || []) {
         if (!Array.isArray(row) || row.length < 5) continue;
         s.shotLog.push([t, row[0]]);
@@ -9766,7 +10101,20 @@
       s.done = s.i >= r.lines.length;
       dirty = true;
       if (!s.done) setTimeout(more, 0);
-      else { buildTicks(r); hpPrint = ''; hpShow(); hpSideShow(); }
+      else {
+        const tracksByPid = new Map();
+        for (const track of s.tracks.values()) if (track.pid) tracksByPid.set(track.pid, track);
+        for (const b of r.signals.blasts) {
+          const tr = tracksByPid.get(b.pid);
+          if (tr) {
+            const at = tr.t.findLastIndex(t => t <= b.t);
+            if (at >= 0) { b.fx = tr.x[at]; b.fy = tr.y[at]; }
+          }
+          s.blasts.push(b);
+        }
+        s.blasts.sort((a, b) => a.t - b.t);
+        buildTicks(r); hpPrint = ''; hpShow(); hpSideShow();
+      }
     };
     more();
     return s;
@@ -10652,16 +11000,29 @@
     }
     return out;
   }
+  function sameBurst(a, b) {
+    return Math.abs(a.t - b.t) <= 600 && (!a.pid || !b.pid || a.pid === b.pid)
+      && Math.hypot(a.x - b.x, a.y - b.y) <= 2;
+  }
   let blastMarks = [];
   const BLAST_MS = 2600;
   function drawBlasts(scale) {
-    if (!blastMarks.length) return;
-    const now = performance.now();
-    blastMarks = blastMarks.filter(b => now - b.at < BLAST_MS);
-    if (prefs.grenades === false) { blastMarks = []; return; }
+    if (prefs.grenades === false) return;
+    const now = replay ? replay.at : performance.now();
+    if (!replay && blastMarks.length) blastMarks = blastMarks.filter(b => now - b.t < BLAST_MS);
+    let marks = blastMarks;
+    if (replay) {
+      if (replay.scan?.done) marks = recentSignals(replay.scan.blasts, now, BLAST_MS);
+      else {
+        const known = recentSignals(replay.signals.blasts, now, BLAST_MS);
+        blastMarks = blastMarks.filter(b => b.t <= now && now - b.t < BLAST_MS && !known.some(k => sameBurst(b, k)));
+        marks = blastMarks.length ? known.concat(blastMarks) : known;
+      }
+    }
+    if (!marks.length) return;
     ctx.save();
-    for (const b of blastMarks) {
-      const k = (now - b.at) / BLAST_MS, s = toScreen(b.x, b.y), r = Math.max(12 * scale, 7 * zoom) * (0.35 + 0.65 * Math.min(1, k * 3));
+    for (const b of marks) {
+      const k = (now - b.t) / BLAST_MS, s = toScreen(b.x, b.y), r = Math.max(12 * scale, 7 * zoom) * (0.35 + 0.65 * Math.min(1, k * 3));
       ctx.globalAlpha = 1 - k;
       if (Number.isFinite(b.fx)) {
         // thrown from here: an arc to where it went off
@@ -10686,6 +11047,13 @@
       ctx.arc(s[0], s[1], 3.2 * scale, 0, Math.PI * 2);
       ctx.fillStyle = '#fff3e0';
       ctx.fill();
+      if (b.name) {
+        ctx.font = 'bold ' + Math.round(12 * scale) + 'px ' + FONT;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+        ctx.strokeStyle = '#23180b'; ctx.lineWidth = 3 * scale;
+        ctx.strokeText(b.name, s[0], s[1] - r - 3 * scale);
+        ctx.fillText(b.name, s[0], s[1] - r - 3 * scale);
+      }
     }
     ctx.restore();
     dirty = true;
@@ -10739,7 +11107,8 @@
     FirstAid: 'heal', PostCombatMedical: 'heal', Stims: 'heal', Cover: 'cover', PostCombatCover: 'cover' };
   const ACTION_OF_SAIN = { Reload: 'reload', FirstAid: 'heal', Surgery: 'heal', Stims: 'heal', ThrowGrenade: 'grenade', Retreat: 'back', RunAway: 'back',
     RushEnemy: 'push', MoveToEngage: 'push', SeekCover: 'cover', ShiftCover: 'cover' };
-  const ACTION_COL = { push: '#e0483f', back: '#3d8bff', reload: '#e0a63a', heal: '#3fbf5f', grenade: '#ff8a1c', cover: '#7d8796' };
+  const ACTION_RADIUS = 5.4;
+  const ACTION_COL = { sight: '#baf4ff', voice: '#ffda8d', share: '#e1b8ff', push: '#e0483f', back: '#3d8bff', reload: '#e0a63a', heal: '#3fbf5f', grenade: '#ff8a1c', cover: '#7d8796' };
   function actionOf(m) {
     const sain = modOn('SAIN') && typeof m.dc === 'string' && m.dc.startsWith('SAIN:') ? ACTION_OF_SAIN[m.dc.slice(5)] : null;
     // (reloading, healing and a grenade say most, whatever the move is)
@@ -10769,7 +11138,19 @@
     g.lineWidth = Math.max(1.2, d * 0.24);
     g.lineCap = g.lineJoin = 'round';
     g.beginPath();
-    if (kind === 'push' || kind === 'back') {
+    if (kind === 'sight' || kind === 'voice') {
+      g.fillStyle = kind === 'sight' ? '#0d3450' : '#533713';
+      g.font = 'bold ' + d * 1.65 + 'px ' + FONT;
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText(kind === 'sight' ? '?' : '♪', 0, 0);
+    } else if (kind === 'share') {
+      g.strokeStyle = '#49235c';
+      g.scale(d / 13, d / 13);
+      g.translate(-12, -12);
+      g.lineWidth = 2.6;
+      for (const [path] of ICONS.special) g.stroke(new Path2D(path));
+    } else if (kind === 'push' || kind === 'back') {
       // two chevrons: on (pointing up), or back (pointing down)
       const s = kind === 'push' ? 1 : -1;
       for (const y of [-0.35, 0.35]) { g.moveTo(-k * 0.8, (y + 0.45 * s) * k); g.lineTo(0, (y - 0.35 * s) * k); g.lineTo(k * 0.8, (y + 0.45 * s) * k); }
@@ -10802,22 +11183,38 @@
     actionPics.set(key, pic);
     return pic;
   }
+  function actionLegend() {
+    const group = mk('details', 'actionLegend');
+    group.appendChild(mk('summary', '', T('Action icon key')));
+    const keys = mk('div');
+    for (const [kind, word] of [['push', T('Pushing')], ['back', T('Falling back')], ['reload', T('Reloading')],
+      ['heal', T('Healing')], ['grenade', T('Throwing a grenade')], ['cover', T('Taking cover')],
+      ['sight', T('Spotted another bot')], ['voice', T('Voice call')], ['share', T('Contact shared')]]) {
+      const item = mk('span'), icon = document.createElement('canvas'), pic = actionPic(kind, 8);
+      icon.width = icon.height = pic.c.width;
+      icon.getContext('2d').drawImage(pic.c, 0, 0);
+      item.append(icon, word);
+      keys.appendChild(item);
+    }
+    group.appendChild(keys);
+    return group;
+  }
+  $('actionLegend').appendChild(actionLegend());
   // a bot's part in its squad's tactic, in a word or two
   function tacticWord(q) {
     if (q.f === 'S03') return q.r === 'support' ? T('Support') : q.r === 'rear' ? T('Rear') : T('Flank');
     if (q.f === 'S02') return T('Second way');
     if (q.f === 'S04') return T('Cover mate');
-    if (q.f === 'S05') return q.r === 'push' ? T('Trade') : T('Watch');
-    if (q.f === 'S06') return T('Storm');
+    if (q.f === 'S05') return squadPart(q);
+    if (q.f === 'S06') return T('Squad assault');
     if (q.f === 'S10') return q.r === 'throw' ? T('Grenade') : T('Hold angle');
     if (q.f === 'S11') return T('Siege');
     if (q.f === 'S01') return T('Crossfire');
     return T('Squad tactic');
   }
   function drawDoing(scale) {
-    const icons = prefs.actionIcons !== false, words = prefs.tacticWords !== false && modOn('COMET');
-    if (!icons && !words) return;
-    const d = 5.4 * scale;
+    if (prefs.actionIcons === false) return;
+    const d = ACTION_RADIUS * scale;
     for (const m of live) {
       if (!m.dyn || m.c === 'Corpse' || m.gh || !Number.isFinite(m.cx) || isHidden(m.c) || inArea(m) || !hasDetails(m)) continue;
       if (HIST && prefs.hpNoPeople) return;
@@ -10827,15 +11224,13 @@
       const s = toScreen(m.cx, m.cy), r = 8 * scale * kind.size;
       if (s[0] < -40 || s[1] < -40 || s[0] > vw + 40 || s[1] > vh + 40) continue;
       const alpha = otherFloor(m.cx, m.cy, m.cz) !== 0 ? 0.55 : 1;
-      const act = icons ? actionOf(m) : null;
+      const act = actionOf(m);
       if (act) {
         const pic = actionPic(act, d);
         ctx.globalAlpha = alpha;
         ctx.drawImage(pic.c, s[0] - r * 1.05 - pic.o, s[1] - r * 1.05 - pic.o, pic.w, pic.w);
         ctx.globalAlpha = 1;
       }
-      const q = words ? m.sq : null;
-      if (q && q.a && !squadOver(q) && q.u !== 'declined' && q.u !== 'interrupted') write(tacticWord(q), 9.5 * scale, s[0], s[1] - r * 1.5 - 13 * scale, '#ffc56e', alpha * 0.95);
     }
   }
   // which letter an ORBIT squad's objective is drawn with: K kills, L loot, Q quest, E extract camp, A airdrop, and a
@@ -11120,8 +11515,10 @@
       const bar = $('replayBar'), over = bar.hidden ? 0 : window.innerHeight - bar.getBoundingClientRect().top;
       st.setProperty('--hp-under', Math.round(head) + 'px');
       st.setProperty('--bar-over', Math.round(over) + 'px');
+      const toolbar = $('hpMapBar');
+      st.setProperty('--action-under', Math.ceil(Math.max(head, toolbar.getBoundingClientRect().bottom)) + 'px');
     };
-    if (window.ResizeObserver) { const watchSize = new ResizeObserver(measureHp); watchSize.observe(hpPage); watchSize.observe($('replayBar')); }
+    if (window.ResizeObserver) { const watchSize = new ResizeObserver(measureHp); watchSize.observe(hpPage); watchSize.observe($('hpMapBar')); watchSize.observe($('replayBar')); }
     window.addEventListener('resize', measureHp);
     hpMeasure = measureHp;
     // Behaviour: a sort picked out goes back to all of them on a press anywhere but the sorts and the bars
@@ -11808,13 +12205,23 @@
         rows.push({ t: e.rt, who: name, kind: '', act: 'mag', text: (MAG_SAID[d.st] || d.st || '') + (d.i ? ' · ' + d.i : ''), at: d.at, id: e.p ? idOf(e.p) : null });
       }
     }
+    for (const [pid, calls] of r.signals.voices) {
+      const id = idOf(pid), bot = s.tracks.get(id);
+      for (const call of calls) rows.push({ t: call.t, who: bot?.name || pid, kind: bot?.c || '', act: 'voice',
+        text: spaced(call.phrase.replace(/^On(?=[A-Z])/, '')), at: null, id });
+    }
+    for (const share of r.signals.shares) {
+      const id = idOf(share.from), from = s.tracks.get(id), to = s.tracks.get(idOf(share.to));
+      rows.push({ t: share.t, who: from?.name || share.from, kind: from?.c || '', act: 'share',
+        text: (from?.name || share.from) + ' → ' + (to?.name || share.to), at: null, id });
+    }
     for (const b of s.blasts) {
-      const track = s.tracks.get(b.who);
-      rows.push({ t: b.t, who: track ? track.name || ONE[track.c] || track.c : '', kind: track ? track.c : '', act: 'grenade', text: T('Grenade went off'), at: [b.x, b.y], id: null });
+      const track = s.tracks.get(b.who) || (b.pid && s.tracks.get(idOf(b.pid)));
+      rows.push({ t: b.t, who: track ? track.name || ONE[track.c] || track.c : '', kind: track ? track.c : '', act: 'grenade', text: b.name ? T('Grenade went off') + ' · ' + b.name : T('Grenade went off'), at: [b.x, b.y], id: null });
     }
     return rows.sort((x, y) => x.t - y.t);
   }
-  const ACTS = { killed: T('killed'), looted: T('looted'), dropped: T('dropped'), threw: T('threw'), grenade: T('grenade'), left: T('left'), switch: T('switch'), door: T('door'), ghost: T('ghost'), mag: T('magazine') };
+  const ACTS = { voice: T('Voice call'), share: T('Contact shared'), killed: T('killed'), looted: T('looted'), dropped: T('dropped'), threw: T('threw'), grenade: T('grenade'), left: T('left'), switch: T('switch'), door: T('door'), ghost: T('ghost'), mag: T('magazine') };
   // what PBT made of one of its cheaters ("personality|cheat,cheat"), said
   const cheatSaid = s => {
     if (!s) return '';
@@ -12132,6 +12539,8 @@
     ['events', T('Raid events'), sideEvents, true, 'events'],
     ['drops', T('Airdrops'), sideDrops, true, 'events'],
     ['switches', T('Switches'), sideSwitches, false, 'events'],
+    ['cometDebug', T('COMET event inspector'), sideCometDebug, false, 'bots'],
+    ['cometReports', T('COMET raid reports'), sideCometReports, false, 'bots'],
     ['why', T('Why it does what it does'), sideWhy, true, 'bots'],
     ['inv', T('Bot inventory'), sideInv, true, 'bots'],
     ['quests', T('Bot quests'), sideQuests, true, 'bots'],
@@ -12192,7 +12601,8 @@
     for (const b of hpTabs.children) b.classList.toggle('on', b.dataset.k === prefs.hpTab);
     const folds = [...hpSide.querySelectorAll('.hpSec')];
     // (one with nothing in this raid isn't there at all)
-    const hasOf = k => k === 'hear' || k === 'orbit' ? orbit
+    const hasOf = k => k === 'cometDebug' || k === 'cometReports' ? prefs.hpDebug
+      : k === 'hear' || k === 'orbit' ? orbit
       : k === 'switches' ? (r.hasSwitch !== undefined ? r.hasSwitch : (r.hasSwitch = switchFlipped(r)))
       : k === 'fields' ? r.events.some(e => e.k === 'orbit.field' || e.k === 'phobos.field')
       : k === 'quests' ? s.sentBy.has('QuestingBots') : k === 'drops' ? s.drops.size > 0
@@ -12200,6 +12610,11 @@
     const shown = folds.filter(f => f.dataset.tab === prefs.hpTab && hasOf(f.dataset.k));
     for (const fold of folds) {
       fold.hidden = !shown.includes(fold);
+      if ((fold.hidden || !fold.open) && fold.lastChild.cometInspector) {
+        fold.lastChild.cometInspector.abort();
+        delete fold.lastChild.cometInspector;
+        fold.lastChild.replaceChildren();
+      }
       const solo = shown.length === 1 && shown[0] === fold;
       fold.classList.toggle('solo', solo);
       if (solo && !fold.open) fold.open = true;
@@ -12218,7 +12633,12 @@
     const row = mk('label', 'row'), tick = mk('input');
     tick.type = 'checkbox';
     tick.checked = byDefault ? prefs[key] !== false : !!prefs[key];
-    tick.onchange = () => { prefs[key] = tick.checked; save(); squadPanePrint = ''; tipFor = null; dirty = true; };
+    tick.onchange = () => {
+      prefs[key] = tick.checked;
+      const setting = $('opt' + key[0].toUpperCase() + key.slice(1));
+      if (setting?.type === 'checkbox') setting.checked = tick.checked;
+      save(); squadPanePrint = ''; tipFor = null; dirty = true;
+    };
     row.append(tick, mk('span', '', label));
     if (title) row.title = title;
     box.appendChild(row);
@@ -12236,12 +12656,12 @@
   // in groups. Each is the menu's own control, mirrored: changed through it, so both pages keep the same, with its
   // name and its explanation as the menu has them. Made once; brought up to date each time it's shown.
   const SIDE_SETTINGS = [
-    ['markers', T('Markers and names'), ['optBotShape', 'optMeShape', 'optScale', 'optWorldScale', 'optSizeByKind', 'optTextScale', 'optNameScale', 'optDoingScale', 'optChaseRing', 'optMyName', 'optLatin', 'optHealth', 'optHealthAll']],
+    ['markers', T('Markers and names'), ['optBotShape', 'optMeShape', 'optScale', 'optWorldScale', 'optSizeByKind', 'optTextScale', 'optNameScale', 'optDoingScale', 'optChaseRing', 'optNames', 'optMapDifficulty', 'optMapPersonality', 'optMyName', 'optLatin', 'optHealth', 'optHealthAll']],
     ['people', T('People and bots'), ['optSquadMarks', 'optModTeams', 'optTeamNames', 'optSquadCols', 'optMapDoing', 'optActionIcons', 'optTacticWords', 'optSquadParts', 'optDoorEvents']],
     ['onMap', T('On the map'), ['optShots', 'optLootFloats', 'optFloatWorth', 'optHitFlash', 'optKillLines', 'optGrenades', 'optSwitches', 'optKillKeep', 'optTrailMs', 'optMinimap']],
-    ['orbit', T('ORBIT on the map'), ['optOrbitMain', 'optOrbitRush', 'optOrbitLines', 'optOrbitNames', 'optOrbitFights', 'optOrbitHear', 'optOrbitField', 'optPhobosField']],
+    ['orbit', T('ORBIT on the map'), ['optOrbitMain', 'optOrbitRush', 'optOrbitTactics', 'optOrbitLines', 'optOrbitNames', 'optOrbitFights', 'optOrbitHear', 'optOrbitField', 'optPhobosField']],
     ['floors', T('Floors'), ['optFloorOnly', 'optFloorDim', 'optFloorGrey', 'optFloorHide', 'optOtherLoot']],
-    ['loot', T('Loot'), ['optPrices', 'optWorth', 'optPeek', 'optWishMarks', 'optTipGear', 'optTipCarry', 'optSecureShown', 'optItemNames', 'optModTints', 'optRoofLoot', 'optRoofTotals', 'optRoofTotalsUnder']],
+    ['loot', T('Loot'), ['optContainerStyle', 'optContainerScale', 'optPrices', 'optWorth', 'optPeek', 'optWishMarks', 'optTipGear', 'optTipCarry', 'optSecureShown', 'optItemNames', 'optModTints', 'optRoofLoot', 'optRoofTotals', 'optRoofTotalsUnder']],
     ['feed', T('Kill feed'), ['optFeed', 'optFeedMine', 'optFeedPmc', 'optFeedBoss', 'optFeedAi', 'optFeedNames', 'optFeedRows', 'optFeedKeep', 'optFeedBox', 'optFeedBg']],
     ['screen', T('Screen'), ['optMapLight', 'optTurn', 'optLowPower']],
     ['colours', T('Colours'), []]];
@@ -12249,12 +12669,12 @@
   // The live map and Raid history keep their settings apart (see read); either can take groups of them from the
   // other, ticked by what they're about (as the history page's settings panel groups them), then loads again.
   const COPY_GROUPS = [
-    ['markers', T('Markers and names'), ['botShape', 'meShape', 'scale', 'worldScale', 'sizeByKind', 'textScale', 'nameScale', 'doingScale', 'chaseRing', 'myName', 'latin', 'health', 'healthAll']],
+    ['markers', T('Markers and names'), ['botShape', 'meShape', 'scale', 'worldScale', 'sizeByKind', 'textScale', 'nameScale', 'doingScale', 'chaseRing', 'names', 'mapDifficulty', 'mapPersonality', 'myName', 'latin', 'health', 'healthAll']],
     ['people', T('People and bots'), ['squadMarks', 'modTeams', 'teamNames', 'squadCols', 'mapDoing', 'actionIcons', 'tacticWords', 'squadParts', 'doorEvents']],
     ['onMap', T('On the map'), ['shots', 'lootFloats', 'floatWorth', 'hitFlash', 'killLines', 'grenades', 'switches', 'killKeep', 'trailMs', 'minimap']],
-    ['orbit', T('ORBIT on the map'), ['orbitMain', 'orbitRush', 'orbitLines', 'orbitNames', 'orbitFights', 'orbitHear', 'orbitField', 'phobosField']],
+    ['orbit', T('ORBIT on the map'), ['orbitMain', 'orbitRush', 'orbitTactics', 'orbitLines', 'orbitNames', 'orbitFights', 'orbitHear', 'orbitField', 'phobosField']],
     ['floors', T('Floors'), ['floorOnly', 'floorDim', 'floorGrey', 'floorHide', 'otherLoot']],
-    ['loot', T('Loot'), ['worth', 'peek', 'wishMarks', 'tipGear', 'tipCarry', 'secureShown', 'itemNames', 'modTints', 'roofLoot', 'roofTotals', 'roofTotalsUnder']],
+    ['loot', T('Loot'), ['containerStyle', 'containerScale', 'worth', 'peek', 'wishMarks', 'tipGear', 'tipCarry', 'secureShown', 'itemNames', 'modTints', 'roofLoot', 'roofTotals', 'roofTotalsUnder']],
     ['feed', T('Kill feed'), ['feed', 'feedMine', 'feedPmc', 'feedBoss', 'feedAi', 'feedNames', 'feedRows', 'feedKeep', 'feedBox', 'feedBg']],
     ['screen', T('Screen'), ['mapLight', 'turns', 'lowPower']],
     ['colours', T('Colours'), ['cols']]];
@@ -12345,7 +12765,11 @@
         group.open = prefs.hpOpen['set:' + key] !== false;
         group.ontoggle = () => { prefs.hpOpen['set:' + key] = group.open; save(); };
         group.appendChild(mk('summary', '', title));
-        for (const id of ids) { const row = sideTwin(id); if (row) group.appendChild(row); }
+        for (const id of ids) {
+          const row = sideTwin(id);
+          if (row) group.appendChild(row);
+          if (id === 'optActionIcons') group.appendChild(actionLegend());
+        }
         if (key === 'colours') {
           // every colour: the menu's own list, brought here, and its way back to the usual ones
           const cols = $('colorList');
@@ -12520,32 +12944,37 @@
     box.appendChild(mk('p', 'winNote', T('The field shown is the one recorded last before the moment shown.')));
   }
 
-  // ORBIT's squads at the moment shown, each with the things it means to do in order
+  // Keep the squad's reported objective order, independently of which goals are in progress.
   function sideOrbit(box, r, s) {
     box.textContent = '';
     sideCheck(box, 'orbitMain', T('Show on map'), false, T('Where each ORBIT squad is headed, and what for.'));
     sideCheck(box, 'orbitRush', T('Rush points'), false, T('The places an ORBIT squad is to sweep, as rings.'));
-    const squads = orbitMain && Array.isArray(orbitMain.d.s) ? orbitMain.d.s : [];
+    sideCheck(box, 'orbitTactics', T('Squad tactical routes'), true, T('Show the reported destinations of all squads on tactical assignments.'));
+    const squads = modOn('ORBIT') && orbitMain ? list(orbitMain.d.s) : [];
     sideCount(box, squads.length);
     if (!squads.length) sideNone(box, T('ORBIT had no squad objectives at this moment (or wasn\'t in this raid).'));
-    const nameOf = pid => { for (const t of s.tracks.values()) if (t.pid === pid) return t.name || ONE[t.c] || t.c; return ''; };
-    for (const squad of squads) {
-      const row = mk('div', 'squadRow'), members = list(squad.MemberProfileIds).map(nameOf).filter(Boolean);
-      row.appendChild(mk('b', '', T('Squad {n}', { n: squad.SquadId !== undefined ? squad.SquadId : '?' }) + (members.length ? ' · ' + members.slice(0, 6).join(', ') : '')));
+    const selected = orbitSquadOf(liveById.get(chased)?.pid);
+    const names = new Map();
+    for (const t of s.tracks.values()) if (t.pid) names.set(t.pid, t.name || ONE[t.c] || t.c);
+    for (const squad of selected ? [selected, ...squads.filter(team => team !== selected)] : squads) {
+      const row = mk('div', 'squadRow' + (squad === selected ? ' selected' : ''));
+      const members = list(squad.MemberProfileIds).map(pid => names.get(pid)).filter(Boolean);
+      row.dataset.squad = squad.SquadId;
+      row.appendChild(mk('b', '', T('Squad {n}', { n: squad.SquadId ?? '?' }) + (members.length ? ' · ' + members.join(', ') : '')));
       const chain = mk('div', 'goalChain');
-      const goals = list(squad.MainObjectives);
-      const first = goals.findIndex(o => o && !o.Completed);
-      goals.forEach((o, i) => {
-        if (!o) return;
-        const chip = mk('button', 'goal' + (o.Completed ? ' done' : i === first ? ' now' : ''));
+      for (const o of list(squad.MainObjectives)) {
+        if (!o) continue;
+        const state = orbitGoalState(o, squad), chip = mk('button', 'goal ' + state);
         chip.type = 'button';
-        chip.append(mk('i', '', orbitLetter(o)), mk('span', '', spaced(String(o.OperationName || o.QuestTitle || o.Type || '')) + (o.OperationStepCount ? ' ' + ((o.OperationStepIndex || 0) + 1) + '/' + o.OperationStepCount : '')
-          + (o.AirdropStage ? ' · ' + words(String(o.AirdropStage)) : '') + (o.CampState ? ' · ' + words(String(o.CampState)) : '')));
-        chip.title = o.Completed ? T('Done') : i === first ? T('What the squad is on now') : T('To do after that');
+        chip.append(mk('i', '', orbitLetter(o)), mk('span', '', orbitGoalName(o) + orbitStepCount(o)),
+          mk('small', '', orbitStateText(o, state, squad)));
+        const phase = o.OperationState || o.CampState || o.AirdropStage;
+        if (state === 'active' && phase && phase !== 'active') chip.lastChild.prepend(words(String(phase)) + ' · ');
+        chip.title = [o.OperationStep, o.OperationState, o.CampState, o.CampFailure, o.AirdropStage].filter(Boolean).join(' · ');
         if (Number.isFinite(o.X) && Number.isFinite(o.Z)) chip.onclick = () => goTo(o.X, o.Z);
         chain.appendChild(chip);
-      });
-      if (!goals.length) chain.appendChild(mk('span', 'dim', T('Nothing planned')));
+      }
+      if (!chain.childElementCount) chain.appendChild(mk('span', 'dim', T('Nothing planned')));
       row.appendChild(chain);
       box.appendChild(row);
     }
@@ -12564,15 +12993,21 @@
   // it's followed. COMET's own words for its reasons are shown as it says them, in English.
   const whyOf = new Map();
   let whyPrint = '';
-  function whyLoad(raid, pid) {
-    const key = raid + '|' + pid;
+  function whyLoad(r, pid) {
+    const raid = r.about.id, key = raid + '|' + pid;
     if (whyOf.has(key)) return whyOf.get(key);
     const got = { state: 'loading', ev: [] };
     whyOf.set(key, got);
-    fetch('api/history/comet?id=' + encodeURIComponent(raid) + '&p=' + encodeURIComponent(pid)).then(a => a.json()).then(j => {
-      got.ev = j && Array.isArray(j.ev) ? j.ev.filter(e => e && e.d).sort((x, y) => x.t - y.t) : [];
+    fetch('api/history/comet?id=' + encodeURIComponent(raid) + '&p=' + encodeURIComponent(pid)).then(a => {
+      if (!a.ok) throw new Error(String(a.status));
+      return a.json();
+    }).then(j => {
+      // The server timestamps these rows from recording start. The map trims the loading screen.
+      got.ev = j && Array.isArray(j.ev) ? j.ev.filter(e => e && e.d && Number.isFinite(e.t))
+        .map(e => ({ t: Math.max(0, e.t - r.lead), d: e.d })).sort((x, y) => x.t - y.t) : [];
+      got.choices = got.ev.filter(e => e.d.stage === 'selected' && /^A\d\d$/.test(e.d.feature) && e.d.decision);
       got.state = j && j.none ? 'none' : got.ev.length ? 'ok' : 'empty';
-    }).catch(() => { got.state = 'none'; }).then(() => { whyPrint = ''; hpSideShow(); });
+    }).catch(() => { got.state = 'error'; }).then(() => { if (replay === r) { whyPrint = ''; dirty = true; hpSideShow(); if (prefs.hpActions) showActionOverlay(r); } });
     return got;
   }
   // COMET's word for a reason ("zzap-ranked-selection", "native-push:incompletePath") as plain words
@@ -12580,7 +13015,7 @@
     const said = String(c || '').replace(/^zzap-/, '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[-_]+/g, ' ').replace(/\s*:\s*/g, ': ').replace(/\s+/g, ' ').trim().toLowerCase();
     return said.charAt(0).toUpperCase() + said.slice(1);
   };
-  const WHY_OWNERS = { combat: T('In a fight'), orbit: T('ORBIT'), sleep: T('Asleep (ORBIT ghost)'), recovery: T('Getting unstuck'), other: T('The game\'s own brain') };
+  const WHY_OWNERS = { combat: T('Combat'), orbit: T('ORBIT'), sleep: T('Asleep (ORBIT ghost)'), recovery: T('Getting unstuck'), other: T('The game\'s own brain') };
   const WHY_SEEN = 60000;
   // Who's in control of a bot as its marker has it now (the brain layer, "ly", in every report): "COMET : Post-combat"
   // is "COMET · Post-combat", ORBIT's layer "ORBIT · Orbit Brain Layer", a ghost "Asleep (ORBIT ghost)", the rest by
@@ -12593,50 +13028,433 @@
     if (owned) return owned[1].toUpperCase() + ' · ' + owned[2];
     return (/^Orbit/i.test(layer) ? 'ORBIT · ' : '') + spaced(layer);
   }
-  // a move COMET makes that it never says in its decisions (its crossfire and after-the-fight moves): only the bot's
-  // marker has it ("cm"), and it's the move now whatever COMET said before it
-  const whyUnsaid = m => m && m.cm && /^(PostCombat|Crossfire)/.test(m.cm) ? m.cm : '';
+  function lastAt(events, at) {
+    let lo = 0, hi = events.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >>> 1;
+      if (events[mid].t <= at) lo = mid + 1; else hi = mid;
+    }
+    return lo - 1;
+  }
+  // Keep evidence from the same action together. An unnamed release never inherits an unrelated decision.
+  function recentMove(events, last, at) {
+    let event = null, choice = null;
+    for (let i = last; i >= 0 && at - events[i].t <= WHY_SEEN; i--) {
+      const e = events[i], d = e.d;
+      if (!/^A\d\d$/.test(d.feature) || !['started', 'selected', 'accepted', 'rejected', 'released'].includes(d.stage)) continue;
+      if (!event) event = e;
+      else if (d.feature !== event.d.feature || ['released', 'rejected'].includes(d.stage) || (event.d.decision && d.decision !== event.d.decision)) break;
+      if (d.stage === 'selected') { choice = e; break; }
+    }
+    return { event, choice };
+  }
+  function phaseName(d) {
+    if (d.stage === 'released') return T('Ended');
+    if (d.stage === 'rejected') return T('Declined');
+    if (d.stage === 'started') return d.reason === 'native-action-observed' ? T('Observed') : T('Started');
+    if (d.stage === 'accepted') return T('Accepted');
+    return T('Selected');
+  }
+  function moveReason(d) {
+    const c = (d.candidates || []).find(c => c && c.decision === d.decision);
+    const reason = c && c.reason && c.reason !== 'available' ? c.reason : d.reason;
+    if (!reason || ['zzap-ranked-selection', 'zzap-capability-refreshed', 'native-action-observed', 'available'].includes(reason)) return '';
+    if (reason === 'hidden-contact-handoff') return T('Switched to tracking a hidden target');
+    if (reason === 'visible-contact-handoff') return T('Switched to a visible target');
+    return codeSaid(reason);
+  }
+  const SAMPLED_SAIN_ACTIONS = { 'SAIN:Reload': T('Reloading'), 'SAIN:SeekCover': T('Moving to cover'), 'SAIN:RushEnemy': T('Pushing') };
+  function currentAction(m, brain, compact = false) {
+    if (!brain) return '';
+    if (brain.by === 'ORBIT') {
+      if (m.ob === 'Synthetic (Moving)') return T('Moving');
+      if (m.ob === 'AmbushHotspot (Moving)') return T('Ambush') + ' · ' + T('Moving to it');
+      return brain.ghost ? (m.ob || T('Ghost')) : brain.text;
+    }
+    const dc = m.dc || '';
+    if (!brain.ghost && /^(SAIN|COMET)/i.test(m.ly || '') && modOn('SAIN') && /^SAIN:(?!None$|Peace$).+/.test(dc))
+      return SAMPLED_SAIN_ACTIONS[dc] || cometMove(dc.slice(5));
+    if (brain.fight && brain.by === 'SAIN') return 'SAIN · ' + T('Combat');
+    if (brain.by === 'COMET' && m.cm) {
+      const label = m.cm === 'Storm' ? T('Squad assault') : brain.text;
+      if (!compact) return T('Selected') + ' · ' + label;
+      return m.cm.startsWith('PostCombat') && m.cm.length > 10 ? cometMove(m.cm.slice(10)) : label;
+    }
+    return brain.text;
+  }
+  const orbitGoalName = o => o.Type === 'LootValue' ? T('Loot value') : o.Type === 'Kills' ? (o.KillAmbush ? T('Kill ambush') : T('Looking for kills')) : spaced(String(o.OperationName || o.QuestTitle || o.Type || ''));
+  // A hunt timer belongs to the squad. Several main objectives can be pending at the same time.
+  let huntSnapshot;
+  const huntsByMember = new Map();
+  function squadHunt(m) {
+    if (!orbitMain || !m.pid || !modOn('ORBIT') || !/^(Synthetic \(Moving\)|AmbushHotspot\b)/.test(m.ob || '')) return '';
+    if (huntSnapshot !== orbitMain) {
+      huntSnapshot = orbitMain;
+      huntsByMember.clear();
+      for (const squad of list(orbitMain.d.s)) {
+        const active = list(squad.MainObjectives).filter(o => o && o.Type === 'Kills' && !o.Completed &&
+          (o.KillAmbush ? ['approach', 'holding'].includes(o.CampState) : o.KillsRoamStartedAt > 0));
+        for (const pid of list(squad.MemberProfileIds)) huntsByMember.set(pid, active);
+      }
+    }
+    const ambush = m.ob.startsWith('AmbushHotspot');
+    const active = (huntsByMember.get(m.pid) || []).find(o => !!o.KillAmbush === ambush);
+    return active ? orbitGoalName(active) : '';
+  }
+  function mapContext(m, brain) {
+    const activity = replay && m.pid && modOn('COMET') && activityAt(replay, m.pid);
+    const context = movementContext(m, brain);
+    return activity ? (context ? activity + ' · ' + context : activity) : context;
+  }
+  function extractReason(reason) {
+    return /^all mains done$/i.test(reason || '') ? T('All objectives done') : reason;
+  }
+  function movementContext(m, brain) {
+    if (!brain) return '';
+    const q = m.sq;
+    if (q && q.f === 'S06' && q.a && modOn('COMET') && !brain.ghost && !squadOver(q) &&
+        q.u !== 'interrupted' && q.u !== 'declined' && (brain.by === 'SAIN' || brain.by === 'COMET')) {
+      if (q.why === 'hurt') return T('Target looks badly hurt');
+      if (q.why === 'extract') return T('Target is extracting');
+      if (q.why === 'reload') return T('Target is reloading');
+      if (q.why === 'heal') return T('Target is healing');
+      if (q.why === 'loot') return T('Target is looting');
+      if (q.why === 'grenade') return T('Target has a grenade out');
+      if (q.why === 'alone') return T('Target appears isolated');
+      if (q.why === 'vulnerable') return T('Target looks vulnerable');
+    }
+    if (brain.by !== 'ORBIT') return '';
+    if (m.xr && /^Exfil\b/.test(m.ob || '')) return extractReason(m.xr);
+    return squadHunt(m);
+  }
+  // A proposal, a requested animation or crossing time while scrubbing is never evidence of execution.
+  const GESTURE_LABELS = new Map([
+    ['CornerPeek', T('Corner peek')], ['Prefire', T('Prefire')], ['Zigzag', T('Zigzag')],
+    ['TacticalJump', T('Tactical jump')], ['DoorwayJump', T('Doorway jump')], ['CoverFeint', T('Cover feint')],
+    ['FakeReload', T('Fake reload')], ['DoorwayPeek', T('Doorway peek')], ['FakeGrenade', T('Fake grenade')],
+    ['FakeHeal', T('Fake heal')], ['EnteredRoom', T('Entered room')],
+    ['DrewPistolEmpty', T('Drew pistol · primary empty')], ['DrewPistol', T('Drew pistol')],
+    ['BackToPrimary', T('Back to primary weapon')], ['SwitchedForRange', T('Switched guns for range')], ['SwitchedPrimary', T('Switched primary weapon')],
+    ['LeftExposedCover', T('Left cover · taking hits')], ['ReachedNewCover', T('Reached new cover')],
+    ['InterruptedSurgery', T('Interrupted surgery')], ['InterruptedSurgeryHit', T('Interrupted surgery · hit')],
+    ['InterruptedSurgeryThreat', T('Interrupted surgery · enemy nearby')], ['RepairedLimb', T('Repaired a limb')],
+    ['StoppedHeavyBleed', T('Stopped heavy bleeding')], ['StoppedLightBleed', T('Stopped light bleeding')], ['TreatedFracture', T('Treated fracture')],
+    ['SprintedPastDoor', T('Sprinted past doorway')], ['ThrewIntoRoom', T('Threw grenade into room')],
+    ['ScatteredFromGrenade', T('Split from squad · grenade')], ['FledGrenade', T('Fled grenade')], ['DroppedProneGrenade', T('Went prone · grenade')],
+    ['SwitchedDevicesOff', T('Switched tactical devices off')]
+  ]);
+  const GESTURE_MS = 3000, reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function indexMapSignals(events, lead) {
+    const shares = [], voices = new Map(), blasts = [], seen = new Set();
+    for (const e of events) {
+      if ((e.k !== 'bot.share' && e.k !== 'bot.voice' && e.k !== 'grenade.blast') || seen.has(e.n)) continue;
+      const t = e.performedAt == null ? e.rt : Math.max(0, e.performedAt - lead);
+      if (e.k === 'bot.share' && e.p && e.d.to && e.p !== e.d.to) shares.push({ t, from: e.p, to: e.d.to });
+      if (e.k === 'bot.voice' && e.p && e.d.phrase) {
+        if (!voices.has(e.p)) voices.set(e.p, []);
+        voices.get(e.p).push({ t, phrase: e.d.phrase });
+      }
+      if (e.k === 'grenade.blast' && Array.isArray(e.d.at)) blasts.push(blastEvent(e, t));
+      seen.add(e.n);
+    }
+    shares.sort((a, b) => a.t - b.t);
+    blasts.sort((a, b) => a.t - b.t);
+    for (const calls of voices.values()) calls.sort((a, b) => a.t - b.t);
+    return { shares, voices, blasts };
+  }
+
+  function blastEvent(e, t) {
+    return { t, pid: e.p, x: e.d.at[0], y: e.d.at[1], name: e.d.i || '', confirmed: true };
+  }
+
+  const noSignals = Object.freeze([]);
+  function recentSignals(track, time, duration) {
+    if (!track.length) return noSignals;
+    const end = lastAt(track, time);
+    if (end < 0 || time - track[end].t >= duration) return noSignals;
+    let first = end;
+    while (first >= 0 && time - track[first].t < duration) first--;
+    return track.slice(first + 1, end + 1);
+  }
+
+  function indexSightings(events, lead) {
+    const tracks = new Map(), seen = new Set();
+    for (const e of events) {
+      if (e.k !== 'bot.sight' || !e.p || !e.d?.target || seen.has(e.n)) continue;
+      seen.add(e.n);
+      if (!tracks.has(e.p)) tracks.set(e.p, []);
+      tracks.get(e.p).push({ t: e.performedAt == null ? e.rt : Math.max(0, e.performedAt - lead), target: e.d.target });
+    }
+    const lastSight = new Map();
+    for (const [observer, track] of tracks) {
+      track.sort((a, b) => a.t - b.t);
+      tracks.set(observer, track.filter(e => startsSightContact(lastSight, observer, e.target, e.t)));
+    }
+    return tracks;
+  }
+  function markerHop(track, time, radius) {
+    if (!track || reducedMotion.matches) return 0;
+    const duration = 650;
+    for (let i = lastAt(track, time); i >= 0 && time - track[i].t < duration; i--) {
+      if (track[i].jump) {
+        const phase = (time - track[i].t) / duration;
+        return 2 * radius * 4 * phase * (1 - phase);
+      }
+    }
+    return 0;
+  }
+  function indexGestures(events, lead, hasGestures) {
+    const tracks = new Map(), seen = new Set(), mags = new Set();
+    for (const e of events) {
+      if (!e.p || !e.d || seen.has(e.n)) continue;
+      let name;
+      if (e.k === 'comet.gesture') name = GESTURE_LABELS.get(e.d.action);
+      else if (hasGestures && e.k === 'comet.mag') {
+        if (e.d.st === 'queued') name = T('Dropped magazine');
+        if (e.d.st === 'completed') name = T('Recovered magazine');
+        if (name && e.d.id) {
+          const key = e.p + '/' + e.d.id;
+          if (e.d.st === 'queued') {
+            if (mags.has(key)) continue;
+            mags.add(key);
+          } else mags.delete(key);
+        }
+      }
+      if (!name) continue;
+      seen.add(e.n);
+      if (!tracks.has(e.p)) tracks.set(e.p, []);
+      tracks.get(e.p).push({ t: e.performedAt == null ? e.rt : Math.max(0, e.performedAt - lead), name,
+        jump: e.k === 'comet.gesture' && (e.d.action === 'TacticalJump' || e.d.action === 'DoorwayJump') });
+    }
+    for (const track of tracks.values()) track.sort((a, b) => a.t - b.t);
+    return tracks;
+  }
+  const ACTIVITY_LABELS = new Map([
+    ['PerformingSurgery', T('Performing surgery')], ['UsingStim', T('Using a stim')], ['UsingFirstAid', T('Using first aid')],
+    ['TreatingFracture', T('Treating a fracture')], ['TreatingHeavyBleed', T('Treating heavy bleeding')],
+    ['TreatingLightBleed', T('Treating light bleeding')], ['FlashAffected', T('Blinded by flash')], ['InsideGas', T('Inside CS gas')]
+  ]);
+  function indexActivities(events, lead) {
+    const bots = new Map(), times = [], seen = new Set();
+    for (const e of events) {
+      if (e.k !== 'comet.activity' || !e.p || !ACTIVITY_LABELS.has(e.d.action) || typeof e.d.active !== 'boolean' || seen.has(e.n)) continue;
+      seen.add(e.n);
+      if (!bots.has(e.p)) bots.set(e.p, new Map());
+      const tracks = bots.get(e.p), action = e.d.action;
+      if (!tracks.has(action)) tracks.set(action, []);
+      const edge = { t: e.performedAt == null ? e.rt : Math.max(0, e.performedAt - lead), on: e.d.active, n: e.n };
+      tracks.get(action).push(edge);
+      times.push(edge);
+    }
+    const order = (a, b) => a.t - b.t || a.n - b.n;
+    for (const tracks of bots.values()) for (const track of tracks.values()) track.sort(order);
+    return { bots, times: times.sort(order) };
+  }
+  function activityAt(r, pid) {
+    const tracks = r.activities.bots.get(pid);
+    if (!tracks) return '';
+    let label = '';
+    for (const [action, track] of tracks) {
+      const i = lastAt(track, r.at);
+      // Require both recorded edges. An incomplete archive cannot establish how long this lasted.
+      if (i >= 0 && track[i].on && track[i + 1]?.on === false) {
+        const next = ACTIVITY_LABELS.get(action);
+        label = label ? label + ' · ' + next : next;
+      }
+    }
+    return label;
+  }
+  function gestureTrack(r, pid, loadOld) {
+    if (r.hasGestures || r.gestures.size) return r.gestures.get(pid);
+    if (!loadOld) return r.legacyGestures?.get(pid);
+    // Older formats kept detailed evidence per bot. Reuse evidence already loaded, and load a followed bot on demand.
+    const got = whyLoad(r, pid);
+    if (got.state !== 'ok') return null;
+    if (r.legacyGestures?.has(pid)) return r.legacyGestures.get(pid);
+    const track = actionTrack(got.ev);
+    (r.legacyGestures ||= new Map()).set(pid, track);
+    return track;
+  }
+  function drawGestures(m, r, x, y, scale) {
+    const track = gestureTrack(r, m.pid, chased === m.id);
+    if (!track || !track.length) return;
+    const last = lastAt(track, r.at);
+    let row = 0;
+    for (let i = last; i >= 0 && r.at - track[i].t < GESTURE_MS; i--) {
+      // Two sources in an older debug recording may describe the same door jump.
+      let repeated = false;
+      for (let k = i + 1; k <= last; k++) if (track[k].name === track[i].name) { repeated = true; break; }
+      if (repeated) continue;
+      const age = (r.at - track[i].t) / GESTURE_MS;
+      const rise = reducedMotion.matches ? 0 : 15 * age;
+      write(track[i].name, 12 * scale, x, y - (rise + row * 16) * scale, '#ffd17c', Math.min(1, (1 - age) * 3));
+      row++;
+    }
+  }
+  const actionTrackOf = new WeakMap();
+  function actionTrack(events) {
+    if (actionTrackOf.has(events)) return actionTrackOf.get(events);
+    const track = [], previous = new Map();
+    let weave = null;
+    for (const { t, d } of events) {
+      if (d.stage !== 'evaluated') continue;
+      const f = d.feature;
+      const edge = (key, ok, identity, name) => {
+        if (!ok) { previous.delete(key); return; }
+        if (previous.has(key) && previous.get(key) === identity) return;
+        previous.set(key, identity);
+        track.push({ t, name, jump: f === 'M12' || f === 'D02' });
+      };
+      if (f === 'M03' && d.cornerPeek) {
+        const q = d.cornerPeek;
+        edge(f, q.openObserved && q.peeks > 0, q.episode + '/' + q.peeks, T('Corner peek'));
+      } else if (f === 'M06' && d.cornerPrefire) {
+        const q = d.cornerPrefire;
+        edge(f, q.actualShots > 0, q.episode, T('Prefire'));
+      } else if (f === 'M11' && d.retreatWeave) {
+        const q = d.retreatWeave;
+        const turn = x => Math.abs(x) >= 5 && Math.abs(x) <= 85 ? Math.sign(x) : 0;
+        const dir = turn(q.yaw);
+        if (q.state !== 'evading' || !q.moveRequested || !(q.speed > 0) || !dir || dir !== turn(q.observedYaw)) continue;
+        if (weave && t - weave.t <= 2000 && weave.context === q.context && weave.dir !== dir)
+          track.push({ t, name: T('Zigzag') });
+        weave = { t, context: q.context, dir };
+      } else if (f === 'M12' && d.tacticalJump) {
+        const q = d.tacticalJump;
+        edge(f, q.takeoffObserved, q.attempt, q.sourceFeature === 'D02' ? T('Doorway jump') : T('Tactical jump'));
+      } else if (f === 'M14' && d.coverFeint) {
+        const q = d.coverFeint;
+        edge('mag', q.animationObserved && q.magazineAccepted, q.episode, T('Fake reload'));
+        edge(f, q.exposedObserved && q.movementObserved, q.episode, T('Cover feint'));
+      } else if (f === 'D02' && d.doorJumpPeek) {
+        const q = d.doorJumpPeek;
+        edge(f, q.takeoffObserved, q.door + '/' + q.target, T('Doorway jump'));
+      } else if (f === 'D04' && d.doorStepPeek) {
+        const q = d.doorStepPeek;
+        edge(f, q.arrived && q.looking, q.door + '/' + q.peek, T('Doorway peek'));
+      } else if (f === 'D05' && d.doorFakeGrenade) {
+        const q = d.doorFakeGrenade;
+        edge(f, q.state === 'completed' && q.handsObserved, q.opportunity, T('Fake grenade'));
+      } else if (f === 'D06' && d.doorFakeMedical) {
+        const q = d.doorFakeMedical, med = q.medical;
+        edge(f, q.state === 'completed' && q.handsObserved && med && med.consumptionObserved === false && !med.medicalHandoff, q.opportunity, T('Fake heal'));
+      } else if ((f === 'D07' || f === 'D08') && d.doorRoomClear) {
+        const q = d.doorRoomClear;
+        edge(f, q.thresholdCrossed && q.movementObserved, q.door + '/' + q.target, T('Entered room'));
+      }
+    }
+    actionTrackOf.set(events, track);
+    return track;
+  }
+
+  const actionDock = $('actionDock'), actionBox = $('actionOverlay');
+  let actionFrame = null, actionPrint = '';
+  const fraction = v => Math.max(0, Math.min(1, v));
+  function placeActionOverlay() {
+    if (actionDock.hidden) return;
+    const x = Number.isFinite(prefs.hpActionX) ? fraction(prefs.hpActionX) : 1;
+    const y = Number.isFinite(prefs.hpActionY) ? fraction(prefs.hpActionY) : 0;
+    actionBox.style.left = Math.round(x * Math.max(0, actionDock.clientWidth - actionBox.offsetWidth)) + 'px';
+    actionBox.style.top = Math.round(y * Math.max(0, actionDock.clientHeight - actionBox.offsetHeight)) + 'px';
+  }
+  draggable($('actionHandle'), actionBox, (x, y) => {
+    const r = actionDock.getBoundingClientRect();
+    prefs.hpActionX = fraction((x - r.left) / Math.max(1, r.width - actionBox.offsetWidth));
+    prefs.hpActionY = fraction((y - r.top) / Math.max(1, r.height - actionBox.offsetHeight));
+    save(); placeActionOverlay();
+  }, null, true);
+  if (window.ResizeObserver) {
+    const observer = new ResizeObserver(placeActionOverlay);
+    observer.observe(actionDock); observer.observe(actionBox);
+  }
+  const overlayBot = m => m && m.pid && isMapBot(m, KINDS[m.c] || OTHER) && !isHidden(m.c) && !inArea(m);
+  const activeRole = m => !m.gh && modOn('COMET') && m.sq && m.sq.a && !squadOver(m.sq) &&
+    m.sq.u !== 'interrupted' && m.sq.u !== 'declined' ? m.sq : null;
+
+  function showActionOverlay(r) {
+    if (!prefs.hpActions || prefs.hpNoPeople || chased === null) {
+      if (!actionDock.hidden) actionDock.hidden = true;
+      actionFrame = null;
+      return;
+    }
+    const m = liveById.get(chased);
+    if (!r.about || !overlayBot(m)) {
+      if (!actionDock.hidden) actionDock.hidden = true;
+      actionFrame = null;
+      return;
+    }
+    const track = (modOn('COMET') && gestureTrack(r, m.pid, true)) || [];
+    const last = lastAt(track, r.at), recent = [];
+    for (let i = last; i >= 0 && r.at - track[i].t < GESTURE_MS; i--) {
+      if (!recent.some(a => a.name === track[i].name)) recent.push(track[i]);
+    }
+    const printTime = Math.floor(r.at / 1000) + '/' + lastAt(r.activities.times, r.at) + '/' + recent.map(a => a.t).join(',');
+    if (actionFrame && actionFrame.raid === r && actionFrame.next === r.next && actionFrame.m === m &&
+        actionFrame.time === printTime && actionFrame.goals === orbitMain && !actionDock.hidden) return;
+    actionFrame = { raid: r, next: r.next, m, time: printTime, goals: orbitMain };
+    const plans = orbitMain && modOn('ORBIT') ? list(orbitMain.d.s) : [];
+    const squad = plans.find(s => list(s.MemberProfileIds).includes(m.pid));
+    const memberIds = squad && list(squad.MemberProfileIds);
+    const role = activeRole(m), team = teamKey(m);
+    const others = live.filter(x => {
+      if (x.id === m.id || !overlayBot(x)) return false;
+      if (memberIds) return memberIds.includes(x.pid);
+      if (plans.some(s => list(s.MemberProfileIds).includes(x.pid))) return false;
+      const otherRole = activeRole(x);
+      return (role && otherRole && role.p && role.p === otherRole.p) || (team && team === teamKey(x));
+    });
+    const members = [m, ...others], inSquad = members.length > 1 || !!role;
+    const title = inSquad ? T('Squad') : T('Bot');
+    const rows = members.map((x, i) => {
+      const brain = brainOf(x), q = activeRole(x);
+      return { name: latin(x.t || x.c), action: currentAction(x, brain), context: mapContext(x, brain),
+        role: q ? squadTactic(q) + ' · ' + squadPart(q) : '',
+        moments: i ? [] : recent.map(a => clockText(a.t) + ' · ' + a.name) };
+    });
+    if (actionDock.hidden) actionDock.hidden = false;
+    const objectives = [];
+    for (const goal of list(squad?.MainObjectives)) {
+      const state = orbitGoalState(goal, squad);
+      if (state !== 'active' && state !== 'paused') continue;
+      const detail = orbitGoalDetail(goal, state, squad);
+      if (!detail) continue;
+      objectives.push(orbitGoalName(goal) + ' · ' + (state === 'paused' ? orbitStateNames.paused + ' · ' : '') + detail);
+    }
+    const print = JSON.stringify([title, rows, objectives]);
+    if (print !== actionPrint) {
+      actionPrint = print;
+      $('actionTitle').textContent = title;
+      const body = $('actionRows'); body.replaceChildren();
+      for (const objective of objectives) body.appendChild(mk('div', 'actionMember', objective));
+      for (const row of rows) {
+        const el = mk('div', 'actionMember');
+        el.appendChild(mk('strong', '', row.name));
+        for (const detail of [row.action, row.context]) if (detail) el.appendChild(mk('small', '', detail));
+        if (row.role) el.appendChild(mk('small', 'actionRole', row.role));
+        for (const moment of row.moments) el.appendChild(mk('small', 'actionMoment', moment));
+        body.appendChild(el);
+      }
+      placeActionOverlay();
+    }
+  }
   // the bot followed, when it's one (not a person)
   function whyBot() {
     const m = chased !== null ? liveById.get(chased) : null;
     return m && m.pid && !PEOPLE.includes(m.c) ? m : null;
   }
-  // In a line over the replay's bar, by the followed bot's name: COMET's move now and why, and why ORBIT has it leaving
-  function whyBrief() {
-    const el = $('replayBotWhy'), bot = replay && replay.about ? whyBot() : null;
-    if (!el) return;
-    let said = '';
-    if (bot) {
-      const got = whyLoad(replay.about.id, bot.pid), at = replay.at;
-      let over = '';
-      for (let i = got.ev.length - 1; i >= 0; i--) {
-        const e = got.ev[i];
-        if (e.t > at) continue;
-        if (at - e.t > WHY_SEEN) break;
-        const d = e.d;
-        if (!/^A\d\d$/.test(d.feature)) continue;
-        // (a move let go: the one before it, said as done, with why it was let go)
-        if (d.stage === 'released' && !over) { over = d.reason || '-'; if (!d.decision) continue; }
-        if (d.decision && ['selected', 'started', 'released'].includes(d.stage)) {
-          said = 'COMET: ' + cometMove(d.decision) + (over ? ' (' + T('Done') + ')' : '') + ((over && over !== '-' ? over : d.reason) ? ' · ' + codeSaid(over && over !== '-' ? over : d.reason) : '');
-          break;
-        }
-      }
-      // (a move COMET doesn't say in its decisions, as its moves after a fight: as the bot's marker has it now)
-      if (whyUnsaid(bot) || (!said && bot.cm)) said = 'COMET: ' + cometMove(bot.cm);
-      if (bot.xr) said = (said ? said + ' · ' : '') + T('Leaving the raid: {why}', { why: bot.xr });
-    }
-    if (el.textContent !== said) el.textContent = said;
-  }
   function sideWhy(box, r) {
     const bot = whyBot();
-    const got = bot ? whyLoad(r.about.id, bot.pid) : null, at = r.at;
+    const got = bot ? whyLoad(r, bot.pid) : null, at = r.at;
     // (made again only when something in it changes)
-    let last = -1;
-    if (got) for (let lo = 0, hi = got.ev.length - 1; lo <= hi;) { const mid = (lo + hi) >> 1; if (got.ev[mid].t <= at) { last = mid; lo = mid + 1; } else hi = mid - 1; }
-    const print = [bot ? bot.pid : '', got ? got.state : '', last, bot ? bot.ob || '' : '', bot ? bot.xr || '' : '', bot ? bot.ly || '' : '', bot ? bot.cm || '' : '', bot ? bot.gh || '' : '', Math.floor(at / 5000)].join('|');
+    const last = got ? lastAt(got.ev, at) : -1;
+    const brain = bot && brainOf(bot), action = bot && currentAction(bot, brain), context = bot && mapContext(bot, brain);
+    const tactic = bot && bot.sq && bot.sq.a && !squadOver(bot.sq) && !['declined', 'interrupted'].includes(bot.sq.u) ? squadSaid(bot.sq) : '';
+    const print = [r.about.id, bot && bot.pid, got && got.state, last, action, context, tactic, bot && bot.ly,
+      bot && bot.cm, bot && bot.ob, bot && bot.xr, bot && bot.gh, Math.floor(at / 1000)].join('|');
     if (print === whyPrint && box.childElementCount) return;
     whyPrint = print;
+    const detailsOpen = box.dataset.pid === (bot && bot.pid) && !!box.querySelector('.whyDetails[open]');
+    box.dataset.pid = bot ? bot.pid : '';
     box.textContent = '';
     if (!bot) { sideNone(box, T('Follow a bot (press it on the map or in the list) to see why it does what it does.')); return; }
     const head = mk('div', 'whyHead'), name = mk('b', '', markerText(bot) || bot.t || ONE[bot.c] || bot.c);
@@ -12644,106 +13462,302 @@
     head.append(name, mk('small', '', ONE[bot.c] || bot.c));
     box.appendChild(head);
     const ago = t => at - t < 1000 ? T('just now') : T('{t} ago', { t: clockText(at - t) });
-    const line = (label, text, cls) => { const row = mk('div', 'whyLine' + (cls ? ' ' + cls : '')); row.append(mk('i', '', label), mk('span', '', text)); box.appendChild(row); return row; };
+    const line = (label, text, cls, parent = box) => { const row = mk('div', 'whyLine' + (cls ? ' ' + cls : '')); row.append(mk('i', '', label), mk('span', '', text)); parent.appendChild(row); return row; };
     // the latest of a feature (or features) at the moment shown, no older than WHY_SEEN
     const latest = (test, within = WHY_SEEN) => { for (let i = last; i >= 0; i--) { const e = got.ev[i]; if (at - e.t > within) return null; if (test(e.d)) return e; } return null; };
-    // who's in control: as the bot's marker has it now, else as COMET last said
+    if (action) box.appendChild(mk('div', 'whyAction', action));
+    if (context) line(T('Why'), context);
+    if (tactic) line(T('Squad'), tactic);
+    // Who owns the sampled action can differ from the last COMET decision.
     const control = whyControl(bot);
     const ctl = !control && got && got.state === 'ok' ? latest(d => d.feature === 'T04' && d.controlJournal, Infinity) : null;
-    if (control) line(T('In control'), control);
+    if (control) {
+      const row = line(T('In control'), control);
+      if (/^SAIN\s*:\s*(Combat|Squad) Layer$/i.test(bot.ly || '')) row.title = T('SAIN is handling combat. Check the shot events to see when the bot fired.');
+    }
     else if (ctl) {
       const c = ctl.d.controlJournal;
       line(T('In control'), (WHY_OWNERS[c.owner] || codeSaid(c.owner)) + (c.layer ? ' · ' + spaced(c.layer) : ''));
     }
     // ORBIT
-    if (bot.ob) line('ORBIT', bot.ob);
-    if (bot.xr) line(T('Leaving'), bot.xr, 'hot');
+    if (bot.ob && brain && brain.by !== 'ORBIT') line('ORBIT', bot.ob);
+    if (bot.xr && bot.xr !== context) line(T('Leaving'), bot.xr, 'hot');
     if (!got || got.state === 'loading') { box.appendChild(mk('p', 'hpNone', T('Loading…'))); return; }
-    // (a move COMET is making that it doesn't say in its decisions, as its moves after a fight: the marker has it)
-    if (got.state === 'none' && !bot.cm) { box.appendChild(mk('p', 'hpNone', T('COMET\'s decisions weren\'t recorded in this raid. To record them, set "comet": true under "history" in the server\'s config.jsonc.'))); return; }
-    if (got.state === 'empty' && !bot.cm) { box.appendChild(mk('p', 'hpNone', T('COMET made no decisions for this one in this raid.'))); return; }
-    // COMET's move now: the latest of its choices, weighed or let go
-    const moveOf = d => /^A\d\d$/.test(d.feature) && ['selected', 'started', 'accepted', 'released'].includes(d.stage) && (d.decision || d.stage === 'released');
-    const move = whyUnsaid(bot) ? null : latest(moveOf);
-    rvSection(box, T('COMET\'s move'));
-    if (!move && bot.cm) {
-      // as the marker has it: no options or reason to show
-      const title = mk('div', 'whyMove');
-      title.append(mk('b', '', cometMove(bot.cm)), mk('small', '', T('just now')));
+    if (!got.ev.length) { sideNone(box, got.state === 'error' ? T('Could not load decision details.') : T('No decision details recorded.')); return; }
+    const { event: move, choice } = recentMove(got.ev, last, at);
+    const d = move && move.d, selected = choice && choice.d;
+    const decision = d && (d.decision || (selected && selected.decision));
+    if (move) {
+      const title = mk('div', 'whyMove' + (d.stage === 'released' ? ' over' : ''));
+      title.append(mk('b', '', [phaseName(d), decision && cometMove(decision)].filter(Boolean).join(' · ')), mk('small', '', ago(move.t)));
+      rvSection(box, T("COMET's move"));
       box.appendChild(title);
-    } else if (!move) box.appendChild(mk('p', 'hpNone', T('No move of COMET\'s in the last minute.')));
-    else {
-      const over = move.d.stage === 'released';
-      // (a move let go says what it was by the choice before it, whose options it shows)
-      let chose = move;
-      if (over && !move.d.decision) for (let i = got.ev.indexOf(move); i >= 0; i--) { const e = got.ev[i]; if (moveOf(e.d) && e.d.decision && e.d.stage !== 'released') { chose = e; break; } if (move.t - e.t > WHY_SEEN) break; }
-      const d = Object.assign({}, chose.d, { reason: move.d.reason || chose.d.reason, stage: move.d.stage });
-      const title = mk('div', 'whyMove' + (over ? ' over' : ''));
-      title.append(mk('b', '', over ? T('Done') + (d.decision ? ': ' + cometMove(d.decision) : '') : cometMove(d.decision)), mk('small', '', ago(move.t)));
-      box.appendChild(title);
-      if (d.reason) line(T('Why'), codeSaid(d.reason));
-      const mistake = (d.mixing || {}).mistake;
+      const reason = moveReason(d) || (d.stage !== 'released' && selected && moveReason(selected));
+      if (reason) line(T('Why'), reason);
+      const mistake = ((selected || d).mixing || {}).mistake;
       if (mistake && mistake.state === 'mistake-selected') line(T('Note'), T('Picked a worse option on purpose, as its personality allows ({best} was best)', { best: cometMove(mistake.best || '') }), 'hot');
-      const options = (d.candidates || []).filter(c => c && c.decision);
-      if (options.length) {
-        const table = mk('table', 'whyOptions');
-        const top = table.createTHead().insertRow();
-        for (const [text, cls] of [[T('Option'), ''], [T('Score'), 'num'], [T('Why'), '']]) top.appendChild(mk('th', cls, text));
-        const body = table.createTBody();
-        for (const c of options.slice().sort((x, y) => (Number.isFinite(y.score) ? y.score : -1e9) - (Number.isFinite(x.score) ? x.score : -1e9))) {
-          const row = body.insertRow();
-          row.className = (c.decision === d.decision ? 'on' : '') + (c.eligible ? '' : ' no');
-          row.insertCell().textContent = cometMove(c.decision);
-          const score = row.insertCell();
-          score.className = 'num';
-          score.textContent = Number.isFinite(c.score) ? String(Math.round(c.score * 10) / 10) : '–';
-          row.insertCell().textContent = c.eligible ? (c.reason && c.reason !== 'available' ? codeSaid(c.reason) : T('Could')) : codeSaid(c.reason || '');
+    }
+    if (last < 0) return;
+    const details = mk('details', 'whyDetails');
+    details.appendChild(mk('summary', '', T('Decision details')));
+    const fill = () => {
+      if (!details.open || details.childElementCount > 1) return;
+      if (move) {
+        details.appendChild(mk('p', 'winNote', [d.feature, d.stage, d.reason].filter(Boolean).join(' · ')));
+        const options = ((selected || d).candidates || []).filter(c => c && c.decision);
+        if (options.length) {
+          const table = mk('table', 'whyOptions');
+          const top = table.createTHead().insertRow();
+          for (const [text, cls] of [[T('Option'), ''], [T('Score'), 'num'], [T('Why'), '']]) top.appendChild(mk('th', cls, text));
+          const body = table.createTBody();
+          for (const c of options.slice().sort((x, y) => (Number.isFinite(y.score) ? y.score : -1e9) - (Number.isFinite(x.score) ? x.score : -1e9))) {
+            const row = body.insertRow();
+            row.className = (c.decision === decision ? 'on' : '') + (c.eligible ? '' : ' no');
+            row.insertCell().textContent = cometMove(c.decision);
+            const score = row.insertCell();
+            score.className = 'num';
+            score.textContent = Number.isFinite(c.score) ? String(Math.round(c.score * 10) / 10) : '–';
+            row.insertCell().textContent = c.eligible ? (c.reason && c.reason !== 'available' ? codeSaid(c.reason) : T('Could')) : codeSaid(c.reason || '');
+          }
+          details.appendChild(table);
         }
-        box.appendChild(table);
+      }
+      // what else COMET has it doing
+      const also = [];
+      const med = latest(d => d.feature === 'H01' && d.medicalChoice, 30000);
+      if (med) also.push([T('Medical'), cometMove(med.d.medicalChoice.choice || '') + ' · ' + codeSaid(med.d.medicalChoice.reason || med.d.reason)]);
+      const reload = latest(d => d.feature === 'W04' && d.quickReload, 30000);
+      if (reload) also.push([T('Reload'), codeSaid(reload.d.quickReload.choice || '') + ' · ' + codeSaid(reload.d.quickReload.reason || reload.d.reason)]);
+      const search = latest(d => d.feature === 'P09' && d.searchAbandonment, 30000);
+      if (search) also.push([T('Searching'), codeSaid(search.d.searchAbandonment.state || '') + ' · ' + codeSaid(search.d.searchAbandonment.reason || search.d.reason)]);
+      const squad = latest(d => /^S\d\d$/.test(d.feature) && d.stage === 'evaluated', 30000);
+      if (squad) {
+        const q = squad.d, part = q.crossfire || q[Object.keys(q).find(k => q[k] && typeof q[k] === 'object' && 'state' in q[k])] || {};
+        also.push([T('Squad'), codeSaid(q.decision || q.feature) + (part.state ? ' · ' + codeSaid(part.state) : '') + (part.execution ? ' · ' + part.execution : '') + (q.reason ? ' · ' + codeSaid(q.reason) : '')]);
+      }
+      const learnt = latest(d => d.feature === 'E04' && d.tacticalOutcome && d.tacticalOutcome.result && !['pending', 'neutral'].includes(d.tacticalOutcome.result), 30000);
+      if (learnt) also.push([T('Learnt'), cometMove(learnt.d.tacticalOutcome.action || '') + ' · ' + codeSaid(learnt.d.tacticalOutcome.result)]);
+      if (also.length) {
+        rvSection(details, T('Also'));
+        for (const [label, text] of also) line(label, text, '', details);
+      }
+      // its moves before: the newest first, each pressed to go there (the same move chosen again and again, as COMET
+      // weighs it anew every moment, once: when it was first chosen)
+      const before = [];
+      for (let i = lastAt(got.choices, at); i >= 0 && before.length < 12; i--) {
+        const e = got.choices[i];
+        if (before.length && before[before.length - 1].d.decision === e.d.decision) before[before.length - 1] = e;
+        else before.push(e);
+      }
+      if (before.length) {
+        rvSection(details, T('Before'));
+        const list = mk('div', 'whyBefore');
+        for (const e of before) {
+          const b = mk('button', '', '');
+          b.type = 'button';
+          const best = (e.d.candidates || []).find(c => c.decision === e.d.decision);
+          b.append(mk('i', '', clockText(e.t)), mk('b', '', cometMove(e.d.decision)), mk('small', '', best && Number.isFinite(best.score) ? String(Math.round(best.score * 10) / 10) : ''));
+          b.title = T('Go to this moment on the map');
+          b.onclick = () => { seekReplay(e.t); replayShown = ''; showReplay(); whyPrint = ''; };
+          list.appendChild(b);
+        }
+        details.appendChild(list);
+      }
+      if (details.childElementCount === 1) sideNone(details, T('No decision details recorded.'));
+    };
+    details.ontoggle = fill;
+    details.open = detailsOpen;
+    fill();
+    box.appendChild(details);
+  }
+
+  // Debug panels stay on the page they were opened at while the replay runs. Only the explicit
+  // playhead button starts a new archive lookup. Expanding one field builds just its children.
+  function cometFields(parent, data) {
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== null && typeof value === 'object') {
+        const group = mk('details', 'cometFields'), count = Object.keys(value).length;
+        group.appendChild(mk('summary', '', key + ' (' + count + ')'));
+        group.ontoggle = () => {
+          if (group.open && group.childElementCount === 1) cometFields(group, value);
+        };
+        parent.appendChild(group);
+      } else {
+        const row = mk('div', 'whyLine');
+        row.append(mk('i', '', key), mk('span', '', value === '' ? '""' : String(value)));
+        parent.appendChild(row);
       }
     }
-    // what else COMET has it doing
-    const also = [];
-    const med = latest(d => d.feature === 'H01' && d.medicalChoice, 30000);
-    if (med) also.push([T('Medical'), cometMove(med.d.medicalChoice.choice || '') + ' · ' + codeSaid(med.d.medicalChoice.reason || med.d.reason)]);
-    const reload = latest(d => d.feature === 'W04' && d.quickReload, 30000);
-    if (reload) also.push([T('Reload'), codeSaid(reload.d.quickReload.choice || '') + ' · ' + codeSaid(reload.d.quickReload.reason || reload.d.reason)]);
-    const search = latest(d => d.feature === 'P09' && d.searchAbandonment, 30000);
-    if (search) also.push([T('Searching'), codeSaid(search.d.searchAbandonment.state || '') + ' · ' + codeSaid(search.d.searchAbandonment.reason || search.d.reason)]);
-    const squad = latest(d => /^S\d\d$/.test(d.feature) && d.stage === 'evaluated', 30000);
-    if (squad) {
-      const q = squad.d, part = q.crossfire || q[Object.keys(q).find(k => q[k] && typeof q[k] === 'object' && 'state' in q[k])] || {};
-      also.push([T('Squad'), codeSaid(q.decision || q.feature) + (part.state ? ' · ' + codeSaid(part.state) : '') + (part.execution ? ' · ' + part.execution : '') + (q.reason ? ' · ' + codeSaid(q.reason) : '')]);
-    }
-    const learnt = latest(d => d.feature === 'E04' && d.tacticalOutcome && d.tacticalOutcome.result && !['pending', 'neutral'].includes(d.tacticalOutcome.result), 30000);
-    if (learnt) also.push([T('Learnt'), cometMove(learnt.d.tacticalOutcome.action || '') + ' · ' + codeSaid(learnt.d.tacticalOutcome.result)]);
-    if (also.length) {
-      rvSection(box, T('Also'));
-      for (const [label, text] of also) line(label, text);
-    }
-    // its moves before: the newest first, each pressed to go there (the same move chosen again and again, as COMET
-    // weighs it anew every moment, once: when it was first chosen)
-    const before = [];
-    for (let i = last; i >= 0 && before.length < 12; i--) {
-      const e = got.ev[i];
-      if (!/^A\d\d$/.test(e.d.feature) || e.d.stage !== 'selected' || !e.d.decision) continue;
-      if (before.length && before[before.length - 1].d.decision === e.d.decision) before[before.length - 1] = e;
-      else before.push(e);
-    }
-    if (before.length) {
-      rvSection(box, T('Before'));
-      const list = mk('div', 'whyBefore');
-      for (const e of before) {
-        const b = mk('button', '', '');
-        b.type = 'button';
-        const best = (e.d.candidates || []).find(c => c.decision === e.d.decision);
-        b.append(mk('i', '', clockText(e.t)), mk('b', '', cometMove(e.d.decision)), mk('small', '', best && Number.isFinite(best.score) ? String(Math.round(best.score * 10) / 10) : ''));
-        b.title = T('Go to this moment on the map');
-        b.onclick = () => { seekReplay(Math.max(0, e.t - 1500)); replayShown = ''; showReplay(); whyPrint = ''; };
-        list.appendChild(b);
+  }
+
+  function cometButton(label, action) {
+    const b = mk('button', '', label);
+    b.type = 'button'; b.onclick = action;
+    return b;
+  }
+
+  function cometEventRow(parent, r, event, names) {
+    const d = event.d, time = Math.max(0, event.t - r.lead);
+    const fold = mk('details', 'cometDebugRow');
+    const stamp = clockText(time) + '.' + String(Math.floor(time % 1000)).padStart(3, '0');
+    const heading = mk('summary', '', [stamp, d.feature, d.decision, d.stage, d.name || names.get(event.p)].filter(Boolean).join(' · '));
+    fold.appendChild(heading);
+    fold.ontoggle = () => {
+      if (!fold.open || fold.childElementCount > 1) return;
+      if (d.name || d.reason) fold.appendChild(mk('p', 'winNote', [d.name, d.reason].filter(Boolean).join(' · ')));
+      fold.appendChild(cometButton(T('Go to this moment on the map'), () => { seekReplay(time); showReplay(); }));
+      if (Array.isArray(d.candidates) && d.candidates.length) {
+        const table = mk('table', 'whyOptions'), head = table.createTHead().insertRow();
+        for (const label of [T('Option'), T('Score'), T('Why')]) head.appendChild(mk('th', '', label));
+        const body = table.createTBody();
+        for (const c of d.candidates) {
+          if (!c || typeof c !== 'object') continue;
+          const row = body.insertRow();
+          row.className = (c.decision === d.decision ? 'on' : '') + (c.eligible === false ? ' no' : '');
+          for (const value of [c.decision, c.score, c.reason]) row.insertCell().textContent = value ?? '';
+        }
+        fold.appendChild(table);
       }
-      box.appendChild(list);
+      cometFields(fold, d);
+    };
+    parent.appendChild(fold);
+  }
+
+  const reportNames = { T01: T('Combat journal'), T02: T('Decision counters'), T03: T('Weapon journal'), T04: T('Control transitions') };
+  function cometReports(parent, events) {
+    const groups = new Map();
+    for (const { d } of events) {
+      const page = d.tacticCounters || d.journalReport;
+      if (!reportNames[d.feature] || !page || !d.session) continue;
+      const key = d.session + '|' + d.feature;
+      if (!groups.has(key)) groups.set(key, { code: d.feature, pages: [] });
+      groups.get(key).pages.push({ data: d, page });
     }
+    if (!groups.size) { sideNone(parent, T('No COMET reports were recorded.')); return; }
+    const present = new Set([...groups.values()].map(g => g.code));
+    for (const code of Object.keys(reportNames)) if (!present.has(code))
+      sideNone(parent, code + ' · ' + reportNames[code] + ' · ' + T('No COMET reports were recorded.'));
+    for (const { code, pages } of [...groups.values()].sort((a, b) => a.code.localeCompare(b.code))) {
+      pages.sort((a, b) => a.page.part - b.page.part);
+      const header = pages.find(p => p.page.part === 0)?.page;
+      const expected = header?.parts ?? pages[0].page.parts;
+      const valid = new Map();
+      for (const { page } of pages) if (Number.isInteger(page.part) && page.part >= 0 && page.part < expected &&
+        page.parts === expected && !valid.has(page.part)) valid.set(page.part, page);
+      const complete = header && Number.isInteger(expected) && expected > 0 && valid.size === expected &&
+        pages.every(({ page }) => page.version === 1 && page.parts === expected && Number.isInteger(page.part) &&
+          page.part >= 0 && page.part < expected && page.complete === true);
+      const fold = mk('details', 'cometDebugRow');
+      fold.appendChild(mk('summary', '', code + ' · ' + reportNames[code] + ' · ' + valid.size + '/' + (expected ?? '?') +
+        ' · ' + (header?.enabled === false ? T('Off') : complete ? T('Complete') : T('Partial'))));
+      fold.ontoggle = () => {
+        if (!fold.open || fold.childElementCount > 1) return;
+        if (valid.size !== expected || !header) fold.appendChild(mk('p', 'winNote', T('Some report pages are missing.')));
+        if (header) {
+          const counters = {};
+          for (const field of ['recordedOpportunities', 'queueDropped', 'capacitySkipped', 'invalidEvents', 'omittedEvents', 'oversizeEvents', 'observationGaps'])
+            if (header[field] > 0) counters[codeSaid(field)] = header[field];
+          cometFields(fold, counters);
+        }
+        const records = [...valid.values()].flatMap(p => list(p.rows)).filter(row => row && typeof row === 'object');
+        const listBox = mk('div', 'cometReportRows');
+        if (records.length > 1) {
+          const search = mk('input');
+          search.type = 'search'; search.placeholder = T('Search'); search.setAttribute('aria-label', reportNames[code] + ' · ' + search.placeholder);
+          search.oninput = () => {
+            const term = search.value.trim().toLowerCase();
+            for (const item of listBox.children) item.hidden = !item.firstChild.textContent.toLowerCase().includes(term);
+          };
+          fold.appendChild(search);
+        }
+        fold.appendChild(listBox);
+        for (const row of records) {
+          const entry = mk('details', 'cometFields');
+          entry.appendChild(mk('summary', '', [row.name || row.feature || row.profileId, row.decision || row.action || row.owner, row.personality].filter(Boolean).join(' · ') || T('Details')));
+          entry.ontoggle = () => { if (entry.open && entry.childElementCount === 1) cometFields(entry, row); };
+          listBox.appendChild(entry);
+        }
+        const original = mk('details', 'cometFields');
+        original.appendChild(mk('summary', '', T('Recorded pages')));
+        original.ontoggle = () => {
+          if (original.open && original.childElementCount === 1) cometFields(original, pages.map(p => p.data));
+        };
+        fold.appendChild(original);
+      };
+      parent.appendChild(fold);
+    }
+  }
+
+  function sideCometDebug(box, r) { cometInspector(box, r, false); }
+  function sideCometReports(box, r) { cometInspector(box, r, true); }
+  function cometInspector(box, r, reports) {
+    const bot = whyBot(), pid = reports ? '' : bot?.pid || '';
+    const key = r.about.id + '|' + pid;
+    if (box.cometInspector?.key === key) return;
+    box.cometInspector?.abort(); box.replaceChildren();
+    const state = { key, controller: null, abort: () => state.controller?.abort() };
+    box.cometInspector = state;
+    const nav = mk('div', 'cometDebugTools'), results = mk('div', 'cometDebugResults');
+    const text = mk('input'), scope = mk('input');
+    const search = mk('form', 'cometDebugTools');
+    let from = 0, cursor = 0, previous = [], term = '';
+    function reset(at) { from = at; cursor = 0; previous = []; term = text.value.trim(); load(); }
+    if (!reports) {
+      text.type = 'search'; text.maxLength = 80; text.placeholder = T('Bot, feature, stage or reason');
+      text.setAttribute('aria-label', text.placeholder);
+      const submit = mk('button', '', T('Search')); submit.type = 'submit';
+      search.append(text, submit);
+      search.onsubmit = ev => { ev.preventDefault(); reset(0); };
+      if (pid) {
+        const label = mk('label', 'row'); scope.type = 'checkbox'; scope.checked = true;
+        label.append(scope, mk('span', '', bot.t || pid)); scope.onchange = () => reset(from);
+        nav.appendChild(label);
+      }
+      nav.append(cometButton(T('From playhead'), () => reset(r.at + r.lead)), cometButton(T('From raid start'), () => reset(0)));
+      box.append(search, nav);
+    }
+    box.appendChild(results);
+    async function load() {
+      state.abort();
+      const controller = state.controller = new AbortController();
+      const params = new URLSearchParams({ id: r.about.id, debug: '1' });
+      if (reports) params.set('sum', '1');
+      else {
+        if (scope.checked) params.set('p', pid);
+        if (term) params.set('filter', term);
+        if (from) params.set('at', from);
+        if (cursor) params.set('cursor', cursor);
+      }
+      results.replaceChildren(mk('p', 'winNote', T('Loading…')));
+      try {
+        const response = await fetch('api/history/comet?' + params, { signal: controller.signal });
+        if (!response.ok) throw new Error(String(response.status));
+        const page = await response.json();
+        if (controller.signal.aborted || box.cometInspector !== state || replay !== r) return;
+        results.replaceChildren();
+        if (page.partial || page.unresolved || page.malformed) sideNone(results, T('Some recorded data could not be read.'));
+        const rows = list(page.ev);
+        if (reports) cometReports(results, rows);
+        else {
+          if (!rows.length) sideNone(results, T('No matching COMET events.'));
+          const names = new Map();
+          for (const track of scanReplay(r).tracks.values()) if (track.pid) names.set(track.pid, track.name);
+          for (const row of rows) cometEventRow(results, r, row, names);
+          if (previous.length || page.next != null) {
+            const pages = mk('div', 'cometDebugTools');
+            if (previous.length) pages.appendChild(cometButton('← ' + T('Previous'), () => { cursor = previous.pop(); load(); }));
+            if (page.next != null) pages.appendChild(cometButton(T('Next') + ' →', () => { previous.push(cursor); cursor = page.next; load(); }));
+            results.appendChild(pages);
+          }
+        }
+        if (reports && !rows.length || !reports && (!rows.length || rows.every(e => e.d.schema == null)))
+          results.appendChild(mk('p', 'winNote', T('For full diagnostics, enable COMET Extended replay data and Satellite history.cometDebug before recording.')));
+      } catch (err) {
+        if (controller.signal.aborted || box.cometInspector !== state) return;
+        results.replaceChildren(cometButton(T('Retry'), load));
+      }
+    }
+    load();
   }
 
   function sideInv(box, r, s) {
@@ -13152,80 +14166,145 @@
         lines: [on ? T('Switched on') : T('Not switched'), e.t ? raidClock(e.t) : ''] } });
     }
   }
-  // Where each ORBIT squad is headed, and what for: a blue diamond at each thing it's out to do (the one it's on
-  // now strong, the ones after it faint), a line to it from the squad, and the points of a rush as small rings.
+  // ORBIT objectives and the individual points of a rush share the squad's recorded progress.
   const ORBIT_LETTER = { Kills: 'K', LootValue: 'L', Quest: 'Q' };
-  // (the squad of the bot pointed at, followed or picked in the Raid list: its goal now is drawn whatever the
-  // switches, so what it's out to do is a press away)
-  function orbitFocus() {
-    const pids = new Set();
-    for (const id of [pointed, rosterOver, chased]) {
-      const m = id !== null && id !== undefined ? liveById.get(id) : null;
-      if (m && m.pid) pids.add(m.pid);
+  // Snapshot-local membership. ORBIT's squad id and the native game group are separate identifiers.
+  let indexedOrbitMain, orbitByMember = new Map(), orbitReceivedAt = 0;
+  function orbitSquadOf(pid) {
+    if (!pid || !orbitMain || !modOn('ORBIT')) return null;
+    if (indexedOrbitMain !== orbitMain) {
+      indexedOrbitMain = orbitMain;
+      orbitByMember.clear();
+      for (const squad of list(orbitMain.d.s)) for (const member of list(squad.MemberProfileIds)) {
+        if (orbitByMember.has(member) && orbitByMember.get(member) !== squad) orbitByMember.set(member, null);
+        else orbitByMember.set(member, squad);
+      }
     }
-    return pids;
+    return orbitByMember.get(pid) || null;
   }
-  // the ORBIT squad a bot is in, and the goal it's on now, from ORBIT's latest snapshot
+  const activeOrbitStages = new Set(['approach', 'holding', 'searching cover', 'planning route', 'entering room',
+    'returning to room', 'opening door', 'unlocking door', 'looting', 'searching', 'interacting', 'extracting',
+    'waiting', 'loot', 'approaching camp cover', 'camping', 'finding camp cover', 'looting area', 'returning to camp',
+    'approaching site', 'leaving post', 'looting own kill', 'returning to post', 'surveying another post',
+    'surveying corrected site', 'surveying post', 'waiting for transfer']);
+  function orbitGoalState(o, squad) {
+    const stage = String(o.OperationState || o.CampState || o.AirdropStage || '').toLowerCase();
+    if (/^(failed|aborted|cancelled)(?:\b|:)/.test(stage)) return 'failed';
+    if (o.Completed) return 'done';
+    if (stage === 'paused' || o.LootValueInterrupted) return 'paused';
+    if (activeOrbitStages.has(stage) || o.CampHolding || o.Type === 'LootValue' && o.LootValueEnteredAt > 0 ||
+        o.Type === 'Kills' && !o.KillAmbush && o.KillsRoamStartedAt > 0) return 'active';
+    // A recorded Quest order has only a destination. Match its rounded coordinates to a unique quest in this squad.
+    if (squad && o.Type === 'Quest' && Number.isFinite(o.X) && Number.isFinite(o.Z)) {
+      const near = (x, z) => Math.abs(x - o.X) <= .26 && Math.abs(z - o.Z) <= .26;
+      const member = live.find(m => m.c !== 'Corpse' && (!m.os || m.os === 'ORBIT') && orbitSquadOf(m.pid) === squad &&
+        m.ob === 'Quest (Moving)' && Array.isArray(m.og) && near(m.og[0], m.og[1]) &&
+        (!Number.isFinite(m.og[2]) || !Number.isFinite(o.Y) || Math.abs(m.og[2] - o.Y) <= .26) &&
+        (m.gh || /^orbit/i.test(m.ly || '')));
+      if (member && !list(squad.MainObjectives).some(g => g !== o && g?.Type === 'Quest' && !g.Completed && near(g.X, g.Z)))
+        return 'active';
+    }
+    return 'planned';
+  }
+  const orbitStateNames = { active: T('In progress'), paused: T('Paused'), done: T('Done'), failed: T('Failed'), planned: T('Planned') };
+  const orbitStateColors = { active: '#65dec4', paused: '#f5bd62', done: '#94aa9d', failed: '#ef8982', planned: '#8db8e0' };
+  function orbitStepCount(o) {
+    return o.OperationStepIndex > 0 && o.OperationStepCount > 0 ? ' ' + o.OperationStepIndex + '/' + o.OperationStepCount : '';
+  }
+  function huntKey(squad, goal) {
+    return [squad.SquadId, goal.X, goal.Z, goal.Y, goal.KillsRoamStartedAt].join('/');
+  }
+  function orbitGoalDetail(o, state, squad) {
+    if (o.Type === 'LootValue' && Number.isFinite(o.LootValueTotal)) return roubles(o.LootValueTotal);
+    if (state === 'done' || state === 'failed') return '';
+    const at = replay ? replay.mainTimes.get(orbitMain?.n) : orbitReceivedAt;
+    const age = at == null ? 0 : Math.max(0, ((replay ? replay.at : performance.now()) - at) / 1000);
+    let remaining, approximate = false;
+    if (state === 'active' || state === 'paused') {
+      if (o.CampUntilTimeExtract && Number.isFinite(o.CampExtractRemainingSeconds))
+        remaining = o.CampExtractRemainingSeconds - age;
+      else if (o.CampTargetDuration > 0 && Number.isFinite(o.CampElapsed) && (o.CampHolding || state === 'paused'))
+        remaining = o.CampTargetDuration - o.CampElapsed - (state === 'active' && o.CampHolding ? age : 0);
+      else if (o.Type === 'Kills' && !o.KillAmbush && o.KillsRoamStartedAt > 0) {
+        if (Number.isFinite(o.KillsRoamRemainingSeconds))
+          remaining = o.KillsRoamRemainingSeconds - (o.KillsRoamTimerRunning ? age : 0);
+        else if (replay && squad && o.KillsRoamTargetDuration > 0) {
+          const first = replay.firstHunts.get(huntKey(squad, o));
+          if (first != null) {
+            remaining = o.KillsRoamTargetDuration - Math.max(0, replay.at - first) / 1000;
+            approximate = true;
+          }
+        }
+      }
+    }
+    if (remaining != null) return (approximate ? '~' : '') + T('{t} left', { t: clockText(Math.max(0, Math.ceil(remaining)) * 1000) });
+    return o.Type === 'Kills' && o.KillsRoamTargetDuration > 0 ? T('Target duration {t}', { t: clockText(o.KillsRoamTargetDuration * 1000) }) : '';
+  }
+  function orbitStateText(o, state, squad) {
+    const detail = orbitGoalDetail(o, state, squad);
+    return detail ? orbitStateNames[state] + ' · ' + detail : orbitStateNames[state];
+  }
   function orbitGoalOf(pid) {
-    if (!orbitMain || !pid || !modOn('ORBIT') || !Array.isArray(orbitMain.d.s)) return null;
-    const squad = orbitMain.d.s.find(q => list(q.MemberProfileIds).includes(pid));
-    const o = squad ? list(squad.MainObjectives).find(g => g && !g.Completed) : null;
-    if (!o) return null;
-    const what = o.AirdropStage ? 'Airdrop · ' + words(String(o.AirdropStage)) : words(String(o.OperationName || o.Type || ''));
-    const step = o.OperationStep ? words(o.OperationStep) + (o.OperationStepCount ? ' (' + ((o.OperationStepIndex || 0) + 1) + '/' + o.OperationStepCount + ')' : '') : '';
-    return { o, text: what + (step ? ' · ' + step : '') + (o.QuestTitle ? ' · ' + o.QuestTitle : '') };
+    const squad = orbitSquadOf(pid);
+    if (!squad) return null;
+    const active = list(squad.MainObjectives).filter(o => o && orbitGoalState(o, squad) === 'active');
+    return active.length ? { text: active.map(o => {
+      const goal = orbitGoalName(o) + orbitStepCount(o);
+      return o.Type === 'LootValue' && Number.isFinite(o.LootValueTotal) ? goal + ' · ' + roubles(o.LootValueTotal) : goal;
+    }).join(' · ') } : null;
+  }
+  function orbitTacticalOrder(m) {
+    if (!replay || prefs.orbitTactics === false || (m.os && m.os !== 'ORBIT') || !m.ob || !Array.isArray(m.og) || !modOn('ORBIT')) return false;
+    const squad = orbitSquadOf(m.pid);
+    if ((!m.gh && m.ly && !/^ORBIT/i.test(m.ly)) || /\((?:Failed|paused|interrupted)\)/i.test(m.ob)) return false;
+    const operation = squad && list(squad.MainObjectives).find(o => o?.OperationName && m.ob.startsWith(o.OperationName + ':'));
+    if (operation) return orbitGoalState(operation) === 'active';
+    return /^(?:Ambush|Airdrop|SquadCover|MultiStep:|(?:Spawn|Boss|Marked|Custom) rush\b|Sniper overwatch\b)/i.test(m.ob);
   }
   function drawOrbitMain(scale) {
     const plans = !!prefs.orbitMain, rush = !!prefs.orbitRush;
     if (!orbitMain || !modOn('ORBIT')) return;
-    const focus = plans && rush ? null : orbitFocus();
-    if (!(plans || rush) && !focus.size) return;
-    const squads = Array.isArray(orbitMain.d.s) ? orbitMain.d.s : [];
+    const selected = orbitSquadOf(liveById.get(chased)?.pid);
+    const focus = selected || orbitSquadOf(liveById.get(rosterOver)?.pid) || orbitSquadOf(liveById.get(pointed)?.pid);
+    if (!(plans || rush || focus)) return;
+    const squads = list(orbitMain.d.s), visible = new Map();
+    for (const m of live) {
+      if (m.c === 'Corpse' || isHidden(m.c) || inArea(m)) continue;
+      const squad = orbitSquadOf(m.pid);
+      if (!squad || !(plans || rush || squad === focus)) continue;
+      if (!visible.has(squad)) visible.set(squad, []);
+      visible.get(squad).push(m);
+    }
     ctx.save();
     for (const squad of squads) {
-      const members = list(squad.MemberProfileIds);
-      const shown = focus && members.some(id => focus.has(id));
-      if (!(plans || rush || shown)) continue;
-      const goals = list(squad.MainObjectives).filter(o => o && !o.Completed && Number.isFinite(o.X) && Number.isFinite(o.Z)).slice(0, plans ? undefined : 1);
-      if (!goals.length) continue;
-      const here = live.filter(m => m.pid && members.includes(m.pid) && m.c !== 'Corpse');
-      // (a squad nobody of which is shown: its plans aren't either)
-      if (!here.length || here.every(m => isHidden(m.c) || inArea(m))) continue;
-      goals.forEach((o, i) => {
+      const shown = squad === focus;
+      const here = visible.get(squad);
+      if (!here) continue;
+      const goals = list(squad.MainObjectives).filter(o => o && Number.isFinite(o.X) && Number.isFinite(o.Z));
+      goals.forEach(o => {
         if (offFloor(o.X, o.Z, o.Y)) return;
-        const s = toScreen(o.X, o.Z), r = 8 * scale;
-        const what = o.AirdropStage ? 'Airdrop · ' + words(String(o.AirdropStage)) : words(String(o.OperationName || o.Type || ''));
-        ctx.globalAlpha = i ? 0.45 : 1;
-        if ((plans || shown) && !i && Number.isFinite(here[0].cx)) {
-          const from = toScreen(here[0].cx, here[0].cy);
-          ctx.beginPath();
-          ctx.moveTo(from[0], from[1]);
-          ctx.lineTo(s[0], s[1]);
-          ctx.setLineDash([3 * scale, 6 * scale]);
-          ctx.lineWidth = 1.5 * scale;
-          ctx.strokeStyle = 'rgba(111, 188, 255, 0.75)';
-          ctx.stroke();
-          ctx.setLineDash([]);
-        }
+        const s = toScreen(o.X, o.Z), r = (shown ? 10 : 8) * scale, state = orbitGoalState(o, squad);
+        const what = orbitGoalName(o), status = orbitStateNames[state], detail = orbitGoalDetail(o, state, squad);
+        ctx.globalAlpha = focus && !shown ? .38 : shown || state === 'active' ? 1 : .74;
         // the places the squad is to sweep (a rush), each a ring named over its top: what for, and by whom
         for (const p of rush ? list(o.RushPoints) : []) {
           if (!p || !Number.isFinite(p.X) || !Number.isFinite(p.Z)) continue;
           const at = toScreen(p.X, p.Z), rr = Math.max(4 * scale, (p.Radius || 0) * zoom);
           if (at[0] + rr < 0 || at[1] + rr < 0 || at[0] - rr > vw || at[1] - rr > vh) continue;
-          const done = /done|visited|complete/i.test(p.State || '');
+          const done = /done|visited|complete/i.test(p.State || ''), current = p.State === 'current';
           ctx.beginPath();
           ctx.arc(at[0], at[1], rr, 0, Math.PI * 2);
           ctx.lineWidth = 1.3 * scale;
-          ctx.strokeStyle = done ? 'rgba(61, 220, 90, 0.8)' : 'rgba(111, 188, 255, 0.8)';
+          ctx.strokeStyle = current ? orbitStateColors[state] : done ? '#94aa9d' : '#7999bd';
           ctx.stroke();
-          const label = 'ORBIT · ' + (what || T('Rush point')) + (here.length ? ' · ' + (here[0].t || ONE[here[0].c] || here[0].c) + (here.length > 1 ? ' +' + (here.length - 1) : '') : '');
+          const label = T('Squad {n}', { n: squad.SquadId }) + ' · ' + (p.Name || what || T('Rush point')) + (current ? ' · ' + status : '');
           ctx.font = Math.round(10.5 * scale) + 'px ' + FONT;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'bottom';
           ctx.lineWidth = 3 * scale;
           ctx.strokeStyle = 'rgba(0, 0, 0, 0.75)';
           ctx.strokeText(label, at[0], at[1] - rr - 2 * scale);
-          ctx.fillStyle = done ? '#7ee89a' : '#bfe0ff';
+          ctx.fillStyle = current ? orbitStateColors[state] : '#bfe0ff';
           ctx.fillText(label, at[0], at[1] - rr - 2 * scale);
         }
         if (!plans && !shown) return;
@@ -13235,19 +14314,33 @@
         ctx.closePath();
         ctx.fillStyle = '#12314d';
         ctx.fill();
-        ctx.lineWidth = 2 * scale;
-        ctx.strokeStyle = '#6fbcff';
+        ctx.lineWidth = (shown ? 3 : 2) * scale;
+        ctx.strokeStyle = orbitStateColors[state];
         ctx.stroke();
         ctx.font = 'bold ' + Math.round(10 * scale) + 'px ' + FONT;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#d7ecff';
         ctx.fillText(orbitLetter(o), s[0], s[1] + 0.5);
+        const captionVisible = shown || state === 'active' || state === 'paused';
+        if (captionVisible) {
+          const caption = T('Squad {n}', { n: squad.SquadId }) + ' · ' + status;
+          ctx.font = Math.round(11 * scale) + 'px ' + FONT;
+          ctx.lineWidth = 3 * scale; ctx.strokeStyle = '#101622';
+          ctx.strokeText(caption, s[0], s[1] + r * 2.1); ctx.fillStyle = orbitStateColors[state];
+          ctx.fillText(caption, s[0], s[1] + r * 2.1);
+        }
+        if (detail) {
+          const y = s[1] + r * 2.1 + (captionVisible ? 13 * scale : 0);
+          ctx.font = Math.round(11 * scale) + 'px ' + FONT;
+          ctx.lineWidth = 3 * scale; ctx.strokeStyle = '#101622';
+          ctx.strokeText(detail, s[0], y); ctx.fillStyle = orbitStateColors[state];
+          ctx.fillText(detail, s[0], y);
+        }
         thingsDrawn.push({ x: s[0], y: s[1], r: r * 1.4, tip: { title: 'ORBIT · ' + what,
-          lines: [o.OperationStep ? words(o.OperationStep) + (o.OperationStepCount ? ' (' + ((o.OperationStepIndex || 0) + 1) + '/' + o.OperationStepCount + ')' : '') : '',
-            o.QuestTitle || '', o.CampState ? words(o.CampState) : '', o.KillAmbush ? 'Ambush' : '',
-            T('Squad:') + ' ' + here.map(m => m.t || ONE[m.c] || m.c).slice(0, 6).join(', '),
-            i ? '' : goals.length > 1 ? T('…and {n} more', { n: goals.length - 1 }) : ''] } });
+          lines: [status, detail, o.OperationStep ? words(o.OperationStep) + orbitStepCount(o) : '',
+            o.QuestTitle || '', o.CampFailure || o.OperationState || o.CampState || o.AirdropStage || '',
+            T('Squad:') + ' ' + here.map(m => m.t || ONE[m.c] || m.c).join(', ')] } });
       });
     }
     ctx.restore();

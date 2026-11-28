@@ -203,6 +203,7 @@ namespace Satellite.Client
             public string Sub;
             public string Plan;
             public string Contact;
+            public string AssaultReason;
             public string Mate;
             public string Key;
             public bool Applied;
@@ -226,6 +227,8 @@ namespace Satellite.Client
         private static bool _saidUnread;
         private static bool _saidHeard;
 
+        internal static bool GestureEvents { get; private set; }
+
         private static void Listen(Type decisions)
         {
             try
@@ -239,6 +242,7 @@ namespace Satellite.Client
 
                 _listener = Hear;
                 published.AddEventHandler(null, _listener);
+                GestureEvents = decisions.GetField("GestureEventVersion", BindingFlags.Public | BindingFlags.Static)?.GetRawConstantValue() is int versionGestures && versionGestures >= 1;
             }
             catch (Exception)
             {
@@ -274,7 +278,9 @@ namespace Satellite.Client
                 return;
             }
 
-            if (json[at + 1] == 'S' && json[at + 2] == '1' && (json[at + 3] == '0' || json[at + 3] == '1') && json[at + 4] == '"')
+            bool action = json.Length <= 2048 && (json.IndexOf("\"stage\":\"performed\"", at, Math.Min(120, json.Length - at), StringComparison.Ordinal) >= 0
+                || json.IndexOf("\"stage\":\"activity-", at, Math.Min(120, json.Length - at), StringComparison.Ordinal) >= 0);
+            if (!action && json[at + 1] == 'S' && json[at + 2] == '1' && (json[at + 3] == '0' || json[at + 3] == '1') && json[at + 4] == '"')
             {
                 json = Cut(json, json[at + 3] == '0' ? "squadGrenade" : "siege");
                 if (json == null)
@@ -282,7 +288,7 @@ namespace Satellite.Client
                     return;
                 }
             }
-            else if (json.Length > MostLength || !(json[at + 1] == 'S' && json[at + 2] == '0' || json[at + 1] == 'W' && json[at + 2] == '0' && json[at + 3] == '4'))
+            else if (!action && (json.Length > MostLength || !(json[at + 1] == 'S' && json[at + 2] == '0' || json[at + 1] == 'W' && json[at + 2] == '0' && json[at + 3] == '4')))
             {
                 return;
             }
@@ -498,6 +504,21 @@ namespace Satellite.Client
 
             var profileId = Word(said, "profileId");
             var feature = Word(said, "feature");
+            var stage = Word(said, "stage");
+            bool activity = stage == "activity-start" || stage == "activity-end";
+            if ((stage == "performed" || activity) && profileId.Length > 0 && Amount(said, "realtime", out var performed))
+            {
+                var gesture = Word(said, "decision");
+                if (gesture.Length > 0)
+                    Events.Add(activity ? "comet.activity" : "comet.gesture", profileId, Word(said, "name"), performed, to =>
+                    {
+                        to.Append("{\"action\":");
+                        World.Text(to, gesture);
+                        if (activity) to.Append(stage == "activity-start" ? ",\"active\":true" : ",\"active\":false");
+                        to.Append('}');
+                    });
+                return;
+            }
             if (feature == "W04")
             {
                 Magazine(said, profileId);
@@ -527,6 +548,7 @@ namespace Satellite.Client
                 State = Word(crossfire, "state"),
                 Applied = Flag(crossfire, "applied"),
                 Contact = Word(crossfire, "contact"),
+                AssaultReason = feature == "S06" ? AssaultReason(storm) : null,
                 At = when,
                 Role = maneuver != null ? Word(maneuver, "role") : trade != null ? Word(trade, "choice") : "",
                 Sub = storm != null ? Word(storm, "status") : trade != null ? Word(trade, "status") : cover != null ? Word(cover, "status")
@@ -549,9 +571,43 @@ namespace Satellite.Client
             Told(said, profileId, squad, when);
         }
 
+        private static string AssaultReason(Newtonsoft.Json.Linq.JToken storm)
+        {
+            if (storm == null || Word(storm, "reason") != "storm-weak-enemy")
+            {
+                return null;
+            }
+
+            if (storm["evidence"] is Newtonsoft.Json.Linq.JArray evidence)
+            {
+                // A storm can have several contributing clues. Prefer a specific, recorded observation.
+                bool hurt = false, alone = false;
+                string busy = null;
+                foreach (var clue in evidence)
+                {
+                    if (clue.Type != Newtonsoft.Json.Linq.JTokenType.String) continue;
+                    switch ((string)clue)
+                    {
+                        case "badly hurt": case "dying": hurt = true; break;
+                        case "alone": alone = true; break;
+                        case "busy (Reloading)": busy = "reload"; break;
+                        case "busy (Healing)": case "busy (UsingSurgery)": busy = "heal"; break;
+                        case "busy (Looting)": busy = "loot"; break;
+                        case "busy (TryingToExtract)": busy = "extract"; break;
+                        case "busy (HasGrenade)": busy = "grenade"; break;
+                    }
+                }
+                if (hurt) return "hurt";
+                if (busy != null) return busy;
+                if (alone) return "alone";
+            }
+
+            return "vulnerable";
+        }
+
         private static void Told(Newtonsoft.Json.Linq.JObject said, string profileId, Squad squad, float when)
         {
-            squad.Key = squad.Feature + "|" + squad.State + "|" + squad.Applied + "|" + squad.Role + "|" + squad.Sub + "|" + squad.Plan + "|" + squad.Fire;
+            squad.Key = squad.Feature + "|" + squad.State + "|" + squad.Applied + "|" + squad.Role + "|" + squad.Sub + "|" + squad.Plan + "|" + squad.Fire + "|" + squad.AssaultReason;
             Squads.TryGetValue(profileId, out var before);
             Squads[profileId] = squad;
             // an event only when it changed, and not for what was said long ago while nobody was looking
@@ -690,6 +746,12 @@ namespace Satellite.Client
             {
                 to.Append(",\"m\":");
                 World.Text(to, squad.Mate);
+            }
+
+            if (!string.IsNullOrEmpty(squad.AssaultReason))
+            {
+                to.Append(",\"why\":");
+                World.Text(to, squad.AssaultReason);
             }
 
             if (squad.Fire)

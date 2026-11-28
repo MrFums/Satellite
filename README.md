@@ -82,6 +82,12 @@ If port 6969 is forwarded for Fika, anyone with your address can open the map to
   does); `"server": { "quietLogs": false }` in it brings them back.
 - F12 > Fums-Satellite: the key that opens the map, and how often it updates.
 
+## COMET replay diagnostics
+
+In a recorded raid, choose **Debug > Bots** to open the **COMET event inspector** or **COMET raid reports**. The inspector starts with the followed bot if one is selected. Search by bot, feature, stage or reason, or choose **From playhead** to read from the current moment. Each event links back to the map.
+
+For a full capture, enable **Extended replay data** in COMET and set `history.cometDebug` to `true` in Satellite before the raid. Restart the SPT server after changing its config. Existing recordings can show the data they already contain. Essential works with the normal replay settings.
+
 ## Build
 
 ```powershell

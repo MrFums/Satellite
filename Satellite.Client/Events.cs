@@ -37,6 +37,7 @@ namespace Satellite.Client
                 return;
             }
 
+            if (!raid && !World.BrainsOff) Brains.Sort();
             _in = raid;
             // out of the raid: what happened in its last moments (how it ended) still goes out, with the next report.
             // The raid left is kept even with nothing waiting: the game may say how it ended a moment after
@@ -54,7 +55,9 @@ namespace Satellite.Client
             _raid = raid ? Guid.NewGuid().ToString("N") : "";
             _began = Time.realtimeSinceStartup;
             Brains.Forget();
-            if (!raid)
+            ContactSharing.Forget();
+            if (raid) CometLog.RaidStarted(_raid, _began);
+            else
             {
                 CometLog.RaidLeft();
             }

@@ -31,8 +31,11 @@ try { if (sessionStorage.getItem('swap')) { sessionStorage.removeItem('swap'); v
 <div id="debugLine" hidden></div>
 <!-- a replay's timeline, under the map (as Raid Review's): the kills along it, the time, then play, stop, how fast,
      and more switches behind the cog -->
+<div id="actionDock" hidden><section id="actionOverlay" class="ui">
+  <header id="actionHandle"><b id="actionTitle"></b><span aria-hidden="true">⠿</span></header><div id="actionRows"></div>
+</section></div>
 <div id="replayBar" data-rec class="ui" hidden>
-  <div id="replayBot" hidden><b id="replayBotName"></b><span id="replayBotWhy" title="Why it does it: more in the Bots tab beside the map"></span><div id="replayBotStrip" title="What this one was doing over the raid. Press to go to a moment."></div></div>
+  <div id="replayBot" hidden><div id="replayBotStrip" title="What this one was doing over the raid. Press to go to a moment."></div></div>
   <div id="replayTrack"><div id="replayGrid"></div><div id="replayFights"></div><div id="replaySprees"></div><div id="replayFill"></div><div id="replayHead"></div><div id="replayHover" hidden></div><div id="replayTicks"></div><input type="range" id="replaySeek" min="0" max="1000" step="1" value="0" aria-label="Time in the raid"></div>
   <div id="replayTip" hidden></div>
   <div id="replayTimes"><span id="replayClock"></span><span id="replayDebug" hidden></span><span id="replayTotal"></span></div>
@@ -59,6 +62,8 @@ try { if (sessionStorage.getItem('swap')) { sessionStorage.removeItem('swap'); v
     <button id="replayKeep" type="button" title="In a replay: every death so far stays marked, not only the last few seconds'.">Keep kill marks</button>
     <button id="replaySpree" type="button" title="Along the bottom of the timeline: when somebody picked up a lot in a short while (a bot clearing a marked room, say). Pressed, the map goes there, following them.">Loot sprees</button>
     <button id="replayDoing" type="button" title="What each bot is doing, under its name, as the mod deciding for it has it (SAIN, ORBIT, COMET...).">Behaviour</button>
+    <button id="replayGestures" type="button" aria-pressed="true">Brief actions</button>
+    <button id="replayOverlayToggle" type="button" aria-pressed="false">Action overlay</button>
     <button id="replayFacing" type="button" title="Everybody as an arrow pointing the way they face. Off: a dot.">Facing arrows</button>
     <button id="replayMini" type="button" title="In a replay: the whole map small in a corner, with where everybody is and has been. Press it to go there.">Minimap</button>
     <label id="replayColor" title="Your own marker's colour, on the history page and the live map (Settings > Colours has it too)"><span>Your colour</span><input type="color" id="replayColorPick"></label>
@@ -186,6 +191,8 @@ try { if (sessionStorage.getItem('swap')) { sessionStorage.removeItem('swap'); v
       </details>
       <details class="group" data-group="boxKinds" open>
         <summary>Kinds of container</summary>
+        <label class="row range"><span>Container markers</span><select id="optContainerStyle"><option value="icon">Container icons</option><option value="square">Small squares</option></select></label>
+        <label class="row range"><span>Container size <small id="containerScaleText"></small></span><input type="range" id="optContainerScale" min="0.5" max="2" step="0.1"></label>
         <div class="filterGrid" id="boxKinds"></div>
       </details>
       <details class="group" data-group="lootMore" open>
@@ -318,6 +325,7 @@ try { if (sessionStorage.getItem('swap')) { sessionStorage.removeItem('swap'); v
         <label class="row sub" title="The bar over everybody, hurt or not."><input type="checkbox" id="optHealthAll"><span>Also when not hurt</span></label>
         <label class="row" title="Under each bot's marker, always: what it is doing now, as SAIN, COMET, ORBIT, QuestingBots or Phobos has it (looting, heading for a quest, in a fight). Off: only by the pointer and in the Raid list."><input type="checkbox" id="optMapDoing"><span>What each bot is doing</span></label>
         <label class="row" title="A small badge by each bot for what it's doing this moment, as SAIN or COMET has it: pushing (red), falling back (blue), reloading (amber), healing (green), throwing a grenade (orange), getting to cover (grey)."><input type="checkbox" id="optActionIcons"><span>Action icons</span></label>
+        <div id="actionLegend"></div>
         <label class="row" title="By each bot of the squad you point at or follow: its part in what COMET has the squad doing (Flanking, Covering a teammate), under its marker."><input type="checkbox" id="optSquadParts"><span>Squad parts on the map</span></label>
         <label class="row" title="Over each bot while its squad carries out a COMET tactic: its part in it in a word (Support, Flank, Crossfire, Storm...), for every squad, not only the one pointed at."><input type="checkbox" id="optTacticWords"><span>Squad tactic words</span></label>
         <label class="row" title="Only who is on the floor shown: people, kills and pick-ups on other floors are left out."><input type="checkbox" id="optFloorOnly"><span>Selected floor only</span></label>
@@ -337,14 +345,15 @@ try { if (sessionStorage.getItem('swap')) { sessionStorage.removeItem('swap'); v
       <details class="group" data-group="mapMods" open>
         <summary>Bot mods</summary>
         <label class="row" title="Phobos's field over the map: the arrows its bots are drawn along, and its zones."><input type="checkbox" id="optPhobosField"><span>Phobos field</span></label>
-        <label class="row" title="Where each ORBIT squad is headed and what for: a blue diamond, with a line to it from the squad. Off unless you turn it on."><input type="checkbox" id="optOrbitMain"><span>ORBIT squad objectives</span></label>
+        <label class="row" title="Mark squad objectives by their recorded status. Select a bot to highlight its squad."><input type="checkbox" id="optOrbitMain"><span>ORBIT squad objectives</span></label>
         <label class="row" title="The places an ORBIT squad is sent to sweep (a boss rush, a spawn rush): a blue ring each, as big as the place, named over its top with what for and the squad. Green once swept. Off unless you turn it on."><input type="checkbox" id="optOrbitRush"><span>ORBIT rush points</span></label>
         <label class="row" title="ORBIT's field over the map: the arrows its bots are drawn along, and its zones."><input type="checkbox" id="optOrbitField"><span>ORBIT field</span></label>
-        <label class="row" id="optOrbitLinesRow" title="A thin blue line from every ORBIT bot to the place it is heading for, with a small circle there. Off: only for the bot you point at or follow."><input type="checkbox" id="optOrbitLines"><span>Lines to where all are heading</span></label>
+        <label data-rec class="row orbitReplayRoutes" title="Show the reported destinations of all squads on tactical assignments."><input type="checkbox" id="optOrbitTactics"><span>Squad tactical routes</span></label>
+        <label class="row" id="optOrbitLinesRow" title="Show the recorded destinations of all bots, including ordinary travel."><input type="checkbox" id="optOrbitLines"><span>Lines to where all are heading</span></label>
         <label class="row sub" title="At the end of each line: what the bot is going there for."><input type="checkbox" id="optOrbitNames"><span>Say what for, at the place</span></label>
         <label class="row" title="A fight between ORBIT's ghosts (bots parked far from every player, fought out without the game): a ⚔ where it was, for half a minute."><input type="checkbox" id="optOrbitFights"><span>Ghost fights</span></label>
         <label class="row" title="When a ghost hears shots: a big pale blue circle round it, as wide as it could hear, for a few seconds. These can be hundreds of metres across."><input type="checkbox" id="optOrbitHear"><span>Hearing circles</span></label>
-        
+
       </details>
       <details class="group" data-group="replays" data-rec open>
         <summary>Replays</summary>
@@ -431,8 +440,10 @@ try { if (sessionStorage.getItem('swap')) { sessionStorage.removeItem('swap'); v
         <label class="row range" title="How big the names and words on the map are, apart from the markers."><span>Text size <small id="textScaleText"></small></span><input type="range" id="optTextScale" min="0.6" max="2.4" step="0.1"></label>
         <label class="row range sub" title="How big the names under the markers are, on top of Text size."><span>Names <small id="nameScaleText"></small></span><input type="range" id="optNameScale" min="0.5" max="2" step="0.1"></label>
         <label class="row range sub" title="How big the words under a bot's name saying what it's doing are, and its part in its squad's tactic, on top of Text size."><span>What they're doing <small id="doingScaleText"></small></span><input type="range" id="optDoingScale" min="0.5" max="2" step="0.1"></label>
-        <label class="row range" title="Whose name is written under their marker. Bosses include their guards and the Goons. Pointing at a marker always names it."><span>Names under</span><select id="optNames">
-        <option value="some">Bosses and friends</option><option value="players">PMCs, bosses and friends</option><option value="all">Everyone</option></select></label>
+        <label class="row range"><span>Bot names</span><select id="optNames">
+          <option value="none">None</option><option value="pmc">PMCs only</option><option value="other">Non-PMC bots only</option><option value="all">All bots</option></select></label>
+        <label class="row"><input type="checkbox" id="optMapDifficulty"><span>Difficulty under bots</span></label>
+        <label class="row"><input type="checkbox" id="optMapPersonality"><span>SAIN personality under bots</span></label>
         <label class="row" title="Your name under your own marker. It shows by itself while friends are in the raid with you; this shows it always."><input type="checkbox" id="optMyName"><span>Always show my name</span></label>
         <label class="row" title="Names written in Cyrillic (scavs, bosses) are shown in Latin letters; the bosses by the names players know them by (Kollontay, Reshala)."><input type="checkbox" id="optLatin"><span>Names in English letters</span></label>
       </details>

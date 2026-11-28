@@ -49,6 +49,7 @@ namespace Satellite.Client
             public int BotLevel;
             public string Side;
             public bool Person;
+            public bool PlayerScav;
             // a bot: how hard it is ("easy" to "impossible"), SAIN's personality for it, the brain layer deciding
             // for it now, whether ORBIT has it parked as a ghost, what ORBIT has it heading for, and the move COMET
             // has it making in a fight
@@ -517,6 +518,7 @@ namespace Satellite.Client
         {
             try
             {
+                dot.Person = !IsBot(player);
                 if (dot.Kind == "Main Player" || dot.Kind == "Friendly Player" || dot.Kind == "Enemy Player")
                 {
                     dot.Level = player.Profile?.Info != null ? player.Profile.Info.Level : 0;
@@ -524,22 +526,39 @@ namespace Satellite.Client
                     dot.Side = player.Side.ToString();
                     dot.BotLevel = 0;
                 }
-                else if (IsBot(player))
+                else if (!dot.Person)
                 {
                     dot.BotLevel = player.Profile?.Info != null ? player.Profile.Info.Level : 0;
                 }
 
-                dot.Person = !IsBot(player);
-
-                if (IsBot(player) && player.Profile?.Info?.Settings != null)
+                var info = player.Profile?.Info;
+                if (!dot.Person && info?.Settings != null)
                 {
-                    dot.Difficulty = player.Profile.Info.Settings.BotDifficulty.ToString();
+                    dot.Difficulty = info.Settings.BotDifficulty.ToString();
+                    dot.PlayerScav = IsPlayerScav(player.Side, info.Settings.Role, info.MainProfileNickname, info.Nickname);
                 }
             }
             catch (Exception)
             {
                 // drawn without them
             }
+        }
+
+        private static bool IsPlayerScav(EPlayerSide side, WildSpawnType role, string mainName, string scavName)
+        {
+            if (side != EPlayerSide.Savage || role != WildSpawnType.assault)
+            {
+                return false;
+            }
+
+            // SPT records the PMC name separately. Older profiles use "scav (PMC)".
+            if (!string.IsNullOrEmpty(mainName))
+            {
+                return true;
+            }
+
+            int suffix = scavName?.LastIndexOf(" (", StringComparison.Ordinal) ?? -1;
+            return suffix > 0 && scavName.Length > suffix + 3 && scavName.EndsWith(")", StringComparison.Ordinal);
         }
 
         // The kinds only a mod brings, and whether that mod is in this game: the page offers a switch for a kind only
@@ -1514,6 +1533,11 @@ namespace Satellite.Client
             {
                 to.Append(",\"sd\":");
                 Text(to, dot.Side);
+            }
+
+            if (dot.PlayerScav)
+            {
+                to.Append(",\"psc\":1");
             }
 
             if (dot.Person && dot.Player != null && FikaSide.Downed(dot.Player))

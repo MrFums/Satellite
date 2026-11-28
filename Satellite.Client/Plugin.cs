@@ -386,6 +386,7 @@ namespace Satellite.Client
                 }
 
                 to.Append(']');
+                if (Brains.GestureEvents) to.Append(",\"gestures\":1");
             }
 
             if (raid)

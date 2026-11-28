@@ -40,6 +40,10 @@ namespace Satellite.Client
             }
 
             Recorded.Hook(harmony);
+            ContactSharing.Hook(harmony);
+            After(harmony, Types.Find("SAIN.Components.PlayerComponentSpace.PlayerComponent"), "PlayVoiceLine",
+                typeof(Recorded), nameof(Recorded.VoicePlayed));
+            After(harmony, typeof(Grenade), nameof(Grenade.Explosion), typeof(Shots), nameof(Shots.Exploded));
         }
 
         private static void After(Harmony harmony, Type type, string method, Type mine, string with)
@@ -151,6 +155,27 @@ namespace Satellite.Client
         }
 
         private static readonly List<One> Waiting = new List<One>();
+
+        public static void Exploded(bool __runOriginal, object __1, Vector3 __2, string __3)
+        {
+            if (!__runOriginal || !World.Watched || Events.Raid.Length == 0) return;
+            // The explosive itself is authoritative, including for a launcher carrying different rounds.
+            var item = __1 as Item;
+            string name = null;
+            try { if (item != null) name = RichText.Plain(item.LocalizedShortName()); }
+            catch (Exception) { /* The blast still has a position when an addon's item has no name. */ }
+            Events.Add("grenade.blast", __3, null, Time.realtimeSinceStartup, to =>
+            {
+                to.Append("{\"at\":");
+                Hooks.Place(to, __2.x, __2.y, __2.z);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    to.Append(",\"i\":");
+                    World.Text(to, name);
+                }
+                to.Append('}');
+            });
+        }
 
         public static void Fired(object __0)
         {
